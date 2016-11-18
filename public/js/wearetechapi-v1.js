@@ -1,3 +1,5 @@
+'use strict'
+
 function WRTechAPI(){
     this.apiKey = "Qw2@ivd56njks&jso9bc#cxz9-caxm-0";
     this.apiCallback = function(data){

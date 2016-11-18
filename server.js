@@ -1,3 +1,5 @@
+'use strict'
+
 let express = require('express')
 let http = require('http')
 let app = express()
