@@ -24,9 +24,6 @@ WRTechAPI.prototype.setValidateButton = function(validateButton){
 WRTechAPI.prototype.setApiButtonEventListener = function(){
     let btns = document.querySelectorAll('[data-wearetechbtn]');
     for(let i = 0; i < btns.length; i++){
-        console.log(btns[i]);
-    }
-    btns.forEach(function(btn){
         if(btn.dataset.wearetechbtn != 0){
             btn.addEventListener("click", function(){
                 var xhttp;
@@ -74,7 +71,10 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
         }else{
             console.log("This button is not handle");
         }
-    })
+    }
+    // btns.forEach(function(btn){
+    //
+    // })
 }
 
 //TThis method will set the callback of the
