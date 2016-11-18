@@ -40,9 +40,7 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
                 }
 
                 let amount = this.dataset.amount;
-                if(amount){
-                    // xhttp.withCredentials = true;
-                    // console.log(toto);
+                if(typeof amount !== 'undefined'){
                     xhttp.open("GET", "https://paiementback.herokuapp.com/initpopup/"+amount, true);
                     xhttp.send();
                 }else{
@@ -58,9 +56,8 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
                     if(this.readyState == 4 && this.status == 200){
                         //Il faut faire un controle avant d'inserer de nouveau le code suivant.
                         document.body.insertAdjacentHTML('beforeend', this.responseText);
-                        // var coupe = this.responseText.split("<script>");
-                        // var javcsrpt = coupe[1].split("<\/script>");
-                        // eval(javcsrpt[0]);
+
+
                         let closebtn = document.getElementById("wearetech_closemodal");
                         if(closebtn){
                             WAPI.setCloseButton(closebtn);
