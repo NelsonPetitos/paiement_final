@@ -24,6 +24,7 @@ WRTechAPI.prototype.setValidateButton = function(validateButton){
 WRTechAPI.prototype.setApiButtonEventListener = function(){
     let btns = document.querySelectorAll('[data-wearetechbtn]');
     for(let i = 0; i < btns.length; i++){
+        let btn = btns[i];
         if(btn.dataset.wearetechbtn != 0){
             btn.addEventListener("click", function(){
                 var xhttp;
