@@ -1,5 +1,5 @@
 'use strict'
-
+let listSocket = new Set();
 let express = require('express')
 let http = require('http')
 let app = express()
@@ -59,10 +59,32 @@ app.get('/initpopup/:id', (request, response) => {
 
 //need to be improve to handle client paiement request
 io.on('connection', (socket) => {
+    listSocket.add(socket);
     console.log(`connection to socket.io identifier: ${socket.id}`)
+
+    //All to do if socket it's not the server
     socket.on('wearetechapi_client_emit', (data) => {
         console.log(data)
-        socket.emit('wearetechapi_server_response', {reslt: "happy day"})
+        //Send my number to the Mobile server and wait for the validation
+        let message = {
+            phone: data.phone,
+            socket: socket.id
+        }
+        io.emit('message', message);
+        // socket.emit('wearetechapi_server_response', {reslt: "happy day"})
+    })
+
+    socket.on('disconnect', ()=>{
+        console.log('user disconnect to the socket.')
+        listSocket.delete(this)
+    })
+})
+
+io.on('message', (data)=>{
+    listSocket.forEach((socket) =>{
+        if(socket.id == data.socket){
+            socket.emit('wearetechapi_server_response', {reslt: "happy day"})
+        }
     })
 })
 

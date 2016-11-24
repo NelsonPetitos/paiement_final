@@ -6,6 +6,7 @@ function WRTechAPI(){
         console.log(data);
     };
 }
+
 WRTechAPI.prototype.setApiKey = function(newKey){
     this.apiKey = newKey;
     console.log("new api key = "+ newKey);
@@ -27,6 +28,13 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
         let btn = btns[i];
         if(btn.dataset.wearetechbtn != 0){
             btn.addEventListener("click", function(){
+
+                // WAPI.currentButton = this;
+                // let anim = document.createElement('div');
+                // anim.style = "display:inline-block;border:3px solid #f3f3f3;border-top: 3px solid #3498db;border-radius:50%;width:15px;height:15px;animation:spin 2s linear infinite;margin:10px;";
+                // anim.id = "wearetech-loader";
+                // this.replaceWith(anim);
+
                 var xhttp;
                 if(window.XDomainRequest){
                     xhttp = new XDomainRequest();
@@ -41,7 +49,7 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
 
                 let amount = this.dataset.amount;
                 if(typeof amount !== 'undefined'){
-                    xhttp.open("GET", "https://paiementback.herokuapp.com/initpopup/"+amount, true);
+                    xhttp.open("GET", "http://localhost:5000/initpopup/"+amount, true);
                     xhttp.send();
                 }else{
                     console.log("Set data-amount attribute to your button");
@@ -88,7 +96,7 @@ WRTechAPI.prototype.setApiCallback = function(resolve){
 WRTechAPI.prototype.setValidateButtonEventListemer = function(){
     this.validateButton.addEventListener("click", function () {
         if(typeof io !== 'undefined'){
-            let socket = io.connect('https://paiementback.herokuapp.com/');
+            let socket = io.connect('http://localhost:5000/');
             if(typeof socket !== 'undefined'){
 
                 let phone = document.getElementById('wearetech_phone_number').value;
@@ -123,6 +131,10 @@ WRTechAPI.prototype.setCloseButtonEventListener = function() {
         }else{
             console.log("there is not a block div with id='wearetech_modal'");
         }
+
+        // remove animation
+        // let anim = document.getElementById('wearetech-loader');
+        // anim.replaceWith(WAPI.currentButton);
     });
 }
 
