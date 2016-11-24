@@ -64,6 +64,7 @@ io.on('connection', (socket) => {
 
     //All to do if socket it's not the server
     socket.on('wearetechapi_client_emit', (data) => {
+        Console.log('A browser just send me this data ')
         console.log(data)
         //Send my number to the Mobile server and wait for the validation
         let message = {
@@ -80,7 +81,8 @@ io.on('connection', (socket) => {
     // })
 
     socket.on('message', (data)=>{
-        console.log('the modem just answer me')
+        console.log('the modem just answer me the response is ')
+        console.log(data)
         listSocket.forEach((socket) =>{
             if(socket.id == data.socket){
                 socket.emit('wearetechapi_server_response', {reslt: "happy day"})
