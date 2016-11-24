@@ -74,20 +74,22 @@ io.on('connection', (socket) => {
         // socket.emit('wearetechapi_server_response', {reslt: "happy day"})
     })
 
-    socket.on('disconnect', ()=>{
-        console.log('user disconnect to the socket.')
-        listSocket.delete(this)
+    // socket.on('disconnect', ()=>{
+    //     console.log('user disconnect to the socket.')
+    //     listSocket.delete(this)
+    // })
+
+    socket.on('message', (data)=>{
+        console.log('the modem just answer me')
+        listSocket.forEach((socket) =>{
+            if(socket.id == data.socket){
+                socket.emit('wearetechapi_server_response', {reslt: "happy day"})
+            }
+        })
     })
 })
 
-io.on('message', (data)=>{
-    console.log('the modem just answer me')
-    listSocket.forEach((socket) =>{
-        if(socket.id == data.socket){
-            socket.emit('wearetechapi_server_response', {reslt: "happy day"})
-        }
-    })
-})
+
 
 server.listen(process.env.PORT || 5000, () => {
     console.log(`Server running on port ${process.env.PORT || 5000}`)
