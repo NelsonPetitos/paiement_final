@@ -64,7 +64,7 @@ io.on('connection', (socket) => {
 
     //All to do if socket it's not the server
     socket.on('wearetechapi_client_emit', (data) => {
-        Console.log('A browser just send me this data ')
+        console.log('A browser just send me this data ')
         console.log(data)
         //Send my number to the Mobile server and wait for the validation
         let message = {
