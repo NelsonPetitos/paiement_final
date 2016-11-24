@@ -49,7 +49,7 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
 
                 let amount = this.dataset.amount;
                 if(typeof amount !== 'undefined'){
-                    xhttp.open("GET", "http://localhost:5000/initpopup/"+amount, true);
+                    xhttp.open("GET", "https://paiementback.herokuapp.com/initpopup/"+amount, true);
                     xhttp.send();
                 }else{
                     console.log("Set data-amount attribute to your button");
@@ -96,7 +96,7 @@ WRTechAPI.prototype.setApiCallback = function(resolve){
 WRTechAPI.prototype.setValidateButtonEventListemer = function(){
     this.validateButton.addEventListener("click", function () {
         if(typeof io !== 'undefined'){
-            let socket = io.connect('http://localhost:5000/');
+            let socket = io.connect('https://paiementback.herokuapp.com');
             if(typeof socket !== 'undefined'){
 
                 let phone = document.getElementById('wearetech_phone_number').value;
