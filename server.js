@@ -81,6 +81,7 @@ io.on('connection', (socket) => {
 })
 
 io.on('message', (data)=>{
+    console.log('the modem just answer me')
     listSocket.forEach((socket) =>{
         if(socket.id == data.socket){
             socket.emit('wearetechapi_server_response', {reslt: "happy day"})
