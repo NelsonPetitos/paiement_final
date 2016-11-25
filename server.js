@@ -76,8 +76,8 @@ io.on('connection', (socket) => {
     })
 
     socket.on('disconnect', ()=>{
-        console.log(`user disconnect to the socket. ${this.id}`)
-        listSocket.delete(this)
+        console.log(`user disconnect to the socket. ${socket.id}`)
+        listSocket.delete(socket)
     })
 
     socket.on('message', (data)=>{
