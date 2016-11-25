@@ -75,16 +75,17 @@ io.on('connection', (socket) => {
         // socket.emit('wearetechapi_server_response', {reslt: "happy day"})
     })
 
-    // socket.on('disconnect', ()=>{
-    //     console.log('user disconnect to the socket.')
-    //     listSocket.delete(this)
-    // })
+    socket.on('disconnect', ()=>{
+        console.log(`user disconnect to the socket. ${this.id}`)
+        listSocket.delete(this)
+    })
 
     socket.on('message', (data)=>{
         console.log('the modem just answer me the response is ')
-        console.log(data)
+        console.log(data.socket)
         listSocket.forEach((socket) =>{
             if(socket.id == data.socket){
+                console.log("Sender socket find. The response send back to the browser")
                 socket.emit('wearetechapi_server_response', {reslt: "happy day"})
             }
         })
