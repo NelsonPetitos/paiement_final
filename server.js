@@ -86,7 +86,7 @@ io.on('connection', (socket) => {
         listSocket.forEach((socket) =>{
             if(socket.id == data.socket){
                 console.log("Sender socket find. The response send back to the browser")
-                socket.emit('wearetechapi_server_response', {reslt: "happy day"})
+                socket.emit('wearetechapi_server_response', {reslt: data.airtime})
             }
         })
     })
