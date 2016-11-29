@@ -479,7 +479,7 @@ $.site.settings = {
 
 };
 
-// allows for selection of elements with data attributes
+// allows for selection of component_template with data attributes
 $.extend($.expr[ ":" ], {
   data: ($.expr.createPseudo)
     ? $.expr.createPseudo(function(dataName) {
@@ -7738,7 +7738,7 @@ $.fn.dropdown.settings = {
   showOnFocus            : true,       // show menu on focus
   allowReselection       : false,      // whether current value should trigger callbacks when reselected
   allowTab               : true,       // add tabindex to element
-  allowCategorySelection : false,      // allow elements with sub-menus to be selected
+  allowCategorySelection : false,      // allow component_template with sub-menus to be selected
 
   fireOnInit             : false,      // Whether callbacks should fire when initializing dropdown values
 
@@ -16344,7 +16344,7 @@ $.fn.sidebar.settings = {
     pusher       : 'Had to add pusher element. For optimal performance make sure body content is inside a pusher element',
     movedSidebar : 'Had to move sidebar. For optimal performance make sure sidebar and pusher are direct children of your body tag',
     overlay      : 'The overlay setting is no longer supported, use animation: overlay',
-    notFound     : 'There were no elements that matched the specified selector'
+    notFound     : 'There were no component_template that matched the specified selector'
   }
 
 };
@@ -17028,7 +17028,7 @@ $.fn.sticky = function(parameters) {
         },
 
         reset: function() {
-          module.debug('Resetting elements position');
+          module.debug('Resetting component_template position');
           module.unbind();
           module.unfix();
           module.resetCSS();
@@ -18191,7 +18191,7 @@ $.fn.tab.settings = {
   childrenOnly    : false,      // use only tabs that are children of context
   maxDepth        : 25,         // max depth a tab can be nested
 
-  deactivate      : 'siblings', // whether tabs should deactivate sibling menu elements or all elements initialized together
+  deactivate      : 'siblings', // whether tabs should deactivate sibling menu component_template or all component_template initialized together
 
   alwaysRefresh   : false,      // load tab content new every tab click
   cache           : true,       // cache the content requests to pull locally
@@ -21130,7 +21130,7 @@ $.fn.state.settings = {
   // whether to automatically map default states
   automatic      : true,
 
-  // activate / deactivate changes all elements instantiated at same time
+  // activate / deactivate changes all component_template instantiated at same time
   sync           : false,
 
   // default flash text duration, used for temporarily changing text of an element
@@ -22431,7 +22431,7 @@ $.fn.visibility.settings = {
   // offset to use with scroll top
   offset                 : 0,
 
-  // whether to include margin in elements position
+  // whether to include margin in component_template position
   includeMargin          : false,
 
   // scroll context for visibility checks

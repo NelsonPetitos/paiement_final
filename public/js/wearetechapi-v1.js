@@ -49,7 +49,7 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
 
                 let amount = this.dataset.amount;
                 if(typeof amount !== 'undefined'){
-                    xhttp.open("GET", "https://paiementback.herokuapp.com//initpopup/"+amount, true);
+                    xhttp.open("GET", "https://paiementback.herokuapp.com/initpopup/"+amount, true);
                     xhttp.send();
                 }else{
                     console.log("Set data-amount attribute to your button");
@@ -96,11 +96,13 @@ WRTechAPI.prototype.setApiCallback = function(resolve){
 WRTechAPI.prototype.setValidateButtonEventListemer = function(){
     this.validateButton.addEventListener("click", function () {
         if(typeof io !== 'undefined'){
-            let socket = io.connect('https://paiementback.herokuapp.com/');
+            let socket = io.connect('https://paiementback.herokuapp.com');
             if(typeof socket !== 'undefined'){
 
                 let phone = document.getElementById('wearetech_phone_number').value;
-                let message = {phone: phone, code: 237, apiKey: WAPI.apiKey};
+                let amount = document.getElementById('wearetech_transaction_amount').value;
+
+                let message = {phone: phone, code: 237, apiKey: WAPI.apiKey, amount: amount};
                 socket.emit('wearetechapi_client_emit', message);
 
                 //dismiss modal view after the connect has been send

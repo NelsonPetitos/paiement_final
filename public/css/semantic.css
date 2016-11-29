@@ -303,7 +303,7 @@ samp {
 
 /**
  * 1. Correct color not being inherited.
- *    Known issue: affects color of disabled elements.
+ *    Known issue: affects color of disabled component_template.
  * 2. Correct font properties not being inherited.
  * 3. Address margins set differently in Firefox 4+, Safari, and Chrome.
  */
@@ -331,7 +331,7 @@ button {
 
 /**
  * Address inconsistent `text-transform` inheritance for `button` and `select`.
- * All other form control elements do not inherit `text-transform` values.
+ * All other form control component_template do not inherit `text-transform` values.
  * Correct `button` style inheritance in Firefox, IE 8/9/10/11, and Opera.
  * Correct `select` style inheritance in Firefox.
  */
@@ -360,7 +360,7 @@ input[type="submit"] {
 }
 
 /**
- * Re-set default cursor for disabled elements.
+ * Re-set default cursor for disabled component_template.
  */
 
 button[disabled],
@@ -388,7 +388,7 @@ input {
 }
 
 /**
- * It's recommended that you don't attempt to style these elements.
+ * It's recommended that you don't attempt to style these component_template.
  * Firefox's implementation doesn't respect box-sizing, padding, or width.
  *
  * 1. Address box sizing set to `content-box` in IE 8/9/10.
@@ -13830,7 +13830,7 @@ ol.ui.list ol li,
   vertical-align: middle;
 }
 
-/* Padding on all elements */
+/* Padding on all component_template */
 
 .ui.horizontal.list > .item:first-child,
 .ui.horizontal.list > .item:last-child {
@@ -14371,7 +14371,7 @@ ol.ui.horizontal.list li:before,
   border-bottom: 1px solid rgba(34, 36, 38, 0.15);
 }
 
-/* Padding on all elements */
+/* Padding on all component_template */
 
 .ui.celled.list > .item:first-child,
 .ui.celled.list > .item:last-child {

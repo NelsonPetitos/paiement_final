@@ -3,10 +3,11 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'my-app',
   template: `
-    <h1>Hello {{name}}</h1>
-    <p>Mon mail est {{address}}.</p>`,
+        <my-navigation></my-navigation>
+        <intro-section></intro-section>
+        <about-section></about-section>
+        <getstarted-section></getstarted-section>
+        <docs-section></docs-section>        
+    `,
 })
-export class AppComponent  {
-  name = 'Nelson';
-  address = 'nde_nelson@yahoo.fr';
-}
+export class AppComponent  { }
