@@ -1,4 +1,5 @@
 'use strict'
+
 let listSocket = new Set()
 let modemSocket = undefined
 let secretKey = "1234567890"
@@ -22,6 +23,7 @@ app.use((req, res, next) => {
 //Middleware
 app.use('/assets', express.static(__dirname+'/public'))
 app.use('/lib', express.static(__dirname+'/node_modules'))
+app.use('/app', express.static(__dirname+'/app'))
 
 app.get('/', (request, response) => {
     console.log(`new request on the home page url`)
