@@ -1,13 +1,16 @@
 'use strict'
-let listSocket = new Set();
+let listSocket = new Set()
+let modemSocket = undefined
+let secretKey = "1234567890"
 let express = require('express')
 let http = require('http')
 let app = express()
 let server = http.createServer(app)
-let io = require('socket.io')(server);
+let io = require('socket.io')(server)
 
 //Set ejs as the templates engine
 app.set('view engine', 'ejs')
+app.engine('html', require('ejs').renderFile)
 
 
 //Middleware pour gerer les requetes ajaxs (de type XMLHttpRequest ou XDomainRequest
@@ -18,6 +21,7 @@ app.use((req, res, next) => {
 });
 //Middleware
 app.use('/assets', express.static(__dirname+'/public'))
+app.use('/lib', express.static(__dirname+'/node_modules'))
 
 app.get('/', (request, response) => {
     console.log(`new request on the home page url`)
@@ -59,39 +63,71 @@ app.get('/initpopup/:id', (request, response) => {
 
 //need to be improve to handle client paiement request
 io.on('connection', (socket) => {
-    listSocket.add(socket);
-    console.log(`connection to socket.io identifier: ${socket.id}`)
+
+    console.log(`New socket connection with identifier: ${socket.id}`)
+    // console.log(socket.client.conn)
+    listSocket.add(socket); //Keep a list of all socket connected to the server
 
     //All to do if socket it's not the server
     socket.on('wearetechapi_client_emit', (data) => {
         console.log('A browser just send me this data ')
         console.log(data)
-        //Send my number to the Mobile server and wait for the validation
-        let message = {
-            phone: data.phone,
-            socket: socket.id
+
+        if(typeof modemSocket == 'undefined'){
+            //Le modem n'est pas connecte
+            let result = {
+                result: null,
+                error: true,
+                message: "modem unavailable"
+            }
+            socket.emit('wearetechapi_server_response', result)
+            socket.disconnect(0);
+        }else{
+            //Send my number to the Mobile server and wait for the validation
+            let message = {
+                phone: data.phone,
+                socket: socket.id,
+                apiKey: data.apiKey,
+                secretKey: secretKey
+            }
+            modemSocket.emit('message', message);
         }
-        io.emit('message', message);
-        // socket.emit('wearetechapi_server_response', {reslt: "happy day"})
     })
 
-    socket.on('disconnect', ()=>{
-        console.log(`user disconnect to the socket. ${socket.id}`)
+    socket.on('disconnect', ()=> {
+        console.log(`The socket ${socket.id} is disconnected.`)
+        if(typeof modemSocket !== 'undefined' && socket.id == modemSocket.id){
+            modemSocket = undefined
+        }
         listSocket.delete(socket)
     })
 
-    socket.on('message', (data)=>{
-        console.log('the modem just answer me the response is ')
+    socket.on('message', (data)=> {
+        console.log('The modem just answer me the response is ')
         console.log(data.socket)
-        listSocket.forEach((socket) =>{
-            if(socket.id == data.socket){
-                console.log("Sender socket find. The response send back to the browser")
-                socket.emit('wearetechapi_server_response', {reslt: data.airtime})
-            }
-        })
+        if(data.secretKey == secretKey){
+            listSocket.forEach((socket) =>{
+                if(socket.id == data.socket){
+                    console.log("Sender socket find. The response send back to the browser")
+                    let result = {
+                        result: data.airtime,
+                        error: false,
+                        message: "Request sucessfull"
+                    }
+                    socket.emit('wearetechapi_server_response', result)
+                    socket.disconnect(0);
+                }
+            })
+        }
+    })
+
+    socket.on('modemSocket', (data) => {
+        if(data.secretKey == secretKey){
+            modemSocket = socket;
+            console.log('The modem just connect and it\'s identified')
+        }
     })
 })
-
 
 
 server.listen(process.env.PORT || 5000, () => {

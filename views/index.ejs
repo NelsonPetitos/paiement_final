@@ -1,120 +1,25 @@
-<% include ./elements/header.ejs %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Start application</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link rel="stylesheet" href="styles.css"/>
 
-    <!-- Intro Section -->
-    <section id="intro" class="intro-section" style="margin-top: 90px; padding-top: 0;" >
-        <div class="jumbotron">
-            <h1>wearetchapi</h1>
-            <p>Mobile money api</p>
-            <p><a class="btn btn-primary btn-lg page-scroll"  href="#services" role="button">Get started</a></p>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
+        <!-- Polyfill(s) for older browsers -->
+        <script src="lib/core-js/client/shim.min.js"></script>
 
+        <script src="lib/zone.js/dist/zone.js"></script>
+        <script src="lib/reflect-metadata/Reflect.js"></script>
+        <script src="lib/systemjs/dist/system.src.js"></script>
 
-            </div>
-        </div>
-    </section>
+        <script src="assets/js/systemjs.config.js"></script>
+        <script>
+            System.import('app').catch(function(err){ console.error(err); });
+        </script>
+    </head>
 
-    <!-- About Section -->
-    <section id="about" class="about-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="row">
-                        <h1>What's wearetecapi</h1>
-                        <p></p>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-4 "></div>
-                        <div class="col-lg-4"></div>
-                        <div class="col-lg-4"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section id="services" class="services-section">
-        <div class="container">
-            <div class="row">
-                <h1>Get started</h1>
-                <div class="row col-md-6 col-md-offset-3">
-                    <div class="ui" style="margin-top: 10%;">
-                        <h2 class="ui horizontal divider header">Download the script</h2>
-                        <p style="text-align: left; line-height: 2.5em;">
-                            To use the wearetechapi you first needs to download the script. You can
-                            <a href="#">take it from our web site</a> or just insert this :<br/>
-                            <code>&lt;script src="https://paiementback.herokuapp.com/assets/js/wearetechapi-v1.js"&gt;&lt;/script&gt;</code>
-                        </p>
-                    </div>
-                </div>
-                <div class="row col-md-6 col-md-offset-3">
-                    <div class="ui" style="margin-top: 10%;">
-                        <h2 class="ui horizontal divider header">Create your button</h2>
-                        <p>
-                            Now to take on a payment, you just have to create a specific
-                            button in your page. That buuton should have <span></span>
-
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="contact-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="row" style="margin-bottom: 30px;">
-                        <h1>Docs</h1>
-                        <p></p>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-4" >
-                            <h2 class="ui horizontal divider header">
-                                <i class="browser icon"></i> Guide
-                            </h2>
-                            <ul style="text-align: justify !important;">
-                                <li><a href="#">Souscription</a></li>
-                                <li><a href="#">Downloads the script</a></li>
-                                <li><a href="#">Create button</a></li>
-                                <li><a href="#">Implement the callback</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-lg-4">
-                            <h2 class="ui horizontal divider header">
-                                <i class="settings icon"></i>
-                                API reference
-                            </h2>
-                            <ul style="text-align: justify !important;">
-                                <li><a href="#">WAPI object</a></li>
-                                <li>
-                                    <a href="#">Attributes</a>
-                                    <ul>
-                                        <li><a href="#">apiKey</a></li>
-                                        <li><a href="#">apiCallback</a> </li>
-                                    </ul>
-                                </li>
-
-                                <li>
-                                    <a href="#">Method </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-lg-4">
-                            <h2 class="ui horizontal divider header">
-                                <i class="configure icon"></i>
-                                Advance
-                            </h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-<% include ./elements/footer.ejs %>
+    <body>
+        <my-app>Loading AppComponent content here ...</my-app>
+    </body>
+</html>
