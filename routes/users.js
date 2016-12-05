@@ -1,40 +1,46 @@
 let express = require('express')
 let router = express.Router()
 let User = require('../models/user')
+let crypto = require('crypto')
 
-router.post('/login', (req, res, next) => {
+router.post('/', function(req, res){
 
-    let user = new User({
-        apikey: 'Qw2@ivd56njks&jso9bc#cxz9-caxm-0',
-        email: res.body.email,
-        password: res.body.passsword,
-    })
-    user.save((err, data) => {
-        if(err){
-            res.status(404).json({
-                message: 'Ab error occur',
-                err: err,
-            })
-            res.end()
-        }
-        res.status(202).json({
-            message: 'Register succesfully',
-            data: data,
-        })
-
-    })
+    let user = new User()
+    user.apikey = crypto.randomBytes(20).toString('hex');
+    user.email = req.body.email;
+    user.password = req.body.password;
+    if(user.email == '' || user.email == null || user.password == '' || user.password == null || user.apikey == '' || user.apikey == null ){
+        res.send({err: true, msg: "Make sure that all required fields are provided", data: null})
+    }else{
+        user.save().then((data) => {
+            console.log(`User create ${data}`);
+            res.send({err: false, msg: 'user create.', data: data});
+        }, (err) =>{
+            console.log(`Erreur de sauvegarde du user. ${err}`);
+            res.send({err: true, msg: 'Database validation rule failed.', data: JSON.stringify(err)});
+        });
+    }
 })
 
-router.get('/login', (req, res, next) => {
+router.post('/login', function(req, res){
 
+    if(req.body.email == '' || req.body.email == null || req.body.password == '' || req.body.password == null ){
+        res.send({err: true, msg: "Make sure that there is no empty fields", data: null})
+    }else{
+        User.findOne({email: req.body.email}, (err, user) => {
+            if(err != null || user == null ){
+                console.log(`erreur de recherche d'un user: ${err}`);
+                res.send({err: true, msg: 'User does not exist', data: err});
+            }else if(user.comparePassword(req.body.password)){
+                console.log(`User find ${user}`);
+                res.send({err: false, msg: 'user login', data: user});
+            }else{
+                console.log(`User - password couple does not fit`);
+                res.send({err: true, msg: 'Wrong email or password', data: null});
+            }
+        });
+    }
 })
 
-router.post('/register', (req, res, next) => {
-
-})
-
-router.get('/register', (req, res, next) => {
-
-})
 
 module.exports = router

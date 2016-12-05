@@ -8,13 +8,7 @@
   },
   "author": "@nelson",
   "license": "ISC",
-
   "dependencies": {
-    "bootstrap": "^3.3.7",
-    "ejs": "^2.5.2",
-    "express": "^4.14.0",
-    "socket.io": "^1.5.1",
-
     "@angular/common": "~2.2.0",
     "@angular/compiler": "~2.2.0",
     "@angular/core": "~2.2.0",
@@ -23,15 +17,21 @@
     "@angular/platform-browser": "~2.2.0",
     "@angular/platform-browser-dynamic": "~2.2.0",
     "@angular/router": "~3.2.0",
-
     "angular-in-memory-web-api": "~0.1.15",
-    "systemjs": "0.19.40",
+    "bcrypt": "^0.8.7",
+    "bcrypt-as-promised": "^1.1.0",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.15.2",
+    "bootstrap": "^3.3.7",
     "core-js": "^2.4.1",
+    "crypto": "0.0.3",
+    "ejs": "^2.5.2",
+    "express": "^4.14.0",
     "reflect-metadata": "^0.1.8",
     "rxjs": "5.0.0-beta.12",
+    "socket.io": "^1.5.1",
+    "systemjs": "0.19.40",
     "zone.js": "^0.6.26"
-
-
   },
   "devDependencies": {
     "concurrently": "^3.1.0",

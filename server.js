@@ -1,8 +1,6 @@
 'use strict'
 
-let listSocket = new Set()
-let modemSocket = undefined
-let secretKey = "1234567890"
+
 let express = require('express')
 let http = require('http')
 let app = express()
@@ -12,15 +10,38 @@ let popupRoute = require('./routes/popup')
 let homeRoute = require('./routes/home')
 let userRoute = require('./routes/users')
 let mongoose = require('mongoose')
+// var cleanup = new (require('./public/js/cleanup'))();
+let listSocket = new Set()
+let modemSocket = undefined
+let secretKey = "1234567890"
+let bodyParser = require('body-parser')
+
 
 
 //Connect to database
-// mongoose.connect('mongodb://ndenelson:Picsou_88modulus@jello.modulusmongo.net:27017/iG8apaze')
+mongoose.connect('mongodb://localhost:27017/paiement_api_db', (err) =>{
+    if(err){
+        console.log(`Not connected to the database. ${err}`)
+    }else{
+        console.log(`Sucessfull connected to the database.`)
+    }
+})
+// mongoose.connect('mongodb://ndenelson:Picsou_88modulus@jello.modulusmongo.net:27017/iG8apaze', (err) =>{
+//     if(err){
+//         console.log(`Not connected to the database. ${err}`)
+//     }else{
+//         console.log(`Sucessfull connected to the database.`)
+//     }
+// })
 
 //Set ejs as the templates engine
 app.set('view engine', 'ejs')
 app.engine('html', require('ejs').renderFile)
 
+
+//Body parser middleware
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true}))
 
 //Middleware pour gerer les requetes ajaxs (de type XMLHttpRequest ou XDomainRequest
 app.use((req, res, next) => {
@@ -39,9 +60,15 @@ app.use('/assets', express.static(__dirname+'/public'))
 app.use('/lib', express.static(__dirname+'/node_modules'))
 app.use('/app', express.static(__dirname+'/app'))
 
+app.get('/test', function (req, res) {
+    res.send({
+        email: "test@test.cm",
+        password: "testpassword"
+    })
+})
 app.use('/initpopup', popupRoute)
-app.use('/users', userRoute)
-app.use('/', homeRoute)
+app.use('/api/users', userRoute)
+app.use('*', homeRoute)
 
 
 
@@ -64,7 +91,7 @@ io.on('connection', (socket) => {
                 message: "modem unavailable"
             }
             socket.emit('wearetechapi_server_response', result)
-            socket.disconnect(0);
+            socket.disconnect();
         }else{
             //Send my number to the Mobile server and wait for the validation
             let message = {
@@ -74,21 +101,11 @@ io.on('connection', (socket) => {
                 secretKey: secretKey,
                 amount: data.amount,
             }
-            modemSocket.emit('message', message);
+            modemSocket.emit('paiement', message);
         }
-    })
+    });
 
-    socket.on('disconnect', ()=> {
-        console.log(`The socket ${socket.id} is disconnected.`)
-        if(typeof modemSocket !== 'undefined' && socket.id == modemSocket.id){
-            modemSocket = undefined
-        }
-        listSocket.delete(socket)
-        // socket.disconnect(0);
-
-    })
-
-    socket.on('message', (data)=> {
+    socket.on('message ', (data)=> {
         console.log('The modem just answer me the response is ')
         console.log(data)
         if(data.secretKey == secretKey){
@@ -101,20 +118,32 @@ io.on('connection', (socket) => {
                         message: "Request sucessfull"
                     }
                     socket.emit('wearetechapi_server_response', result)
-                    socket.disconnect(0);
+                    socket.disconnect();
                 }
             })
         }
-    })
+    });
 
     socket.on('modemSocket', (data) => {
         if(data.secretKey == secretKey){
             modemSocket = socket;
-            console.log('The modem just connect and it\'s identified')
+            console.log(`The modem just connect and it\'s identified ${socket.id}`)
         }
-    })
+    });
+
+    socket.on('disconnect', ()=> {
+        console.log(`The socket ${socket.id} is disconnected.`)
+        if(typeof modemSocket !== 'undefined' && socket.id == modemSocket.id){
+            modemSocket = undefined
+        }
+        socket.disconnect()
+        listSocket.delete(socket)
+    });
 })
 
+// process.on('exit',  () => {
+//     console.log('On exit event occur...')
+// })
 
 server.listen(process.env.PORT || 5000, () => {
     console.log(`Server running on port ${process.env.PORT || 5000}`)

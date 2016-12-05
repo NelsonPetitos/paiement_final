@@ -10,19 +10,40 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var platform_browser_1 = require('@angular/platform-browser');
+var router_1 = require('@angular/router');
+var forms_1 = require('@angular/forms');
+var http_1 = require('@angular/http');
+var home_component_1 = require('./components/home/home.component');
 var app_component_1 = require('./app.component');
-var navigation_component_1 = require('./components/header/navigation.component');
-var intro_component_1 = require('./components/intro/intro.component');
-var about_component_1 = require('./components/about/about.component');
-var getstarted_component_1 = require('./components/getstarted/getstarted.component');
-var docs_component_1 = require('./components/docs/docs.component');
+var login_component_1 = require('./components/login/login.component');
+var register_component_1 = require('./components/register/register.component');
+var users_service_1 = require('./services/users.service');
+var appRoutes = [
+    { path: 'home', component: home_component_1.HomeComponent },
+    { path: 'about', component: home_component_1.HomeComponent },
+    { path: 'get-started', component: home_component_1.HomeComponent },
+    { path: 'docs', component: home_component_1.HomeComponent },
+    { path: 'account', component: login_component_1.LoginComponent },
+    { path: 'register', component: register_component_1.RegisterComponent }
+];
 var AppModule = (function () {
     function AppModule() {
     }
     AppModule = __decorate([
         core_1.NgModule({
-            imports: [platform_browser_1.BrowserModule],
-            declarations: [app_component_1.AppComponent, navigation_component_1.NavigationComponent, intro_component_1.IntroComponent, about_component_1.AboutComponent, getstarted_component_1.GetstartedComponent, docs_component_1.DocsComponent],
+            imports: [
+                platform_browser_1.BrowserModule,
+                forms_1.FormsModule,
+                http_1.HttpModule,
+                router_1.RouterModule.forRoot(appRoutes)
+            ],
+            declarations: [
+                app_component_1.AppComponent,
+                home_component_1.HomeComponent,
+                login_component_1.LoginComponent,
+                register_component_1.RegisterComponent
+            ],
+            providers: [users_service_1.UsersService],
             bootstrap: [app_component_1.AppComponent]
         }), 
         __metadata('design:paramtypes', [])

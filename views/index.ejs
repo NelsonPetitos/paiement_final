@@ -1,22 +1,17 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <base href="/">
         <title>WearetecAPi documentation</title>
         <meta charset="UTF-8"/>
 
-
-        <link rel="stylesheet" type="text/css" href="assets/css/semantic.css"/>
-
-        <link rel="stylesheet" type="text/css" href="assets/css/scrolling-nav.css"/>
-        <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+        <!--<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css" />-->
 
-    </head>
-
-    <body>
-
-        <my-app>Loading AppComponent content here ...</my-app>
-
+        <!--Style sheet-->
+        <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
+        <link rel="stylesheet" type="text/css" href="assets/css/semantic.css"/>
+        <link rel="stylesheet" type="text/css" href="assets/css/scrolling-nav.css" />
 
         <!-- Polyfill(s) for older browsers -->
         <script src="lib/core-js/client/shim.min.js"></script>
@@ -30,18 +25,25 @@
             System.import('app').catch(function(err){ console.error(err); });
         </script>
 
+    </head>
+
+    <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+
+        <my-app>Loading content ...</my-app>
+
         <!-- jQuery -->
-        <script src="assets/js/jquery.js"></script>
+        <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>-->
+        <script src="assets/js/jquery.js" ></script>
 
         <!-- Bootstrap Core JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <!--<script src="assets/js/bootstrap"-->
 
-        <!--&lt;!&ndash; Scrolling Nav JavaScript &ndash;&gt;-->
-        <!--<script src="assets/js/jquery.easing.min.js"></script>-->
-        <!--<script src="assets/js/scrolling-nav.js"></script>-->
+        <!-- Scrolling Nav JavaScript -->
+        <script src="assets/js/jquery.easing.min.js"></script>
+        <script src="assets/js/scrolling-nav.js"></script>
 
         <!--  Semantic UI -->
         <script src="assets/js/semantic.js"></script>
-
     </body>
 </html>
