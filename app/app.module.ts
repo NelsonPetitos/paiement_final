@@ -7,6 +7,7 @@ import { HttpModule } from '@angular/http';
 import { HomeComponent }        from './components/home/home.component';
 import { AppComponent }         from './app.component';
 import { LoginComponent }       from './components/login/login.component';
+import { AccountComponent }     from './components/account/account.component';
 import { RegisterComponent }    from './components/register/register.component';
 import { UsersService }         from './services/users.service';
 
@@ -14,8 +15,8 @@ const appRoutes: Routes = [
     { path: 'home', component: HomeComponent },
     { path: 'about', component: HomeComponent },
     { path: 'get-started', component: HomeComponent },
-    { path: 'docs', component: HomeComponent },
-    { path: 'account', component: LoginComponent },
+    { path: 'account', component:  AccountComponent },
+    { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent}
 ];
 
@@ -30,7 +31,8 @@ const appRoutes: Routes = [
         AppComponent,
         HomeComponent,
         LoginComponent,
-        RegisterComponent
+        RegisterComponent,
+        AccountComponent
 
     ],
     providers: [UsersService],

@@ -19,7 +19,8 @@ let bodyParser = require('body-parser')
 
 
 //Connect to database
-mongoose.connect('mongodb://localhost:27017/paiement_api_db', (err) =>{
+mongoose.connect('mongodb://ndenelson:Picsou_88modulus@jello.modulusmongo.net:27017/iG8apaze', (err) =>{
+// mongoose.connect('mongodb://localhost:27017/paiement_api_db', (err) =>{
     if(err){
         console.log(`Not connected to the database. ${err}`)
     }else{
@@ -105,7 +106,7 @@ io.on('connection', (socket) => {
         }
     });
 
-    socket.on('message ', (data)=> {
+    socket.on('paiement', (data)=> {
         console.log('The modem just answer me the response is ')
         console.log(data)
         if(data.secretKey == secretKey){

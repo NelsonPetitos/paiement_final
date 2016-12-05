@@ -17,7 +17,7 @@ router.post('/', function(req, res){
             res.send({err: false, msg: 'user create.', data: data});
         }, (err) =>{
             console.log(`Erreur de sauvegarde du user. ${err}`);
-            res.send({err: true, msg: 'Database validation rule failed.', data: JSON.stringify(err)});
+            res.send({err: true, msg: 'Invalid unique rule. User exist already.', data: JSON.stringify(err)});
         });
     }
 })

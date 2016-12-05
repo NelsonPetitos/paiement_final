@@ -16,14 +16,15 @@ var http_1 = require('@angular/http');
 var home_component_1 = require('./components/home/home.component');
 var app_component_1 = require('./app.component');
 var login_component_1 = require('./components/login/login.component');
+var account_component_1 = require('./components/account/account.component');
 var register_component_1 = require('./components/register/register.component');
 var users_service_1 = require('./services/users.service');
 var appRoutes = [
     { path: 'home', component: home_component_1.HomeComponent },
     { path: 'about', component: home_component_1.HomeComponent },
     { path: 'get-started', component: home_component_1.HomeComponent },
-    { path: 'docs', component: home_component_1.HomeComponent },
-    { path: 'account', component: login_component_1.LoginComponent },
+    { path: 'account', component: account_component_1.AccountComponent },
+    { path: 'login', component: login_component_1.LoginComponent },
     { path: 'register', component: register_component_1.RegisterComponent }
 ];
 var AppModule = (function () {
@@ -41,7 +42,8 @@ var AppModule = (function () {
                 app_component_1.AppComponent,
                 home_component_1.HomeComponent,
                 login_component_1.LoginComponent,
-                register_component_1.RegisterComponent
+                register_component_1.RegisterComponent,
+                account_component_1.AccountComponent
             ],
             providers: [users_service_1.UsersService],
             bootstrap: [app_component_1.AppComponent]

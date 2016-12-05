@@ -21,20 +21,23 @@ var RegisterComponent = (function () {
             password: "",
             apikey: ""
         };
+        this.isError = false;
     }
     RegisterComponent.prototype.onSubmit = function () {
-        console.log('je soumet le formulaire');
-        this.usersService.registerUser(this.user).subscribe(function (data) {
-            console.log(JSON.stringify(data));
+        var _this = this;
+        this.usersService.registerUser(this.user).then(function (data) {
+            _this.isError = data.err;
+            _this.errMsg = data.msg;
+            if (!data.err) {
+                console.log("il faut redirriger vers le compte");
+            }
         }, function (err) {
-            console.log(JSON.stringify(err));
-        }, function () {
-            console.log("Request completed.");
+            console.log(err);
         });
     };
     RegisterComponent = __decorate([
         core_1.Component({
-            template: "\n\n            <section style=\"padding-top: 90px;\" >\n                <div class=\"jumbotron\"  style=\"text-align: center;\">\n                    <h1>Register</h1>\n                </div>\n                <div class=\"container\">\n                    <div class=\"row\">\n                        <div class=\"col-sm-offset-4 col-sm-4\">\n                            <form (ngSubmit)=\"onSubmit()\" #registerForm=\"ngForm\">\n                                <label for=\"email\" >Email</label>\n                                <input type=\"email\" name=\"email\" class=\"form-control\" id=\"email\" placeholder=\"Email\" [(ngModel)]=\"user.email\" required />\n                                <br/>\n                                <label for=\"password\">Password</label>\n                                <input type=\"password\" name=\"password\" class=\"form-control\" id=\"password\" placeholder=\"Password\" [(ngModel)]=\"user.password\" required />\n                                <br/>\n                                <label for=\"confirm\">Confirm</label>\n                                <input type=\"password\" name=\"confirm\" class=\"form-control\" id=\"confirm\" placeholder=\"Password again\"  [(ngModel)]=\"confirm\" required>\n                                <br/>\n                                <button type=\"submit\" class=\"btn btn-default btn-lg btn-block\" [disabled]=\"!registerForm.form.valid\" >Register</button>\n                                \n                                <br/>\n                                <a routerLinkActive=\"active\" routerLink=\"/account\">Already member, login here</a> \n                            </form>\n                        </div>\n                    </div>\n                </div>\n            </section>\n        "
+            template: "\n        <section class=\"section\">\n            <div class=\"section-container\">\n                <div class=\"container\">\n                    <section style=\"padding-top: 90px;\" >\n                        <!--<div class=\"jumbotron\"  style=\"text-align: center;\">-->\n                            <!--<h1>Register</h1>-->\n                        <!--</div>-->\n                        <div *ngIf=\"isError\" class=\"alert alert-danger\" role=\"alert\">{{ errMsg }}</div>\n                        <div class=\"container\">\n                            <div class=\"row\">\n                                <div class=\"col-sm-offset-4 col-sm-4\">\n                                    <form (ngSubmit)=\"onSubmit()\" #registerForm=\"ngForm\">\n                                        <label for=\"email\" >Email</label>\n                                        <input type=\"email\" name=\"email\" class=\"form-control\" id=\"email\" placeholder=\"Email\" [(ngModel)]=\"user.email\" required />\n                                        <br/>\n                                        <label for=\"password\">Password</label>\n                                        <input type=\"password\" name=\"password\" class=\"form-control\" id=\"password\" placeholder=\"Password\" [(ngModel)]=\"user.password\" required />\n                                        <br/>\n                                        <label for=\"confirm\">Confirm</label>\n                                        <input type=\"password\" name=\"confirm\" class=\"form-control\" id=\"confirm\" placeholder=\"Password again\"  [(ngModel)]=\"confirm\" required>\n                                        <br/>\n                                        <button type=\"submit\" class=\"btn btn-default btn-lg btn-block\" [disabled]=\"!registerForm.form.valid\" >Register</button>\n                                        \n                                        <br/>\n                                        <a routerLinkActive=\"active\" routerLink=\"/login\">Already member, login here</a> \n                                    </form>\n                                </div>\n                            </div>\n                        </div>\n                    </section>\n                </div>\n            </div>\n        </section>\n        "
         }), 
         __metadata('design:paramtypes', [users_service_1.UsersService])
     ], RegisterComponent);
