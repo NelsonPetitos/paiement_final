@@ -8,8 +8,7 @@ router.post('/', (request, response) => {
     let amount = request.body.amount;
 
     let box =`
-    
-	
+    	
 	<div id="wearetech_modal" class="wearetechmodalContainer" style="height:100%;">
 	    <style>
             .wearetechmodalContainer .wearetechmodal{
@@ -192,12 +191,8 @@ router.post('/', (request, response) => {
                 box-shadow: 0 1px 0 #fff, inset 0 2px 0 rgba(41, 102, 20, .1);
                 
             }
-            
-    
-    
-            
-    
-            .wearetechmodalContainer .checkout:active{
+
+             .wearetechmodalContainer .checkout:active{
                 background-image: linear-gradient(180deg, #328ac3, #277bbe);
             }
         </style>
@@ -218,11 +213,10 @@ router.post('/', (request, response) => {
 							<div style="width:66px;height:66px;border: 1px solid rgba(0,0,0,0.15);border-radius:50%;padding-left:0px;padding:0px!important;position:absolute;top:0;left:0;display:inline-block;top:-31px;right:0px;left:0px;margin: 0 auto;background:white;">
 							</div>
 							<div style="width:76px;height:76px;border-radius:50%;margin-left:auto;margin-right:auto;position:absolute;top:0;left:0;display:inline-block;top:-28px;right:0px;left:0px;margin: 0 auto;">
-								<div class="logoImage" alt="Logo" style="background-image: url(https://s3.amazonaws.com/stripe-uploads/acct_17VOecA0wkW9zdgumerchant-icon-1473092917160-dybz.jpg);display:inline-block;vertical-align:middle;"></div>
+								<div class="logoImage" alt="Logo" style="background-image: url(https://paiementback.herokuapp.com/assets/img/logo.png);display:inline-block;vertical-align:middle;"></div>
 							</div>
 							<h1 class="Header-companyName">Flitpay</h1>
 							<div id="wearetech_message" style="background-color: #f2dede;border-color: #ebccd1;color: #a94442;display:none">Give a valid phone number</div>
-							
 						</div>
 					</div>
 					<div style="background:#f5f5f5;padding:10px 30px 10px 30px;border-top:1px solid silver;border-top-left-radius:5px;border-top-right-radius:5px;">
@@ -233,8 +227,8 @@ router.post('/', (request, response) => {
 									<select id="wearetech_country_code">
 										<option value="237" style="">Cameroun - (+237)</option>
 										<option value="239">Côte d'ivoire - (+..)</option>
-										<option value="241">Gabon - (+..)</option>
-										<option value="240">Nigéria - (+..)</option>
+										<option value="241">Gabon - (...)</option>
+										<option value="240">Nigéria - (...)</option>
 									</select>
 								</div>
 								<div style="position:relative;top:-27px;margin-bottom:-30px;z-index:0;">
@@ -264,7 +258,7 @@ router.post('/', (request, response) => {
 									</span>
 								</div>
 								<div style="margin-top:0px;position:relative;z-index:1;">
-									<input id='wearetech_phone_number' type="tel" style="width:82%;border:none;padding-left:35px;padding-right:5px;height:38px;font-size:13px;border-bottom-left-radius:5px;border-bottom-right-radius:5px;border:1px solid rgba(0,0,0,0.15);margin-top:0px;background:transparent;" placeholder="Téléphone" autofocus required>
+									<input id='wearetech_phone_number' type="tel" onfocus="WAPI.handlePhoneError()" style="width:82%;border:none;padding-left:35px;padding-right:5px;height:38px;font-size:13px;border-bottom-left-radius:5px;border-bottom-right-radius:5px;border:1px solid rgba(0,0,0,0.15);margin-top:0px;background:transparent;" placeholder="Téléphone" autofocus required>
 								</div>
 								<div style="position:relative;top:-28px;margin-bottom:-60px;z-index:0;height:35px;">
 									<span>
@@ -279,7 +273,7 @@ router.post('/', (request, response) => {
 						<div style="margin-top:20px;">
 
 							<button style="" class="checkout paiement" id="wearetech_validate">
-								Pay ${amount} F cfa
+								Pay ${amount} CFA
 							</button>
 
 							<button style="display:none" class="checkout paiement" id="wearetech_waiting">

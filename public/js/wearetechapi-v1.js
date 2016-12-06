@@ -33,13 +33,6 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
         let btn = btns[i];
         if(btn.dataset.wearetechbtn != 0){
             btn.addEventListener("click", function(){
-
-                // WAPI.currentButton = this;
-                // let anim = document.createElement('div');
-                // anim.style = "display:inline-block;border:3px solid #f3f3f3;border-top: 3px solid #3498db;border-radius:50%;width:15px;height:15px;animation:spin 2s linear infinite;margin:10px;";
-                // anim.id = "wearetech-loader";
-                // this.replaceWith(anim);
-
                 var xhttp;
                 if(window.XDomainRequest){
                     xhttp = new XDomainRequest();
@@ -93,11 +86,6 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
                         if(valBtn){
                             WAPI.setValidateButton(valBtn);
                         }
-                        let phoneInput = document.getElementById('wearetech_phone_number')
-                        if(phoneInput){
-                            phoneInput.addEventListener('focus', WAPI.handlePhoneError())
-                            console.log('focus in place.')
-                        }
                     }
                 }
             })
@@ -105,9 +93,6 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
             console.log("This button is not handle");
         }
     }
-    // btns.forEach(function(btn){
-    //
-    // })
 }
 
 //TThis method will set the callback of the
@@ -180,7 +165,6 @@ WRTechAPI.prototype.loadScript = function(url, callback){
 
 
 WRTechAPI.prototype.handlePhoneError = function () {
-    console.log('focus occur');
     let message = document.getElementById('wearetech_message')
     if(message.style.display == 'block'){
         message.style.display = 'none';
@@ -193,10 +177,17 @@ WRTechAPI.prototype.waitingAction = function () {
     if(waiting){
         waiting.style.display = 'inline-block';
         this.validateButton.style.display = 'none';
+
+        document.getElementById('wearetech_client_email').disabled = true;
+        document.getElementById('wearetech_phone_number').disabled = true;
     }
 }
 
 WRTechAPI.prototype.handleResponse = function(result) {
+
+    document.getElementById('wearetech_client_email').disabled = false;
+    document.getElementById('wearetech_phone_number').disabled = false;
+
     let waiting = document.getElementById('wearetech_waiting');
     let error = document.getElementById('wearetech_error');
     let success = document.getElementById('wearetech_success');

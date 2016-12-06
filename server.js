@@ -116,7 +116,7 @@ io.on('connection', (socket) => {
                     let result = {
                         result: data.airtime,
                         error: false,
-                        message: "Request sucessfull"
+                        message: "Verify your phone"
                     }
                     socket.emit('wearetechapi_server_response', result)
                     socket.disconnect();
