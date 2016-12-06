@@ -13,6 +13,7 @@ var platform_browser_1 = require('@angular/platform-browser');
 var router_1 = require('@angular/router');
 var forms_1 = require('@angular/forms');
 var http_1 = require('@angular/http');
+var ng2_page_scroll_1 = require('ng2-page-scroll/ng2-page-scroll');
 var home_component_1 = require('./components/home/home.component');
 var app_component_1 = require('./app.component');
 var login_component_1 = require('./components/login/login.component');
@@ -36,7 +37,8 @@ var AppModule = (function () {
                 platform_browser_1.BrowserModule,
                 forms_1.FormsModule,
                 http_1.HttpModule,
-                router_1.RouterModule.forRoot(appRoutes)
+                router_1.RouterModule.forRoot(appRoutes),
+                ng2_page_scroll_1.Ng2PageScrollModule.forRoot()
             ],
             declarations: [
                 app_component_1.AppComponent,

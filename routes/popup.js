@@ -253,7 +253,7 @@ router.get('/:id', (request, response) => {
 
     `
 
-    response.end(popup)
+    response.end(box)
 
 
 })

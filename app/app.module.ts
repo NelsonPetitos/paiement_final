@@ -2,7 +2,8 @@ import { NgModule }             from '@angular/core';
 import { BrowserModule }        from '@angular/platform-browser';
 import { Routes, RouterModule}  from '@angular/router';
 import { FormsModule }          from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpModule }           from '@angular/http';
+import { Ng2PageScrollModule}  from 'ng2-page-scroll/ng2-page-scroll';
 
 import { HomeComponent }        from './components/home/home.component';
 import { AppComponent }         from './app.component';
@@ -25,7 +26,8 @@ const appRoutes: Routes = [
         BrowserModule,
         FormsModule,
         HttpModule,
-        RouterModule.forRoot(appRoutes)
+        RouterModule.forRoot(appRoutes),
+        Ng2PageScrollModule.forRoot()
     ],
     declarations: [
         AppComponent,
