@@ -12,9 +12,14 @@ WRTechAPI.prototype.setApiKey = function(newKey){
     console.log("new api key = "+ newKey);
 }
 
-WRTechAPI.prototype.setCloseButton = function(closeButton){
-    this.closeButton = closeButton;
-    this.setCloseButtonEventListener();
+WRTechAPI.prototype.setErrorButton = function(errorButton){
+    this.errorButton= errorButton;
+    this.setErrorButtonEventListener();
+}
+
+WRTechAPI.prototype.setSuccessButton = function(successButton){
+    this.successButton = successButton;
+    this.setSuccessButtonEventListener()
 }
 
 WRTechAPI.prototype.setValidateButton = function(validateButton){
@@ -49,9 +54,11 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
 
                 let amount = this.dataset.amount;
                 if(typeof amount !== 'undefined'){
-                    xhttp.open("GET", "https://paiementback.herokuapp.com/initpopup/"+amount, true);
-                    // xhttp.open("GET", "http://192.168.15.197:5000/initpopup/"+amount, true);
-                    xhttp.send();
+                    // let url = "http://192.168.15.197:5000/initpopup";
+                    let url = "https://paiementback.herokuapp.com/initpopup";
+                    xhttp.open("POST", url, true);
+                    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                    xhttp.send('amount='+amount);
                 }else{
                     console.log("Set data-amount attribute to your button");
                     return;
@@ -67,14 +74,29 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
                         //Il faut faire un controle avant d'inserer de nouveau le code suivant.
                         document.body.insertAdjacentHTML('beforeend', this.responseText);
 
+                        let errorBtn = document.getElementById("wearetech_error");
+                        let successBtn = document.getElementById("wearetech_success");
 
-                        let closebtn = document.getElementById("wearetech_closemodal");
-                        if(closebtn){
-                            WAPI.setCloseButton(closebtn);
+                        if(errorBtn){
+                            WAPI.setErrorButton(errorBtn);
                         }
+
+                        if(successBtn){
+                            WAPI.setSuccessButton(successBtn);
+                        }
+
+                        if(successBtn){
+                            WAPI.setErrorButton(errorBtn);
+                        }
+
                         let valBtn = document.getElementById("wearetech_validate");
                         if(valBtn){
                             WAPI.setValidateButton(valBtn);
+                        }
+                        let phoneInput = document.getElementById('wearetech_phone_number')
+                        if(phoneInput){
+                            phoneInput.addEventListener('focus', WAPI.handlePhoneError())
+                            console.log('focus in place.')
                         }
                     }
                 }
@@ -98,29 +120,31 @@ WRTechAPI.prototype.setApiCallback = function(resolve){
 WRTechAPI.prototype.setValidateButtonEventListemer = function(){
     this.validateButton.addEventListener("click", function () {
         if(typeof io !== 'undefined'){
-            let socket = io.connect('https://paiementback.herokuapp.com');
-            // let socket = io.connect('http://192.168.15.197:5000');
-            if(typeof socket !== 'undefined'){
+            let phone = document.getElementById('wearetech_phone_number').value;
 
-                let phone = document.getElementById('wearetech_phone_number').value;
-                let amount = document.getElementById('wearetech_transaction_amount').value;
+            let amount = document.getElementById('wearetech_transaction_amount').value;
 
-                let message = {phone: phone, code: 237, apiKey: WAPI.apiKey, amount: amount};
-                socket.emit('wearetechapi_client_emit', message);
-
-                //dismiss modal view after the connect has been send
-                let modaldiv = document.getElementById('wearetech_modal');
-                if(modaldiv){
-                    document.body.removeChild(modaldiv);
-                }else{
-                    console.log("there is not a block div with id='wearetech_modal'");
-                }
-
-                socket.on('wearetechapi_server_response', function(result) {
-                    WAPI.apiCallback(result);
-                });
+            if(typeof phone == 'undefined' || /^[1-9][0-9]{8,}/.test(phone) == false ){
+                document.getElementById('wearetech_message').style.display = 'block';
             }else{
-                console.log("Socket connection with wearetech server failed.");
+
+                let socket = io.connect('https://paiementback.herokuapp.com');
+                // let socket = io.connect('http://192.168.15.197:5000');
+
+                if(typeof socket !== 'undefined'){
+                    let message = {phone: phone, code: 237, apiKey: WAPI.apiKey, amount: amount};
+                    socket.emit('wearetechapi_client_emit', message);
+
+                    //dismiss modal view after the connect has been send
+                    WAPI.waitingAction()
+
+                    socket.on('wearetechapi_server_response', function(result) {
+                        WAPI.handleResponse(result);
+                        WAPI.apiCallback(result);
+                    });
+                }else{
+                    console.log("Socket connection with wearetech server failed.");
+                }
             }
         }else{
             console.log("socket.io is not load in this application.");
@@ -128,18 +152,21 @@ WRTechAPI.prototype.setValidateButtonEventListemer = function(){
     });
 }
 
-WRTechAPI.prototype.setCloseButtonEventListener = function() {
-    this.closeButton.addEventListener("click", function() {
-        var modaldiv = document.getElementById('wearetech_modal');
-        if(typeof modaldiv !== 'undefined'){
+WRTechAPI.prototype.setErrorButtonEventListener = function() {
+    this.errorButton.addEventListener("click", function() {
+        let modaldiv = document.getElementById('wearetech_modal');
+        if(modaldiv){
             document.body.removeChild(modaldiv);
-        }else{
-            console.log("there is not a block div with id='wearetech_modal'");
         }
+    });
+}
 
-        // remove animation
-        // let anim = document.getElementById('wearetech-loader');
-        // anim.replaceWith(WAPI.currentButton);
+WRTechAPI.prototype.setSuccessButtonEventListener = function() {
+    this.successButton.addEventListener("click", function() {
+        let modaldiv = document.getElementById('wearetech_modal');
+        if(modaldiv){
+            document.body.removeChild(modaldiv);
+        }
     });
 }
 
@@ -149,6 +176,48 @@ WRTechAPI.prototype.loadScript = function(url, callback){
     scrpt.type = 'text/javascript';
     scrpt.onload = callback();
     document.getElementsByTagName('body')[0].appendChild(scrpt);
+}
+
+
+WRTechAPI.prototype.handlePhoneError = function () {
+    console.log('focus occur');
+    let message = document.getElementById('wearetech_message')
+    if(message.style.display == 'block'){
+        message.style.display = 'none';
+    }
+}
+
+
+WRTechAPI.prototype.waitingAction = function () {
+    let waiting = document.getElementById('wearetech_waiting');
+    if(waiting){
+        waiting.style.display = 'inline-block';
+        this.validateButton.style.display = 'none';
+    }
+}
+
+WRTechAPI.prototype.handleResponse = function(result) {
+    let waiting = document.getElementById('wearetech_waiting');
+    let error = document.getElementById('wearetech_error');
+    let success = document.getElementById('wearetech_success');
+
+    if(result.error == true){
+        if(error){
+            error.innerHTML = result.message;
+            error.style.display = 'block';
+        }
+    }else{
+        if(success){
+            success.innerHTML = result.message;
+            success.style.display = 'block';
+        }
+    }
+    if(waiting){
+        waiting.style.display = 'none';
+    }
+
+
+
 }
 
 const WAPI = new WRTechAPI();
