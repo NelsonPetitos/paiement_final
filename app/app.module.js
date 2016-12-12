@@ -10,24 +10,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var platform_browser_1 = require('@angular/platform-browser');
-var router_1 = require('@angular/router');
 var forms_1 = require('@angular/forms');
 var http_1 = require('@angular/http');
 var ng2_page_scroll_1 = require('ng2-page-scroll/ng2-page-scroll');
-var home_component_1 = require('./components/home/home.component');
+var angular2_jwt_1 = require('angular2-jwt');
 var app_component_1 = require('./app.component');
-var login_component_1 = require('./components/login/login.component');
-var account_component_1 = require('./components/account/account.component');
-var register_component_1 = require('./components/register/register.component');
-var users_service_1 = require('./services/users.service');
-var appRoutes = [
-    { path: 'home', component: home_component_1.HomeComponent },
-    { path: 'about', component: home_component_1.HomeComponent },
-    { path: 'get-started', component: home_component_1.HomeComponent },
-    { path: 'account', component: account_component_1.AccountComponent },
-    { path: 'login', component: login_component_1.LoginComponent },
-    { path: 'register', component: register_component_1.RegisterComponent }
-];
+var home_component_1 = require('./components/home/home.component');
+var profile_component_1 = require('./components/profile/profile.component');
+var auth_service_1 = require('./services/auth.service');
+var app_routing_1 = require('./routes/app.routing');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -37,17 +28,15 @@ var AppModule = (function () {
                 platform_browser_1.BrowserModule,
                 forms_1.FormsModule,
                 http_1.HttpModule,
-                router_1.RouterModule.forRoot(appRoutes),
+                app_routing_1.AppRouting,
                 ng2_page_scroll_1.Ng2PageScrollModule.forRoot()
             ],
             declarations: [
                 app_component_1.AppComponent,
                 home_component_1.HomeComponent,
-                login_component_1.LoginComponent,
-                register_component_1.RegisterComponent,
-                account_component_1.AccountComponent
+                profile_component_1.ProfileComponent
             ],
-            providers: [users_service_1.UsersService],
+            providers: [auth_service_1.Auth, angular2_jwt_1.AUTH_PROVIDERS],
             bootstrap: [app_component_1.AppComponent]
         }), 
         __metadata('design:paramtypes', [])

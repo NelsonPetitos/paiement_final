@@ -3,41 +3,32 @@ import { BrowserModule }        from '@angular/platform-browser';
 import { Routes, RouterModule}  from '@angular/router';
 import { FormsModule }          from '@angular/forms';
 import { HttpModule }           from '@angular/http';
-import { Ng2PageScrollModule}  from 'ng2-page-scroll/ng2-page-scroll';
+import { Ng2PageScrollModule }  from 'ng2-page-scroll/ng2-page-scroll';
+import { AUTH_PROVIDERS } from 'angular2-jwt';
 
-import { HomeComponent }        from './components/home/home.component';
 import { AppComponent }         from './app.component';
-import { LoginComponent }       from './components/login/login.component';
-import { AccountComponent }     from './components/account/account.component';
-import { RegisterComponent }    from './components/register/register.component';
-import { UsersService }         from './services/users.service';
+import { HomeComponent } from './components/home/home.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
-const appRoutes: Routes = [
-    { path: 'home', component: HomeComponent },
-    { path: 'about', component: HomeComponent },
-    { path: 'get-started', component: HomeComponent },
-    { path: 'account', component:  AccountComponent },
-    { path: 'login', component: LoginComponent },
-    { path: 'register', component: RegisterComponent}
-];
+import { UsersService }         from './services/users.service';
+import { Auth } from './services/auth.service';
+import { AppRouting } from './routes/app.routing';
+
 
 @NgModule({
     imports: [
         BrowserModule,
         FormsModule,
         HttpModule,
-        RouterModule.forRoot(appRoutes),
+        AppRouting,
         Ng2PageScrollModule.forRoot()
     ],
     declarations: [
-        AppComponent,
+        AppComponent, 
         HomeComponent,
-        LoginComponent,
-        RegisterComponent,
-        AccountComponent
-
+        ProfileComponent
     ],
-    providers: [UsersService],
+    providers: [Auth, AUTH_PROVIDERS ],
     bootstrap: [ AppComponent ]
 })
 export class AppModule {

@@ -8,23 +8,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-/**
- * Created by ndenelson on 01/12/2016.
- */
 var core_1 = require('@angular/core');
 var auth_service_1 = require('../../services/auth.service');
-var HomeComponent = (function () {
-    function HomeComponent(auth) {
+var ProfileComponent = (function () {
+    function ProfileComponent(auth) {
         this.auth = auth;
+        this.profile = JSON.parse(localStorage.getItem('profile'));
     }
-    HomeComponent = __decorate([
+    ProfileComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
-            templateUrl: 'home.template.html'
+            selector: 'profile',
+            templateUrl: './profile.template.html'
         }), 
         __metadata('design:paramtypes', [auth_service_1.Auth])
-    ], HomeComponent);
-    return HomeComponent;
+    ], ProfileComponent);
+    return ProfileComponent;
 }());
-exports.HomeComponent = HomeComponent;
-//# sourceMappingURL=home.component.js.map
+exports.ProfileComponent = ProfileComponent;
+//# sourceMappingURL=profile.component.js.map
