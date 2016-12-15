@@ -9,6 +9,8 @@ router.post('/', function(req, res){
     user.apikey = crypto.randomBytes(20).toString('hex');
     user.email = req.body.email;
     user.password = req.body.password;
+    console.log(`email : ${req.body.email}`);
+    console.log(`password: ${req.body.password}`);
     if(user.email == '' || user.email == null || user.password == '' || user.password == null || user.apikey == '' || user.apikey == null ){
         res.send({err: true, msg: "Make sure that all required fields are provided", data: null})
     }else{

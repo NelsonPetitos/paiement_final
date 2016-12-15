@@ -14,7 +14,12 @@ var Auth = (function () {
     function Auth() {
         var _this = this;
         // Configure Auth0
-        this.lock = new Auth0Lock('cWFTi1Iyjw0EtXPaySXxZRmfvxYkdKa3', 'ndenelson.auth0.com', {});
+        this.lock = new Auth0Lock('cWFTi1Iyjw0EtXPaySXxZRmfvxYkdKa3', 'ndenelson.auth0.com', {
+            auth: {
+                redirectUrl: 'http://localhost:5000/profile',
+                responseType: 'code'
+            }
+        });
         // Add callback for lock `authenticated` event
         this.lock.on("authenticated", function (authResult) {
             _this.lock.getProfile(authResult.idToken, function (err, profile) {

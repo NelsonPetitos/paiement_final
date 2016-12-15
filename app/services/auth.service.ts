@@ -7,7 +7,13 @@ declare var Auth0Lock: any;
 @Injectable()
 export class Auth {
   // Configure Auth0
-  lock = new Auth0Lock('cWFTi1Iyjw0EtXPaySXxZRmfvxYkdKa3', 'ndenelson.auth0.com', {});
+  
+  lock = new Auth0Lock('cWFTi1Iyjw0EtXPaySXxZRmfvxYkdKa3', 'ndenelson.auth0.com', {
+    auth: {
+      redirectUrl: 'http://localhost:5000/profile',
+      responseType: 'code'
+    }
+  });
 
   constructor() {
     // Add callback for lock `authenticated` event

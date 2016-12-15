@@ -19,8 +19,8 @@ let bodyParser = require('body-parser')
 
 
 //Connect to database
-// mongoose.connect('mongodb://ndenelson:Picsou_88modulus@jello.modulusmongo.net:27017/iG8apaze', (err) =>{
-mongoose.connect('mongodb://localhost:27017/paiement_api_db', (err) =>{
+mongoose.connect('mongodb://ndenelson:Picsou_88modulus@jello.modulusmongo.net:27017/iG8apaze', (err) =>{
+// mongoose.connect('mongodb://localhost:27017/paiement_api_db', (err) =>{
     if(err){
         console.log(`Not connected to the database. ${err}`)
     }else{
