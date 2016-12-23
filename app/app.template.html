@@ -1,5 +1,4 @@
 <div class="main-container">
-    <div id="top"></div>
     <header class="site-header">
         <nav class="site-nav navbar navbar-default">
             <div class="container">
@@ -17,26 +16,26 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse navbar-right">
                     <ul class="nav navbar-nav">
-                        <li ><a routerLink="">Home</a></li>
-                        <li ><a pageScroll href="#about">About</a></li>
-                        <li ><a pageScroll href="#docs">Get started</a></li>
-                        <li ><a pageScroll href="#docs">Docs</a></li>
-                        
-                        <li *ngIf="!auth.authenticated()" ><a href="#" (click)="auth.login()">Login</a></li>
+                        <li><a routerLink="home">Documentation</a></li>
+                        <!--<li><a pageScroll>About</a></li>
+                        <li><a pageScroll>Get started</a></li>
+                        <li><a pageScroll>Docs</a></li>-->
+
+                        <li *ngIf="!auth.authenticated()"><a (click)="auth.login()">Member space</a></li>
                         <li *ngIf="auth.authenticated()" class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">Account <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a routerLink="/profile">Profile</a></li>
-                                <li><a href="#" (click)="auth.logout()">Logout</a></li>
+                                <li><a routerLink="profile">Profile</a></li>
+                                <li><a (click)="auth.logout()">Logout</a></li>
                             </ul>
                         </li>
                     </ul>
-                    
+
                 </div>
             </div>
         </nav>
     </header>
-    
+
     <router-outlet></router-outlet>
 
 </div>

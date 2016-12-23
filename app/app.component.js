@@ -14,6 +14,9 @@ var AppComponent = (function () {
     function AppComponent(auth) {
         this.auth = auth;
     }
+    AppComponent.prototype.ngOnInit = function () {
+        this.profile = JSON.parse(localStorage.getItem('profile'));
+    };
     AppComponent = __decorate([
         core_1.Component({
             moduleId: module.id,

@@ -17,8 +17,12 @@ var UsersService = (function () {
         this.http = http;
         this.loginUrl = "api/users/login";
         this.registerUrl = "api/users";
-        this.testUrl = "test";
+        this.usersUrl = "api/users";
+        this.accountUrl = "api/account";
+        this.adressUrl = "api/adress";
+        this.changepwdUrl = 'api/users/change-pwd';
     }
+    /*--------------Working on users-------------*/
     UsersService.prototype.loginUser = function (user) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
@@ -33,8 +37,46 @@ var UsersService = (function () {
             .toPromise()
             .then(function (res) { return res.json(); }, function (err) { return err.json(); });
     };
-    UsersService.prototype.testGet = function () {
-        return this.http.get(this.testUrl)
+    UsersService.prototype.getUser = function (id) {
+        return this.http.get(this.usersUrl + "/" + id)
+            .toPromise()
+            .then(function (res) { return res.json(); }, function (err) { return err.json(); });
+    };
+    UsersService.prototype.changePassword = function (data) {
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        return this.http.post(this.changepwdUrl, data, options)
+            .toPromise()
+            .then(function (res) { return res.json(); }, function (err) { return err.json(); });
+    };
+    /*--------------Working on Adresses-------------*/
+    UsersService.prototype.getAdresses = function (userId) {
+        return this.http.get(this.adressUrl + "/" + userId)
+            .toPromise()
+            .then(function (res) { return res.json(); }, function (err) { return err.json(); });
+    };
+    UsersService.prototype.saveAdress = function (adress) {
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        return this.http.post(this.adressUrl, adress, options)
+            .toPromise()
+            .then(function (res) { return res.json(); }, function (err) { return err.json(); });
+    };
+    /*--------------Working on accounts-------------*/
+    UsersService.prototype.getAccount = function (userId) {
+        return this.http.get(this.accountUrl + "/" + userId)
+            .toPromise()
+            .then(function (res) { return res.json(); }, function (err) { return err.json(); });
+    };
+    UsersService.prototype.saveAccount = function (account) {
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        return this.http.post(this.accountUrl, account, options)
+            .toPromise()
+            .then(function (res) { return res.json(); }, function (err) { return err.json(); });
+    };
+    UsersService.prototype.deleteAccount = function (id) {
+        return this.http.delete(this.accountUrl + "/" + id)
             .toPromise()
             .then(function (res) { return res.json(); }, function (err) { return err.json(); });
     };

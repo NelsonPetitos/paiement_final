@@ -10,17 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
-var home_component_1 = require('./components/home/home.component');
-var login_component_1 = require('./components/login/login.component');
-var register_component_1 = require('./components/register/register.component');
-var appRoutes = [
-    { path: 'home', component: home_component_1.HomeComponent },
-    { path: 'about', component: home_component_1.HomeComponent },
-    { path: 'get-started', component: home_component_1.HomeComponent },
-    { path: 'docs', component: home_component_1.HomeComponent },
-    { path: 'account', component: login_component_1.LoginComponent },
-    { path: 'register', component: register_component_1.RegisterComponent }
-];
+var appRoutes = [];
 var AppRoutingModule = (function () {
     function AppRoutingModule() {
     }
@@ -29,11 +19,10 @@ var AppRoutingModule = (function () {
             imports: [
                 router_1.RouterModule.forRoot(appRoutes)
             ],
-            declarations: [
-                home_component_1.HomeComponent,
-                login_component_1.LoginComponent,
-                register_component_1.RegisterComponent
-            ]
+            exports: [
+                router_1.RouterModule
+            ],
+            declarations: []
         }), 
         __metadata('design:paramtypes', [])
     ], AppRoutingModule);

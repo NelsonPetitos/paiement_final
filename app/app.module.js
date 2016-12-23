@@ -11,14 +11,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var platform_browser_1 = require('@angular/platform-browser');
 var forms_1 = require('@angular/forms');
-var http_1 = require('@angular/http');
-var ng2_page_scroll_1 = require('ng2-page-scroll/ng2-page-scroll');
+// import { HttpModule }           from '@angular/http';
+// import { Ng2PageScrollModule }  from 'ng2-page-scroll/ng2-page-scroll';
 var angular2_jwt_1 = require('angular2-jwt');
 var app_component_1 = require('./app.component');
-var home_component_1 = require('./components/home/home.component');
-var profile_component_1 = require('./components/profile/profile.component');
+// import { UsersService }         from './services/users.service';
 var auth_service_1 = require('./services/auth.service');
-var app_routing_1 = require('./routes/app.routing');
+var app_routing_module_1 = require('./app-routing.module');
+var site_module_1 = require('./site/site.module');
+var users_module_1 = require('./users/users.module');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -27,14 +28,12 @@ var AppModule = (function () {
             imports: [
                 platform_browser_1.BrowserModule,
                 forms_1.FormsModule,
-                http_1.HttpModule,
-                app_routing_1.AppRouting,
-                ng2_page_scroll_1.Ng2PageScrollModule.forRoot()
+                app_routing_module_1.AppRoutingModule,
+                site_module_1.SiteModule,
+                users_module_1.UsersModule
             ],
             declarations: [
-                app_component_1.AppComponent,
-                home_component_1.HomeComponent,
-                profile_component_1.ProfileComponent
+                app_component_1.AppComponent
             ],
             providers: [auth_service_1.Auth, angular2_jwt_1.AUTH_PROVIDERS],
             bootstrap: [app_component_1.AppComponent]
