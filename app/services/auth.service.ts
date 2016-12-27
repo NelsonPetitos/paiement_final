@@ -16,7 +16,7 @@ export class Auth {
     },
     auth: {
       redirect: true,
-      redirectUrl: 'http://localhost:5000/home',
+      redirectUrl: 'https://paiementback.herokuapp.com/home',
       responseType: 'token'
     }
   });
