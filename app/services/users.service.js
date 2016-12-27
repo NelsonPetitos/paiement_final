@@ -62,6 +62,11 @@ var UsersService = (function () {
             .toPromise()
             .then(function (res) { return res.json(); }, function (err) { return err.json(); });
     };
+    UsersService.prototype.deleteAdress = function (id) {
+        return this.http.delete(this.adressUrl + "/" + id)
+            .toPromise()
+            .then(function (res) { return res.json(); }, function (err) { return err.json(); });
+    };
     /*--------------Working on accounts-------------*/
     UsersService.prototype.getAccount = function (userId) {
         return this.http.get(this.accountUrl + "/" + userId)

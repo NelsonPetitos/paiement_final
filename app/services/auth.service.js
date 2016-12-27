@@ -9,16 +9,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
 var angular2_jwt_1 = require('angular2-jwt');
 var Auth = (function () {
-    function Auth() {
+    function Auth(router) {
         var _this = this;
+        this.router = router;
         // Configure Auth0
         this.lock = new Auth0Lock('cWFTi1Iyjw0EtXPaySXxZRmfvxYkdKa3', 'ndenelson.auth0.com', {
             rememberLastLogin: false,
             theme: {
                 logo: 'https://paiementback.herokuapp.com/assets/img/logo.png'
             },
+            auth: {
+                redirect: true,
+                redirectUrl: 'http://localhost:5000/home',
+                responseType: 'token'
+            }
         });
         // Add callback for lock `authenticated` event
         this.lock.on("authenticated", function (authResult) {
@@ -44,10 +51,11 @@ var Auth = (function () {
         // Remove token from localStorage
         localStorage.removeItem('id_token');
         localStorage.removeItem('profile');
+        this.router.navigate(['/home']);
     };
     Auth = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [router_1.Router])
     ], Auth);
     return Auth;
 }());

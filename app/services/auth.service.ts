@@ -1,4 +1,5 @@
 import { Injectable }      from '@angular/core';
+import { Router } from '@angular/router';
 import { tokenNotExpired } from 'angular2-jwt';
 
 // Avoid name not found warnings
@@ -13,14 +14,14 @@ export class Auth {
     theme: {
       logo: 'https://paiementback.herokuapp.com/assets/img/logo.png'
     },
-    // auth: {
-    //   redirect: true,
-    //   redirectUrl: 'http://localhost:5000/home',
-    //   responseType: 'token'
-    // }
+    auth: {
+      redirect: true,
+      redirectUrl: 'http://localhost:5000/home',
+      responseType: 'token'
+    }
   });
 
-  constructor() {
+  constructor(private router: Router) {
     // Add callback for lock `authenticated` event
     this.lock.on("authenticated", (authResult: any) => {
         this.lock.getProfile(authResult.idToken, function(err:any, profile: any){
@@ -48,5 +49,6 @@ export class Auth {
     // Remove token from localStorage
     localStorage.removeItem('id_token');
     localStorage.removeItem('profile');
+    this.router.navigate(['/home']);
   }
 }

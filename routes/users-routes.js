@@ -4,6 +4,10 @@ let User = require('../models/user')
 let crypto = require('crypto')
 let mongoose = require('mongoose')
 
+let bcrypt = require('bcrypt')
+const saltRounds = 10;
+
+
 router.post('/', function(req, res) {
     let user = new User()
     user.apikey = crypto.randomBytes(20).toString('hex');
@@ -61,15 +65,29 @@ router.get('/:userid', function(req, res) {
 
 router.post('/change-pwd', function(req, res) {
     if (req.body.user == '' || req.body.user == null || req.body.password == '' || req.body.password == null || req.body.oldPassword == '' || req.body.oldPassword == null || req.body.confirmPassword == '' || req.body.confirmPassword == null || req.body.confirmPassword != req.body.password) {
-        res.send({ err: true, msg: "Make sure that the passwords match or no user precise.", data: null })
+        res.send({ err: true, msg: "Make sure that the passwords or user id match.", data: null })
     } else {
         User.findOne({ _id: mongoose.Types.ObjectId(req.body.user) }, (err, user) => {
             if (err) {
-                console.log(`erreur de recherche utilisateur ${err}`);
                 res.send({ err: true, msg: 'Error fetching user.', data: err });
             } else {
-                console.log(`User find`);
-                res.send({ err: false, msg: 'I\'ll implememts on the server', data: user });
+                if (user) {
+                    if (bcrypt.compareSync(req.body.oldPassword, user.password)) {
+                        user.password = req.body.password;
+                        user.save().then(
+                            (data) => {
+                                res.send({ err: false, msg: 'Password change.', data: null });
+                            },
+                            (err) => {
+                                res.send({ err: true, msg: 'Server error password not change.', data: null })
+                            }
+                        )
+                    } else {
+                        res.send({ err: true, msg: 'Wrong old password.', data: null });
+                    }
+                } else {
+                    res.send({ err: true, msg: 'No user identified.', data: null });
+                }
             }
         });
     }

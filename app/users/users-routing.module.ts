@@ -5,7 +5,7 @@ import { ProfileComponent } from './components/profile.component';
 import { ProfileDetailsComponent } from './components/profile-details.component';
 import { ChangePwdComponent } from './components/change-pwd.component';
 import { ManageAccountComponent } from './components/manage-account.component';
-import { AddAdressComponent } from './components/add-adress.component';
+import { ManageAdressComponent } from './components/manage-adress.component';
 
 const usersRoutes: Routes  = [
     {
@@ -22,7 +22,7 @@ const usersRoutes: Routes  = [
             },
             {
                 path: 'manage-adress',
-                component: AddAdressComponent
+                component: ManageAdressComponent
             },
             {
                 path: 'manage-account',

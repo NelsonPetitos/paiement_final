@@ -18,9 +18,10 @@ var users_routing_module_1 = require('./users-routing.module');
 var profile_component_1 = require('./components/profile.component');
 var profile_details_component_1 = require('./components/profile-details.component');
 var change_pwd_component_1 = require('./components/change-pwd.component');
-var add_adress_component_1 = require('./components/add-adress.component');
+var manage_adress_component_1 = require('./components/manage-adress.component');
 var manage_account_component_1 = require('./components/manage-account.component');
-var loader_component_1 = require('../loader.component');
+var circle_loader_component_1 = require('../loaders/circle-loader.component');
+var bar_loader_component_1 = require('../loaders/bar-loader.component');
 var UsersModule = (function () {
     function UsersModule() {
     }
@@ -37,8 +38,9 @@ var UsersModule = (function () {
                 profile_details_component_1.ProfileDetailsComponent,
                 change_pwd_component_1.ChangePwdComponent,
                 manage_account_component_1.ManageAccountComponent,
-                add_adress_component_1.AddAdressComponent,
-                loader_component_1.LoaderComponent
+                manage_adress_component_1.ManageAdressComponent,
+                circle_loader_component_1.CircleLoaderComponent,
+                bar_loader_component_1.BarLoaderComponent
             ],
             providers: [
                 users_service_1.UsersService,

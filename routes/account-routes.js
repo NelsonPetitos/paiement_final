@@ -45,13 +45,17 @@ router.delete('/:id', function(req, res) {
     if (req.params.id == '' || req.params.id == null) {
         res.send({ err: true, msg: "No users specified.", data: null })
     } else {
-        Account.remove({ user: mongoose.Types.ObjectId(req.params.id) }, (err) => {
+        Account.findOneAndRemove({ _id: mongoose.Types.ObjectId(req.params.id) }, (err, account) => {
             if (err) {
                 console.log(`erreur supression du compte`);
-                res.send({ err: true, msg: 'Account deletion error.', data: err });
+                res.send({ err: true, msg: 'Error occur.', data: err });
             } else {
-                console.log(`Account delete`);
-                res.send({ err: false, msg: 'Account delete.', data: { id: req.params.id } });
+                if (account) {
+                    console.log(`Account delete`);
+                    res.send({ err: false, msg: 'Account delete.', data: account });
+                } else {
+                    res.send({ err: true, msg: 'Account not exist.', data: err });
+                }
             }
         });
     }

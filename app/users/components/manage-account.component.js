@@ -18,22 +18,30 @@ var ManageAccountComponent = (function () {
         this.showForm = false;
         this.showLoader = true;
         this.saveLoading = false;
+        this.showAlert = false;
         this.accounts = [];
         this.index = 1;
+        this.defaultAccountID = '';
+        this.deletionLoderAccountId = "";
+        this.message = '';
     }
     ManageAccountComponent.prototype.setDefault = function (id) {
         console.log(id);
+        this.defaultAccountID = id;
+        //make some update in the database.
     };
     ManageAccountComponent.prototype.deleteAccount = function (id) {
         var _this = this;
+        this.deletionLoderAccountId = id;
         this.usersService.deleteAccount(id).then(function (data) {
+            _this.deletionLoderAccountId = "";
             var tmp = [];
             var i = 0;
             if (!data.err) {
                 console.log("Supression Ok");
                 for (var _i = 0, _a = _this.accounts; _i < _a.length; _i++) {
                     var account = _a[_i];
-                    if (account._id != data.data.id) {
+                    if (account._id != data.data._id) {
                         tmp[i] = account;
                         i = i + 1;
                     }
@@ -42,11 +50,18 @@ var ManageAccountComponent = (function () {
             }
         }, function (err) {
             console.log(err);
+            _this.deletionLoderAccountId = "";
         });
     };
     ManageAccountComponent.prototype.onSubmit = function () {
         var _this = this;
         this.saveLoading = true;
+        if (this.account.num === null || this.account.num.trim() === '') {
+            this.message = "Account number empty.";
+            this.showAlert = true;
+            setTimeout(function () { _this.resetAlert(); }, 3000);
+            return;
+        }
         this.usersService.saveAccount(this.account).then(function (data) {
             _this.saveLoading = false;
             _this.account.num = '';
@@ -82,9 +97,13 @@ var ManageAccountComponent = (function () {
         });
         this.account = { user: this.userId, num: '', _id: '' };
     };
+    ManageAccountComponent.prototype.resetAlert = function () {
+        this.saveLoading = false;
+        this.showAlert = false;
+    };
     ManageAccountComponent = __decorate([
         core_1.Component({
-            template: "\n        <h1>Manage accounts</h1>\n        <div *ngIf=\"!showLoader\" class=\"table-responsive\">\n            <table class=\"table table-hover\">\n                <tr>\n                <td>Num</td>\n                    <td>Account Number</td>\n                    <td>Action</td>\n                <tr>\n                <tr *ngFor=\"let account of accounts\">\n                    <td>#</td>\n                    <td>{{account.num}}</td>\n                    <td>\n                        <span (click)=\"setDefault(account._id)\" class=\"glyphicon glyphicon-unchecked\" aria-hidden=\"true\"></span>&nbsp;&nbsp;&nbsp;\n                        <span (click)=\"deleteAccount(account._id)\" class=\"glyphicon glyphicon-trash\" aria-hidden=\"true\"></span>\n                    </td>\n                </tr>\n                <tr *ngIf=\"accounts.length == 0\">\n                    <td colspan=\"3\"><h2 style=\"text-align: center;\">No accounts.</h2></td>\n                </tr>\n            </table>\n        </div>\n        \n        <my-loader *ngIf=\"showLoader\"></my-loader>\n\n        <div *ngIf=\"!showForm\" class=\"form-group\" style=\"margin-top: 30px;\">\n            <button (click)=\"addAccount()\" class=\"btn btn-primary\">Add new account</button>\n        </div>\n\n        <div *ngIf=\"showForm\" class=\"form-group\" style=\"margin-bottom: 30px;\">\n            <form (ngSubmit)=\"onSubmit()\" #registerForm=\"ngForm\" class=\"form-horizontal\">\n                <div class=\"form-group\">\n                    <input type=\"text\" [(ngModel)]=\"account.num\" class=\"form-control\" id=\"account\" placeholder=\"Account number\" name=\"num\" required>\n                </div>\n                <div *ngIf=\"!saveLoading\" class=\"form-group\">\n                    <button type=\"submit\" class=\"btn btn-primary\">Add</button>\n                </div>\n            </form>\n        </div>\n\n        <my-loader *ngIf=\"saveLoading\"></my-loader>\n\n    "
+            template: "\n        <h1>Manage accounts</h1>\n        <div *ngIf=\"!showLoader\" class=\"table-responsive\">\n            <table class=\"table table-hover\">\n                <tr>\n                <td>Num</td>\n                    <td>Account Number</td>\n                    <td>Action</td>\n                <tr>\n                <tr *ngFor=\"let account of accounts\">\n                    <td>#</td>\n                    <td>{{account.num}}</td>\n                    <td>\n                        <span *ngIf=\"account._id === defaultAccountID\" (click)=\"setDefault(account._id)\" class=\"glyphicon glyphicon-check\" aria-hidden=\"true\"></span>\n                        <span *ngIf=\"account._id !== defaultAccountID\" (click)=\"setDefault(account._id)\" class=\"glyphicon glyphicon-unchecked\" aria-hidden=\"true\"></span>\n                        &nbsp;&nbsp;&nbsp;\n                        <span *ngIf=\"deletionLoderAccountId !== account._id\" (click)=\"deleteAccount(account._id)\" class=\"glyphicon glyphicon-trash\" aria-hidden=\"true\"></span>\n                        <bar-loader *ngIf=\"deletionLoderAccountId === account._id\"></bar-loader>\n                    </td>\n                </tr>\n                <tr *ngIf=\"accounts.length == 0\">\n                    <td colspan=\"3\"><h2 style=\"text-align: center;\">No accounts.</h2></td>\n                </tr>\n            </table>\n        </div>\n        \n        <circle-loader *ngIf=\"showLoader\" role=\"alert\"></circle-loader>\n\n        <div *ngIf=\"!showForm\" class=\"form-group\" style=\"margin-top: 30px;\">\n            <button (click)=\"addAccount()\" class=\"btn btn-primary\">Add new account</button>\n        </div>\n\n        \n\n        <div *ngIf=\"showForm\" class=\"jumbotron\" style=\"margin-bottom: 30px;\">\n            <div *ngIf=\"showAlert\" class=\"alert alert-danger\" role=\"alert\">{{message}}</div>\n            <form (ngSubmit)=\"onSubmit()\" #registerForm=\"ngForm\" class=\"form-horizontal\">\n                <div class=\"form-group\">\n                    <input type=\"text\" [(ngModel)]=\"account.num\" class=\"form-control\" id=\"account\" placeholder=\"Account number\" name=\"num\" required>\n                </div>\n                <div class=\"form-group\">\n                    <button *ngIf=\"!saveLoading\" type=\"submit\" class=\"btn btn-primary\">Add</button>\n                    <circle-loader *ngIf=\"saveLoading\"></circle-loader>\n                </div>\n            </form>\n        </div>\n\n        \n\n    "
         }), 
         __metadata('design:paramtypes', [users_service_1.UsersService, auth_service_1.Auth])
     ], ManageAccountComponent);

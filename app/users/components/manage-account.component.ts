@@ -18,8 +18,11 @@ import { Auth } from '../../services/auth.service';
                     <td>#</td>
                     <td>{{account.num}}</td>
                     <td>
-                        <span (click)="setDefault(account._id)" class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;
-                        <span (click)="deleteAccount(account._id)" class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                        <span *ngIf="account._id === defaultAccountID" (click)="setDefault(account._id)" class="glyphicon glyphicon-check" aria-hidden="true"></span>
+                        <span *ngIf="account._id !== defaultAccountID" (click)="setDefault(account._id)" class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
+                        &nbsp;&nbsp;&nbsp;
+                        <span *ngIf="deletionLoderAccountId !== account._id" (click)="deleteAccount(account._id)" class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                        <bar-loader *ngIf="deletionLoderAccountId === account._id"></bar-loader>
                     </td>
                 </tr>
                 <tr *ngIf="accounts.length == 0">
@@ -28,24 +31,28 @@ import { Auth } from '../../services/auth.service';
             </table>
         </div>
         
-        <my-loader *ngIf="showLoader"></my-loader>
+        <circle-loader *ngIf="showLoader" role="alert"></circle-loader>
 
         <div *ngIf="!showForm" class="form-group" style="margin-top: 30px;">
             <button (click)="addAccount()" class="btn btn-primary">Add new account</button>
         </div>
 
-        <div *ngIf="showForm" class="form-group" style="margin-bottom: 30px;">
+        
+
+        <div *ngIf="showForm" class="jumbotron" style="margin-bottom: 30px;">
+            <div *ngIf="showAlert" class="alert alert-danger" role="alert">{{message}}</div>
             <form (ngSubmit)="onSubmit()" #registerForm="ngForm" class="form-horizontal">
                 <div class="form-group">
                     <input type="text" [(ngModel)]="account.num" class="form-control" id="account" placeholder="Account number" name="num" required>
                 </div>
-                <div *ngIf="!saveLoading" class="form-group">
-                    <button type="submit" class="btn btn-primary">Add</button>
+                <div class="form-group">
+                    <button *ngIf="!saveLoading" type="submit" class="btn btn-primary">Add</button>
+                    <circle-loader *ngIf="saveLoading"></circle-loader>
                 </div>
             </form>
         </div>
 
-        <my-loader *ngIf="saveLoading"></my-loader>
+        
 
     `
 })
@@ -53,25 +60,33 @@ export class ManageAccountComponent implements OnInit{
     showForm = false;
     showLoader = true;
     saveLoading = false;
+    showAlert = false;
     accounts : Account[] = []
     profile: any;
     userId: string;
     account: Account;
     index = 1;
+    defaultAccountID = '';
+    deletionLoderAccountId = "";
+    message = '';
 
     setDefault(id: string){
         console.log(id);
+        this.defaultAccountID = id;
+        //make some update in the database.
     }
 
     deleteAccount(id: string){
+        this.deletionLoderAccountId = id;
         this.usersService.deleteAccount(id).then(
             (data) => {
+                this.deletionLoderAccountId = "";
                 var tmp: Account[] = [];
                 var i = 0;
                 if(!data.err){
                     console.log(`Supression Ok`);
                     for(var account of this.accounts){
-                        if(account._id != data.data.id){
+                        if(account._id != data.data._id){
                             tmp[i] = account;
                             i = i + 1;
                         }
@@ -81,12 +96,19 @@ export class ManageAccountComponent implements OnInit{
             },
             (err) => {
                 console.log(err)
+                this.deletionLoderAccountId = "";
             }
         )
     }
 
     onSubmit(){
         this.saveLoading = true;
+        if(this.account.num === null || this.account.num.trim() === ''){
+            this.message = "Account number empty."
+            this.showAlert = true;
+            setTimeout(()=>{ this.resetAlert() }, 3000);
+            return;
+        }
         this.usersService.saveAccount(this.account).then(
             (data) => {
                 this.saveLoading = false;
@@ -128,6 +150,11 @@ export class ManageAccountComponent implements OnInit{
             }
         );
         this.account = {user: this.userId, num: '', _id: ''};
+    }
+
+    resetAlert(){
+        this.saveLoading = false;
+        this.showAlert = false;
     }
 
     constructor(private usersService: UsersService, private auth: Auth){

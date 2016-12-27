@@ -91,6 +91,15 @@ export class UsersService{
                 );
     }
 
+    deleteAdress(id: string){
+        return this.http.delete(this.adressUrl+"/"+id)
+            .toPromise()
+            .then(
+                res => res.json(), 
+                err => err.json()
+            )
+    }
+
     /*--------------Working on accounts-------------*/
 
     getAccount(userId: string){

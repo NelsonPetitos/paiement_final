@@ -10,9 +10,10 @@ import { UsersRoutingModule } from './users-routing.module';
 import { ProfileComponent } from './components/profile.component';
 import { ProfileDetailsComponent } from './components/profile-details.component';
 import { ChangePwdComponent } from './components/change-pwd.component';
-import { AddAdressComponent } from './components/add-adress.component';
+import { ManageAdressComponent } from './components/manage-adress.component';
 import { ManageAccountComponent } from './components/manage-account.component';
-import { LoaderComponent } from '../loader.component';
+import { CircleLoaderComponent } from '../loaders/circle-loader.component';
+import { BarLoaderComponent } from '../loaders/bar-loader.component';
 
 @NgModule({
     imports: [
@@ -26,8 +27,9 @@ import { LoaderComponent } from '../loader.component';
         ProfileDetailsComponent,
         ChangePwdComponent,
         ManageAccountComponent,
-        AddAdressComponent,
-        LoaderComponent
+        ManageAdressComponent,
+        CircleLoaderComponent,
+        BarLoaderComponent
     ],
     providers: [
         UsersService,

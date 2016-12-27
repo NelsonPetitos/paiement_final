@@ -31,6 +31,7 @@ var ChangePwdComponent = (function () {
             this.displayAlertError = true;
             this.message = "Password not matching or empty.";
             this.saveLoading = false;
+            setTimeout(function () { _this.resetAlert(); }, 3000);
         }
         else {
             this.usersService.changePassword(this.data).then(function (data) {
@@ -39,6 +40,7 @@ var ChangePwdComponent = (function () {
                 _this.displayAlertError = data.err;
                 _this.displayAlertSucess = !data.err;
                 _this.data = { oldPassword: '', password: '', confirmPassword: '', user: _this.userId };
+                setTimeout(function () { _this.resetAlert(); }, 4000);
             }, function (err) {
                 console.log(err);
                 _this.saveLoading = false;
@@ -46,6 +48,7 @@ var ChangePwdComponent = (function () {
                 _this.displayAlertSucess = false;
                 _this.message = "An error occur. Password not change.";
                 _this.data = { oldPassword: '', password: '', confirmPassword: '', user: _this.userId };
+                setTimeout(function () { _this.resetAlert(); }, 4000);
             });
         }
     };
@@ -54,9 +57,14 @@ var ChangePwdComponent = (function () {
         this.data.user = this.profile.user_id.split("|")[1];
         this.userId = this.profile.user_id.split("|")[1];
     };
+    ChangePwdComponent.prototype.resetAlert = function () {
+        console.log('reset les variable de controle.');
+        this.displayAlertError = false;
+        this.displayAlertSucess = false;
+    };
     ChangePwdComponent = __decorate([
         core_1.Component({
-            template: "\n        <h1>Change password </h1>\n        <div *ngIf=\"displayAlertError\" class=\"alert alert-danger\" role=\"alert\">{{message}}</div>\n        <div *ngIf=\"displayAlertSucess\" class=\"alert alert-success\" role=\"alert\">{{message}}</div>\n        <form (ngSubmit)=\"onSubmit()\" #registerForm=\"ngForm\" class=\"form-horizontal\">\n            <div class=\"form-group\">\n                <input [(ngModel)]=\"data.oldPassword\" type=\"password\" class=\"form-control\" name=\"oldPassword\" id=\"oldPassword\" placeholder=\"Old password\" required>\n            </div>\n            <div class=\"form-group\">\n                <input [(ngModel)]=\"data.password\" type=\"password\" class=\"form-control\" name=\"newPassword\" id=\"newPassword\" placeholder=\"New password\" required>\n            </div>\n            <div class=\"form-group\">\n                <input [(ngModel)]=\"data.confirmPassword\" type=\"password\" class=\"form-control\" name=\"confirmPassword\" id=\"confirmPassword\" placeholder=\"Confirm password\" required>\n            </div>\n            <div *ngIf=\"!saveLoading\" class=\"form-group\">\n                <div class=\"col-sm-12\">\n                    <button type=\"submit\" class=\"btn btn-primary\">Change password</button>\n                </div>\n            </div>\n        </form>\n        <my-loader *ngIf=\"saveLoading\"></my-loader>\n    "
+            template: "\n        <h1>Change password </h1>\n        <div *ngIf=\"displayAlertError\" class=\"alert alert-danger\" role=\"alert\">{{message}}</div>\n        <div *ngIf=\"displayAlertSucess\" class=\"alert alert-success\" role=\"alert\">{{message}}</div>\n        <div class=\"jumbotron\">\n            <form (ngSubmit)=\"onSubmit()\" #registerForm=\"ngForm\" class=\"form-horizontal\">\n                <div class=\"form-group\">\n                    <label for=\"oldPassword\" class=\"col-sm-3 control-label\">Old password</label>\n                    <div class=\"col-sm-6\">\n                        <input [(ngModel)]=\"data.oldPassword\" type=\"password\" class=\"form-control\" name=\"oldPassword\" id=\"oldPassword\" placeholder=\"Old password\" required>\n                    </div>\n                </div>\n                <div class=\"form-group\">\n                    <label for=\"newPassword\" class=\"col-sm-3 control-label\">New password</label>\n                    <div class=\"col-sm-6\">\n                        <input [(ngModel)]=\"data.password\" type=\"password\" class=\"form-control\" name=\"newPassword\" id=\"newPassword\" placeholder=\"New password\" required>\n                    </div>\n                </div>\n                <div class=\"form-group\">\n                    <label for=\"confirmPassword\" class=\"col-sm-3 control-label\">Confirm password</label>\n                    <div class=\"col-sm-6\">\n                        <input [(ngModel)]=\"data.confirmPassword\" type=\"password\" class=\"form-control\" name=\"confirmPassword\" id=\"confirmPassword\" placeholder=\"Confirm password\" required>\n                    </div>\n                </div>\n                <div class=\"form-group\">\n                    <div class=\"col-sm-12\">\n                        <button *ngIf=\"!saveLoading\"  type=\"submit\" class=\"btn btn-primary\">Change password</button>\n                        <circle-loader *ngIf=\"saveLoading\"></circle-loader>\n                    </div>\n                </div>\n            </form>\n            \n        </div>\n    "
         }), 
         __metadata('design:paramtypes', [users_service_1.UsersService, auth_service_1.Auth])
     ], ChangePwdComponent);

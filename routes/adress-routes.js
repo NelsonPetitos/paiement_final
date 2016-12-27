@@ -7,13 +7,14 @@ router.post('/', function(req, res) {
 
     let adress = new Adress()
     adress.phone = req.body.phone;
+    adress.code = req.body.code;
     adress.street = req.body.street;
-    adress.contry = req.body.contry;
+    adress.country = req.body.country;
     adress.town = req.body.town;
     adress.postalbox = req.body.postalbox;
     adress.user = mongoose.Types.ObjectId(req.body.user);
 
-    if (adress.phone == '' || adress.phone == null) {
+    if (adress.phone.trim() == '' || adress.phone == null) {
         res.send({ err: true, msg: "Make sure that all required fields are provided", data: null })
     } else {
         adress.save().then(
@@ -45,5 +46,24 @@ router.get('/:userid', function(req, res) {
     }
 })
 
+router.delete('/:id', function(req, res) {
+    if (req.params.id.trim() == '' || req.params.id == null) {
+        res.send({ err: true, msg: "No users specified.", data: null })
+    } else {
+        Adress.findOneAndRemove({ _id: mongoose.Types.ObjectId(req.params.id) }, (err, adress) => {
+            if (err) {
+                console.log(`erreur supression de l'adresse`);
+                res.send({ err: true, msg: 'Error occur.', data: err });
+            } else {
+                if (adress) {
+                    console.log(`Adress delete`);
+                    res.send({ err: false, msg: 'Adress delete.', data: adress });
+                } else {
+                    res.send({ err: true, msg: 'Adress not exist.', data: err });
+                }
+            }
+        });
+    }
+})
 
 module.exports = router

@@ -3,7 +3,8 @@ let Schema = mongoose.Schema
 
 let mySchema = new Schema({
     street: { type: String },
-    contry: { type: String, required: true },
+    country: { type: String, required: true },
+    code: { type: String, required: true },
     town: { type: String, required: true },
     postalbox: { type: String, required: true },
     phone: { type: String, required: true },

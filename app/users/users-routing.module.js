@@ -14,7 +14,7 @@ var profile_component_1 = require('./components/profile.component');
 var profile_details_component_1 = require('./components/profile-details.component');
 var change_pwd_component_1 = require('./components/change-pwd.component');
 var manage_account_component_1 = require('./components/manage-account.component');
-var add_adress_component_1 = require('./components/add-adress.component');
+var manage_adress_component_1 = require('./components/manage-adress.component');
 var usersRoutes = [
     {
         path: 'profile',
@@ -30,7 +30,7 @@ var usersRoutes = [
             },
             {
                 path: 'manage-adress',
-                component: add_adress_component_1.AddAdressComponent
+                component: manage_adress_component_1.ManageAdressComponent
             },
             {
                 path: 'manage-account',
