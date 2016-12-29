@@ -22,6 +22,9 @@ var manage_adress_component_1 = require('./components/manage-adress.component');
 var manage_account_component_1 = require('./components/manage-account.component');
 var circle_loader_component_1 = require('../loaders/circle-loader.component');
 var bar_loader_component_1 = require('../loaders/bar-loader.component');
+var payments_component_1 = require('./components/payments.component');
+var logs_component_1 = require('./components/logs.component');
+var clients_component_1 = require('./components/clients.component');
 var UsersModule = (function () {
     function UsersModule() {
     }
@@ -40,7 +43,10 @@ var UsersModule = (function () {
                 manage_account_component_1.ManageAccountComponent,
                 manage_adress_component_1.ManageAdressComponent,
                 circle_loader_component_1.CircleLoaderComponent,
-                bar_loader_component_1.BarLoaderComponent
+                bar_loader_component_1.BarLoaderComponent,
+                payments_component_1.PaymentsComponent,
+                clients_component_1.ClientsComponent,
+                logs_component_1.LogsComponent
             ],
             providers: [
                 users_service_1.UsersService,

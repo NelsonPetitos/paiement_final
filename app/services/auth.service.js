@@ -23,8 +23,13 @@ var Auth = (function () {
             },
             auth: {
                 redirect: true,
+                // redirectUrl: 'http://localhost:5000/home',
                 redirectUrl: 'https://paiementback.herokuapp.com/home',
                 responseType: 'token'
+            },
+            languageDictionary: {
+                emailInputPlaceholder: "something@youremail.com",
+                title: "Log in or sign up"
             }
         });
         // Add callback for lock `authenticated` event

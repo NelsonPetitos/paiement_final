@@ -15,7 +15,7 @@ import { User } from '../../models/user';
                     <table class="table table-striped">
                         <tr>
                             <td>Api key : </td>
-                            <td>{{apikey}}</td>
+                            <td>{{profile.apikey}}</td>
                         </tr>
                         <tr>
                             <td>Email : </td>
@@ -53,17 +53,8 @@ export class ProfileDetailsComponent implements OnInit{
 
     ngOnInit(){
         this.profile = JSON.parse(localStorage.getItem('profile'));
+        // console.log(this.profile);
         this.userId = this.profile.user_id.split("|")[1];
-        this.usersService.getUser(this.userId).then(
-            (data) => {
-                if(!data.err){
-                    console.log("Apikey find");
-                    this.apikey = data.data.apikey;
-                }
-            },
-            (err) => {
-                console.log(err)
-            }
-        )
+        
     }
 }

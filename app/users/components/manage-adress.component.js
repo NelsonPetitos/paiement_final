@@ -57,7 +57,7 @@ var ManageAdressComponent = (function () {
         var _this = this;
         this.saveLoading = true;
         if (this.adress.phone === null || this.adress.phone.trim() === '' || this.adress.postalbox == null || this.adress.postalbox.trim() === '' || this.adress.country == null) {
-            this.message = "AFill all required fields.";
+            this.message = "Fill all required fields.";
             this.showAlert = true;
             this.resetAlert();
             return;

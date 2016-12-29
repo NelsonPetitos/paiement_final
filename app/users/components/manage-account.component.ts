@@ -7,6 +7,9 @@ import { Auth } from '../../services/auth.service';
 @Component({
     template: `
         <h1>Manage accounts</h1>
+
+        <circle-loader *ngIf="showLoader" role="alert"></circle-loader>
+
         <div *ngIf="!showLoader" class="table-responsive">
             <table class="table table-hover">
                 <tr>
@@ -30,8 +33,6 @@ import { Auth } from '../../services/auth.service';
                 </tr>
             </table>
         </div>
-        
-        <circle-loader *ngIf="showLoader" role="alert"></circle-loader>
 
         <div *ngIf="!showForm" class="form-group" style="margin-top: 30px;">
             <button (click)="addAccount()" class="btn btn-primary">Add new account</button>
@@ -136,8 +137,6 @@ export class ManageAccountComponent implements OnInit{
         this.usersService.getAccount(this.userId).then(
             (data) => {
                 this.showLoader = false;
-                // this.isError = data.err;
-                // this.errMsg = data.msg;
                 if(!data.err){
                     console.log(`Tout est ok`);
                     this.accounts = data.data;

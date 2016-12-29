@@ -21,6 +21,8 @@ var UsersService = (function () {
         this.accountUrl = "api/account";
         this.adressUrl = "api/adress";
         this.changepwdUrl = 'api/users/change-pwd';
+        this.transactionsUrl = 'api/transactions';
+        this.clientUrl = "api/transactions/clients";
     }
     /*--------------Working on users-------------*/
     UsersService.prototype.loginUser = function (user) {
@@ -82,6 +84,21 @@ var UsersService = (function () {
     };
     UsersService.prototype.deleteAccount = function (id) {
         return this.http.delete(this.accountUrl + "/" + id)
+            .toPromise()
+            .then(function (res) { return res.json(); }, function (err) { return err.json(); });
+    };
+    /*--------------Working on transactions-------------*/
+    UsersService.prototype.getTransactions = function (opt) {
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        return this.http.post(this.transactionsUrl, opt, options)
+            .toPromise()
+            .then(function (res) { return res.json(); }, function (err) { return err.json(); });
+    };
+    UsersService.prototype.getClients = function (opt) {
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        return this.http.post(this.clientUrl, opt, options)
             .toPromise()
             .then(function (res) { return res.json(); }, function (err) { return err.json(); });
     };

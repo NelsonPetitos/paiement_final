@@ -1,5 +1,6 @@
 let mongoose = require('mongoose')
 let uniqueValidator = require('mongoose-unique-validator')
+let webConn = require('../web-db-connection')
 let Schema = mongoose.Schema
 
 let mySchema = new Schema({
@@ -9,4 +10,4 @@ let mySchema = new Schema({
 
 mySchema.plugin(uniqueValidator);
 
-module.exports = mongoose.model('Account', mySchema)
+module.exports = webConn.model('Account', mySchema)

@@ -19,7 +19,9 @@ export class UsersService{
     private usersUrl = "api/users";
     private accountUrl = "api/account";
     private adressUrl = "api/adress";
-    private changepwdUrl = 'api/users/change-pwd'
+    private changepwdUrl = 'api/users/change-pwd';
+    private transactionsUrl = 'api/transactions';
+    private clientUrl = "api/transactions/clients"
 
     /*--------------Working on users-------------*/
 
@@ -130,6 +132,30 @@ export class UsersService{
                 res => res.json(), 
                 err => err.json()
             )
+    }
+
+
+    /*--------------Working on transactions-------------*/
+    getTransactions(opt: {apikey: string, status: string}){
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this.transactionsUrl, opt, options)
+                .toPromise()
+                .then(
+                    res => res.json(),
+                    err => err.json()
+                );
+    }
+
+    getClients(opt: {apikey: string, status: string}){
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this.clientUrl, opt, options)
+                .toPromise()
+                .then(
+                    res => res.json(),
+                    err => err.json()
+                );
     }
 
     constructor(private http: Http){}

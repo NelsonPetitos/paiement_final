@@ -1,4 +1,5 @@
 let mongoose  = require('mongoose')
+let webConn = require('../web-db-connection')
 let Schema = mongoose.Schema
 let uniqueValidator = require('mongoose-unique-validator')
 let bcrypt = require('bcrypt')
@@ -28,6 +29,6 @@ mySchema.method('comparePassword', function(password){
     return bcrypt.compareSync(password, this.password);
 })
 
-let model = mongoose.model('User', mySchema)
+let model = webConn.model('User', mySchema)
 
 module.exports = model

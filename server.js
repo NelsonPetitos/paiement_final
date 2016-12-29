@@ -11,31 +11,23 @@ let homeRoute = require('./routes/home-routes')
 let userRoute = require('./routes/users-routes')
 let accountRoute = require('./routes/account-routes')
 let adressRoute = require('./routes/adress-routes')
-let mongoose = require('mongoose')
+let modemRoute = require('./routes/modem-routes');
+// let mongoose = require('mongoose')
     // var cleanup = new (require('./public/js/cleanup'))();
 let listSocket = new Set()
 let modemSocket = undefined
 let secretKey = "1234567890"
 let bodyParser = require('body-parser')
 
-
-
 //Connect to database
-mongoose.connect('mongodb://ndenelson:Picsou_88modulus@jello.modulusmongo.net:27017/iG8apaze', (err) => {
-        // mongoose.connect('mongodb://localhost:27017/paiement_api_db', (err) =>{
-        if (err) {
-            console.log(`Not connected to the database. ${err}`)
-        } else {
-            console.log(`Sucessfull connected to the database.`)
-        }
-    })
-    // mongoose.connect('mongodb://ndenelson:Picsou_88modulus@jello.modulusmongo.net:27017/iG8apaze', (err) =>{
-    //     if(err){
-    //         console.log(`Not connected to the database. ${err}`)
-    //     }else{
-    //         console.log(`Sucessfull connected to the database.`)
-    //     }
-    // })
+// mongoose.connect('mongodb://ndenelson:Picsou_88modulus@jello.modulusmongo.net:27017/iG8apaze', (err) => {
+// // mongoose.connect('mongodb://localhost:27017/paiement_api_db', (err) =>{
+//     if (err) {
+//         console.log(`Not connected to the database. ${err}`)
+//     } else {
+//         console.log(`Sucessfull connected to the database.`)
+//     }
+// })  
 
 //Set ejs as the templates engine
 app.set('view engine', 'ejs')
@@ -62,17 +54,11 @@ app.use((req, res, next) => {
 app.use('/assets', express.static(__dirname + '/public'))
 app.use('/lib', express.static(__dirname + '/node_modules'))
 app.use('/app', express.static(__dirname + '/app'))
-
-app.get('/test', function(req, res) {
-    res.send({
-        email: "test@test.cm",
-        password: "testpassword"
-    })
-})
 app.use('/initpopup', popupRoute)
 app.use('/api/users', userRoute)
 app.use('/api/account', accountRoute)
 app.use('/api/adress', adressRoute)
+app.use('/api/transactions', modemRoute)
 app.use('*', homeRoute)
 
 
@@ -98,12 +84,12 @@ io.on('connection', (socket) => {
             socket.emit('wearetechapi_server_response', result)
             socket.disconnect();
         } else {
-            //Send my number to the Mobile server and wait for the validation
+            //Send my request to the Mobile server and wait for the validation
             let message = {
                 phone: data.phone,
                 socket: socket.id,
-                apiKey: data.apiKey,
-                secretKey: secretKey,
+                apikey: data.apiKey,
+                secretkey: secretKey,
                 amount: data.amount,
             }
             modemSocket.emit('paiement', message);
@@ -119,8 +105,9 @@ io.on('connection', (socket) => {
                     console.log("Sender socket find. The response send back to the browser")
                     let result = {
                         result: data.airtime,
-                        error: false,
-                        message: "Verify your phone"
+                        error: !data.status,
+                        message: "Complete on the phone",
+                        code: data.errorCode
                     }
                     socket.emit('wearetechapi_server_response', result)
                     socket.disconnect();

@@ -1,5 +1,6 @@
 let mongoose = require('mongoose')
 let Schema = mongoose.Schema
+let webConn = require('../web-db-connection')
 
 let mySchema = new Schema({
     street: { type: String },
@@ -11,4 +12,4 @@ let mySchema = new Schema({
     user: { type: Schema.ObjectId, ref: 'User' }
 });
 
-module.exports = mongoose.model('Adress', mySchema)
+module.exports = webConn.model('Adress', mySchema)

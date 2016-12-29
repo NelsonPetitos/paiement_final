@@ -14,6 +14,9 @@ import { ManageAdressComponent } from './components/manage-adress.component';
 import { ManageAccountComponent } from './components/manage-account.component';
 import { CircleLoaderComponent } from '../loaders/circle-loader.component';
 import { BarLoaderComponent } from '../loaders/bar-loader.component';
+import { PaymentsComponent } from './components/payments.component';
+import { LogsComponent } from './components/logs.component';
+import { ClientsComponent } from './components/clients.component';
 
 @NgModule({
     imports: [
@@ -29,7 +32,10 @@ import { BarLoaderComponent } from '../loaders/bar-loader.component';
         ManageAccountComponent,
         ManageAdressComponent,
         CircleLoaderComponent,
-        BarLoaderComponent
+        BarLoaderComponent,
+        PaymentsComponent,
+        ClientsComponent,
+        LogsComponent
     ],
     providers: [
         UsersService,
