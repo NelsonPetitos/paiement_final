@@ -18,7 +18,7 @@ import { Auth } from '../../services/auth.service';
                     <td>#</td>
                     <td>{{transaction.serverRequest.reception_time}}</td>
                     <td>{{transaction.phone_number}}</td>
-                    <td>{{transaction.amount}}</td>
+                    <td>{{transaction.serverRequest.amount}}</td>
                 </tr>
                 <tr *ngIf="transactions.length == 0">
                     <td colspan="4"><h2 style="text-align: center;">No Logs.</h2></td>

@@ -17,7 +17,7 @@ import { Auth } from '../../services/auth.service';
                 <tr *ngFor="let transaction of transactions">
                     <td>#</td>
                     <td>{{transaction.phone_number}}</td>
-                    <td>{{transaction.amount}}</td>
+                    <td>{{transaction.serverRequest.amount}}</td>
                 </tr>
                 <tr *ngIf="transactions.length == 0">
                     <td colspan="3"><h2 style="text-align: center;">No payments.</h2></td>
