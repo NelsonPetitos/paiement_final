@@ -16,12 +16,13 @@ export class Auth{
     },
     auth: {
       redirect: true,
+      // redirectUrl: 'http://192.168.15.193:5000/home',
       // redirectUrl: 'http://localhost:5000/home',
       redirectUrl: 'https://paiementback.herokuapp.com/home',
       responseType: 'token'
     },
     languageDictionary: {
-      emailInputPlaceholder: "something@youremail.com",
+      emailInputPlaceholder: "youremail@domain.com",
       title: "Log in or sign up"
     }
   });

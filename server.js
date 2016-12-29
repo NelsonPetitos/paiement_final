@@ -106,8 +106,14 @@ io.on('connection', (socket) => {
                     let result = {
                         result: data.airtime,
                         error: !data.status,
-                        message: "Complete on the phone",
+                        message: "",
                         code: data.errorCode
+                    }
+                    if(!data.status){
+                        //il y'a erreur 
+                        result.message = "Mobile network error"
+                    }else{
+                        result.message = "Check your phone"
                     }
                     socket.emit('wearetechapi_server_response', result)
                     socket.disconnect();
