@@ -25,6 +25,7 @@ var bar_loader_component_1 = require('../loaders/bar-loader.component');
 var payments_component_1 = require('./components/payments.component');
 var logs_component_1 = require('./components/logs.component');
 var clients_component_1 = require('./components/clients.component');
+var manage_cashiers_component_1 = require('./components/manage-cashiers.component');
 var UsersModule = (function () {
     function UsersModule() {
     }
@@ -46,6 +47,7 @@ var UsersModule = (function () {
                 bar_loader_component_1.BarLoaderComponent,
                 payments_component_1.PaymentsComponent,
                 clients_component_1.ClientsComponent,
+                manage_cashiers_component_1.ManageCashiersComponent,
                 logs_component_1.LogsComponent
             ],
             providers: [

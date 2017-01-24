@@ -22,7 +22,7 @@ export class Auth{
       responseType: 'token'
     },
     languageDictionary: {
-      emailInputPlaceholder: "youremail@domain.com",
+      emailInputPlaceholder: "email@domain.com",
       title: "Log in or sign up"
     }
   });

@@ -23,6 +23,7 @@ var UsersService = (function () {
         this.changepwdUrl = 'api/users/change-pwd';
         this.transactionsUrl = 'api/transactions';
         this.clientUrl = "api/transactions/clients";
+        this.cashierUrl = "api/cashier";
     }
     /*--------------Working on users-------------*/
     UsersService.prototype.loginUser = function (user) {
@@ -99,6 +100,24 @@ var UsersService = (function () {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
         return this.http.post(this.clientUrl, opt, options)
+            .toPromise()
+            .then(function (res) { return res.json(); }, function (err) { return err.json(); });
+    };
+    /*--------------Working on transactions-------------*/
+    UsersService.prototype.getCashier = function (userId) {
+        return this.http.get(this.cashierUrl + "/" + userId)
+            .toPromise()
+            .then(function (res) { return res.json(); }, function (err) { return err.json(); });
+    };
+    UsersService.prototype.saveCashier = function (cashier) {
+        console.log('je suis dans le user service');
+        // console.log(cashier);
+        // return new Promise(function(resolve, reject){
+        //     resolve({err: false, msg: 'Tout est ok', data: {}});
+        // });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        return this.http.post(this.cashierUrl, cashier, options)
             .toPromise()
             .then(function (res) { return res.json(); }, function (err) { return err.json(); });
     };

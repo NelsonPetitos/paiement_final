@@ -4,7 +4,6 @@ let mongoose = require('mongoose')
 let Account = require('../models/account')
 
 router.post('/', function(req, res) {
-
     let account = new Account()
     account.num = req.body.num;
     account.user = mongoose.Types.ObjectId(req.body.user);

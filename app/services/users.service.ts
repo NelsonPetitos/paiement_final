@@ -8,6 +8,7 @@ import { Injectable } from '@angular/core';
 import { User } from '../models/user';
 import { Account } from '../models/account';
 import { Adress } from '../models/adress';
+import { Cashier } from '../models/cashier';
 
 
 
@@ -21,7 +22,8 @@ export class UsersService{
     private adressUrl = "api/adress";
     private changepwdUrl = 'api/users/change-pwd';
     private transactionsUrl = 'api/transactions';
-    private clientUrl = "api/transactions/clients"
+    private clientUrl = "api/transactions/clients";
+    private cashierUrl = "api/cashier";
 
     /*--------------Working on users-------------*/
 
@@ -158,5 +160,31 @@ export class UsersService{
                 );
     }
 
+    /*--------------Working on transactions-------------*/
+    getCashier(userId: string){
+        return this.http.get(this.cashierUrl+"/"+userId)
+            .toPromise()
+            .then(
+                res => res.json(), 
+                err => err.json()
+            )
+    }
+
+    saveCashier(cashier: Cashier){
+        console.log('je suis dans le user service');
+        // console.log(cashier);
+        // return new Promise(function(resolve, reject){
+        //     resolve({err: false, msg: 'Tout est ok', data: {}});
+        // });
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+
+        return this.http.post(this.cashierUrl, cashier, options)
+                .toPromise()
+                .then(
+                    res => res.json(),
+                    err => err.json()
+                );
+    }
     constructor(private http: Http){}
 }

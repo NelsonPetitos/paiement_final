@@ -12,6 +12,7 @@ import { Component } from '@angular/core';
                     <li role="presentation" ><a [routerLink]="['change-pwd']"><span class="glyphicon glyphicon-lock"></span>&nbsp;&nbsp;&nbsp;Change password</a></li>
                     <li role="presentation"><a [routerLink]="['manage-adress']"><span class="glyphicon glyphicon-level-up"></span>&nbsp;&nbsp;&nbsp;Manage adresses</a></li>
                     <li role="presentation"><a [routerLink]="['manage-account']"><span class="glyphicon glyphicon-edit"></span>&nbsp;&nbsp;&nbsp;Manage accounts</a></li>
+                    <li role="presentation"><a [routerLink]="['manage-cashiers']"><span class="glyphicon glyphicon-phone"></span>&nbsp;&nbsp;&nbsp;Manage cashiers</a></li>
                 </ul>
             </div>
             <div class="col-md-8" style="text-align:center;">

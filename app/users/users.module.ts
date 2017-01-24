@@ -17,6 +17,7 @@ import { BarLoaderComponent } from '../loaders/bar-loader.component';
 import { PaymentsComponent } from './components/payments.component';
 import { LogsComponent } from './components/logs.component';
 import { ClientsComponent } from './components/clients.component';
+import { ManageCashiersComponent } from './components/manage-cashiers.component';
 
 @NgModule({
     imports: [
@@ -35,6 +36,7 @@ import { ClientsComponent } from './components/clients.component';
         BarLoaderComponent,
         PaymentsComponent,
         ClientsComponent,
+        ManageCashiersComponent,
         LogsComponent
     ],
     providers: [

@@ -10,14 +10,16 @@ let popupRoute = require('./routes/popup-routes')
 let homeRoute = require('./routes/home-routes')
 let userRoute = require('./routes/users-routes')
 let accountRoute = require('./routes/account-routes')
-let adressRoute = require('./routes/adress-routes')
+let adressRoute = require('./routes/adress-routes');
 let modemRoute = require('./routes/modem-routes');
+let cashierRoute  = require('./routes/cashier-routes');
 // let mongoose = require('mongoose')
     // var cleanup = new (require('./public/js/cleanup'))();
 let listSocket = new Set()
 let modemSocket = undefined
 let secretKey = "1234567890"
 let bodyParser = require('body-parser')
+let compteur = 0;
 
 //Connect to database
 // mongoose.connect('mongodb://ndenelson:Picsou_88modulus@jello.modulusmongo.net:27017/iG8apaze', (err) => {
@@ -58,6 +60,7 @@ app.use('/initpopup', popupRoute)
 app.use('/api/users', userRoute)
 app.use('/api/account', accountRoute)
 app.use('/api/adress', adressRoute)
+app.use('/api/cashier', cashierRoute)
 app.use('/api/transactions', modemRoute)
 app.use('*', homeRoute)
 
@@ -76,6 +79,7 @@ io.on('connection', (socket) => {
 
         if (typeof modemSocket == 'undefined') {
             //Le modem n'est pas connecte
+            console.log('Le modem n\'est pas connecte ');
             let result = {
                 result: null,
                 error: true,
@@ -97,7 +101,8 @@ io.on('connection', (socket) => {
     });
 
     socket.on('paiement', (data) => {
-        console.log('The modem just answer me the response is ')
+        compteur++;
+        console.log(`Modem response number : ${compteur}.  The airtime is : ${data.airtime}`);
         console.log(data)
         if (data.secretKey == secretKey) {
             listSocket.forEach((socket) => {
@@ -126,6 +131,17 @@ io.on('connection', (socket) => {
         if (data.secretKey == secretKey) {
             modemSocket = socket;
             console.log(`The modem just connect and it\'s identified ${socket.id}`)
+            // let i;
+            // for(i = 1; i <= 50; i++){
+            //     let message = {
+            //         phone: "674180157",
+            //         socket: "oxuk8mJw0C1-qxWmAAAA",
+            //         apikey: "9b7150c692d2bc05c341028f2743d4781172cd5c",
+            //         secretkey: secretKey,
+            //         amount: "10500",
+            //     }
+            //     modemSocket.emit('paiement', message);
+            // }
         }
     });
 

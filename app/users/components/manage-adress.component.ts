@@ -86,7 +86,7 @@ import { Auth } from '../../services/auth.service'
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <button *ngIf="!saveLoading" type="submit" class="btn btn-primary">Add adress</button>
-                        <circle-loader *ngIf="saveLoading"></circle-loader>
+                        <bar-loader *ngIf="saveLoading"></bar-loader>
                     </div>
                 </div>
             </form>

@@ -47,7 +47,7 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
 
                 let amount = this.dataset.amount;
                 if(typeof amount !== 'undefined'){
-                    // let url = "http://192.168.15.193:5000/initpopup";
+                    // let url = "http://192.168.15.191:5000/initpopup";
                     let url = "https://paiementback.herokuapp.com/initpopup";
                     xhttp.open("POST", url, true);
                     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -114,7 +114,7 @@ WRTechAPI.prototype.setValidateButtonEventListemer = function(){
             }else{
 
                 let socket = io.connect('https://paiementback.herokuapp.com');
-                // let socket = io.connect('http://192.168.15.193:5000');
+                // let socket = io.connect('http://192.168.15.191:5000');
 
                 if(typeof socket !== 'undefined'){
                     let message = {phone: phone, code: 237, apiKey: WAPI.apiKey, amount: amount};

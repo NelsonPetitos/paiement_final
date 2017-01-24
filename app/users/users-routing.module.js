@@ -15,6 +15,7 @@ var profile_details_component_1 = require('./components/profile-details.componen
 var change_pwd_component_1 = require('./components/change-pwd.component');
 var manage_account_component_1 = require('./components/manage-account.component');
 var manage_adress_component_1 = require('./components/manage-adress.component');
+var manage_cashiers_component_1 = require('./components/manage-cashiers.component');
 var payments_component_1 = require('./components/payments.component');
 var logs_component_1 = require('./components/logs.component');
 var clients_component_1 = require('./components/clients.component');
@@ -30,6 +31,10 @@ var usersRoutes = [
             {
                 path: 'change-pwd',
                 component: change_pwd_component_1.ChangePwdComponent
+            },
+            {
+                path: 'manage-cashiers',
+                component: manage_cashiers_component_1.ManageCashiersComponent
             },
             {
                 path: 'manage-adress',
