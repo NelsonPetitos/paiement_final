@@ -47,7 +47,7 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
 
                 let amount = this.dataset.amount;
                 if(typeof amount !== 'undefined'){
-                    // let url = "http://192.168.15.191:5000/initpopup";
+                    // let url = "http://192.168.15.192:5000/initpopup";
                     let url = "https://paiementback.herokuapp.com/initpopup";
                     xhttp.open("POST", url, true);
                     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -114,7 +114,7 @@ WRTechAPI.prototype.setValidateButtonEventListemer = function(){
             }else{
 
                 let socket = io.connect('https://paiementback.herokuapp.com');
-                // let socket = io.connect('http://192.168.15.191:5000');
+                // let socket = io.connect('http://192.168.15.192:5000');
 
                 if(typeof socket !== 'undefined'){
                     let message = {phone: phone, code: 237, apiKey: WAPI.apiKey, amount: amount};
@@ -187,19 +187,31 @@ WRTechAPI.prototype.handleResponse = function(result) {
 
     document.getElementById('wearetech_client_email').disabled = false;
     document.getElementById('wearetech_phone_number').disabled = false;
-
+    let message = document.getElementById('wearetech_message');
     let waiting = document.getElementById('wearetech_waiting');
     let error = document.getElementById('wearetech_error');
     let success = document.getElementById('wearetech_success');
 
+    console.log(result.message);
+
     if(result.error == true){
+        if(message){
+            message.innerHTML = result.message;
+            message.style.display = 'block';
+            message.style.backgroundColor = 'pink';
+        }
         if(error){
-            error.innerHTML = result.message;
+            error.innerHTML = "Close";
             error.style.display = 'block';
         }
     }else{
+        if(message){
+            message.innerHTML = result.message;
+            message.style.display = 'block';
+            message.style.backgroundColor = 'lightgreen';
+        }
         if(success){
-            success.innerHTML = result.message;
+            success.innerHTML = "Sucess";
             success.style.display = 'block';
         }
     }

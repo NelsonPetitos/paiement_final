@@ -63,7 +63,7 @@ router.post('/login', function(req, res) {
         res.send({ err: true, msg: "Make sure that there is no empty fields", data: null })
     } else {
         Cashier.find({ phone: req.body.phone }, (err, cashiers) => {
-            for(i=0; i <= cashiers.length; i++){
+            for(i=0; i < cashiers.length; i++){
                 if (cashiers[i].compareCode(req.body.code)) {
                     console.log(`Cashier find`);
                     res.send({ err: false, msg: 'Cashier login', data: cashiers[i] });

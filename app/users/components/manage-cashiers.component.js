@@ -42,7 +42,6 @@ var ManageCashiersComponent = (function () {
         return (this.cashier.phone == null || this.cashier.phone.trim() == '' || this.cashier.name == null || this.cashier.name.trim() == '' || this.cashier.code == null);
     };
     ManageCashiersComponent.prototype.onSubmit = function () {
-        var _this = this;
         console.log('Je suis dans le onsubmit');
         this.saveLoader = true;
         if (this.verifiedCashier() == true) {
@@ -55,11 +54,11 @@ var ManageCashiersComponent = (function () {
             console.log(this.cashier);
             this.userService.saveCashier(this.cashier).then(function (data) {
                 console.log(data);
-                _this.saveLoader = false;
-                _this.showForm = false;
+                this.saveLoader = false;
+                this.showForm = false;
                 if (!data.err) {
                     console.log("Enregistrememnt ok");
-                    _this.cashiers[_this.cashiers.length] = data.data;
+                    this.cashiers[this.cashiers.length] = data.data;
                 }
             }, function (err) {
                 console.log('Error occur');

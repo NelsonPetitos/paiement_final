@@ -216,9 +216,13 @@ router.post('/', (request, response) => {
 								<div class="logoImage" alt="Logo" style="background-image: url(https://paiementback.herokuapp.com/assets/img/logo.png);display:inline-block;vertical-align:middle;"></div>
 							</div>
 							<h1 class="Header-companyName">Flitpay</h1>
-							<div id="wearetech_message" style="background-color: #f2dede;border-color: #ebccd1;color: #a94442;display:none">Give a valid phone number</div>
+							
 						</div>
 					</div>
+                    
+                    
+                    <div id="wearetech_message" style="display: none; padding: 3px; text-align: center;background-color: pink;color: #a94442">Give a valid phone number</div>
+
 					<div style="background:#f5f5f5;padding:10px 30px 10px 30px;border-top:1px solid silver;border-top-left-radius:5px;border-top-right-radius:5px;">
 					<input type='hidden' value="${amount}" id="wearetech_transaction_amount"/>
 						<div style="margin-top:20px;">	

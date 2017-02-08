@@ -128,7 +128,7 @@ export class ManageCashiersComponent implements OnInit {
             console.log('Test is ok');
             console.log(this.cashier);
             this.userService.saveCashier(this.cashier).then(
-                (data) => {
+                function(data){
                     console.log(data);
                     this.saveLoader = false;
                     this.showForm = false;

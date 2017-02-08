@@ -19,7 +19,6 @@ let listSocket = new Set()
 let modemSocket = undefined
 let secretKey = "1234567890"
 let bodyParser = require('body-parser')
-let compteur = 0;
 
 //Connect to database
 // mongoose.connect('mongodb://ndenelson:Picsou_88modulus@jello.modulusmongo.net:27017/iG8apaze', (err) => {
@@ -101,24 +100,50 @@ io.on('connection', (socket) => {
     });
 
     socket.on('paiement', (data) => {
-        compteur++;
-        console.log(`Modem response number : ${compteur}.  The airtime is : ${data.airtime}`);
         console.log(data)
         if (data.secretKey == secretKey) {
             listSocket.forEach((socket) => {
                 if (socket.id == data.socket) {
                     console.log("Sender socket find. The response send back to the browser")
                     let result = {
-                        result: data.airtime,
+                        // result: data.airtime,
                         error: !data.status,
                         message: "",
                         code: data.errorCode
                     }
                     if(!data.status){
-                        //il y'a erreur 
-                        result.message = "Mobile network error"
+                        switch(data.errorCode){
+                            //impossible d'établir la connexion avec le port du modem
+                            case '100': 
+                                console.log("100");
+                                result.message = "Flitpay api error";
+                                break;
+                            //argument from web server is in wrong format
+                            case '101':
+                                console.log("101");
+                                result.message = "Wrong data";
+                                break;
+                            //erreur survenue lors de l'initiation du paiement
+                            case '102':
+                                console.log("102");
+                                result.message = "Mobile network error";
+                                break;
+                            //delai dépassé lors de l'attente de la réponse du client
+                            case '103':
+                                console.log("103");
+                                result.message = "Session timeout";
+                                break;
+                            //fond insuffisant pour initier la commande
+                            case '104':
+                                console.log("104");
+                                result.message = "Insufficient funds";
+                                break;
+                            default:
+                                console.log(data.errorCode);
+                                result.message = 'Unknown error';
+                        }
                     }else{
-                        result.message = "Check your phone"
+                        result.message = "Check the phone"
                     }
                     socket.emit('wearetechapi_server_response', result)
                     socket.disconnect();
