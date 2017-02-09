@@ -176,17 +176,19 @@ WRTechAPI.prototype.waitingAction = function () {
     let waiting = document.getElementById('wearetech_waiting');
     if(waiting){
         waiting.style.display = 'inline-block';
+        waiting.disabled = true;
         this.validateButton.style.display = 'none';
 
         document.getElementById('wearetech_client_email').disabled = true;
         document.getElementById('wearetech_phone_number').disabled = true;
+        document.getElementById('wearetech_country_code').disabled = true;
     }
 }
 
 WRTechAPI.prototype.handleResponse = function(result) {
+    // document.getElementById('wearetech_client_email').disabled = false;
+    // document.getElementById('wearetech_phone_number').disabled = false;
 
-    document.getElementById('wearetech_client_email').disabled = false;
-    document.getElementById('wearetech_phone_number').disabled = false;
     let message = document.getElementById('wearetech_message');
     let waiting = document.getElementById('wearetech_waiting');
     let error = document.getElementById('wearetech_error');
@@ -195,14 +197,24 @@ WRTechAPI.prototype.handleResponse = function(result) {
     console.log(result.message);
 
     if(result.error == true){
-        if(message){
-            message.innerHTML = result.message;
-            message.style.display = 'block';
-            message.style.backgroundColor = 'pink';
-        }
-        if(error){
-            error.innerHTML = "Close";
-            error.style.display = 'block';
+        if(result.code != CODE_WAITING){
+            if(message){
+                message.innerHTML = result.message;
+                message.style.display = 'block';
+                message.style.color = 'white';
+                message.style.backgroundColor = '#EF4836';
+            }
+            if(error){
+                error.innerHTML = "Close";
+                error.style.display = 'block';
+            }
+        }else{
+            if(message){
+                message.innerHTML = result.message;
+                message.style.display = 'block';
+                message.style.backgroundColor = '#3FC380';
+                message.style.color = 'white';
+            }
         }
     }else{
         if(message){
@@ -215,7 +227,7 @@ WRTechAPI.prototype.handleResponse = function(result) {
             success.style.display = 'block';
         }
     }
-    if(waiting){
+    if(waiting && result.code != CODE_WAITING){
         waiting.style.display = 'none';
     }
 
@@ -223,6 +235,7 @@ WRTechAPI.prototype.handleResponse = function(result) {
 
 }
 
+const CODE_WAITING = 105;
 const WAPI = new WRTechAPI();
 WAPI.setApiButtonEventListener();
 WAPI.loadScript('https://cdn.socket.io/socket.io-1.4.5.js', function(){

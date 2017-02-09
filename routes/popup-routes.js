@@ -221,7 +221,7 @@ router.post('/', (request, response) => {
 					</div>
                     
                     
-                    <div id="wearetech_message" style="display: none; padding: 3px; text-align: center;background-color: pink;color: #a94442">Give a valid phone number</div>
+                    <div id="wearetech_message" style="display: none; padding: 3px; text-align: center;background-color: #EF4836;color: #fff">Give a valid phone number</div>
 
 					<div style="background:#f5f5f5;padding:10px 30px 10px 30px;border-top:1px solid silver;border-top-left-radius:5px;border-top-right-radius:5px;">
 					<input type='hidden' value="${amount}" id="wearetech_transaction_amount"/>

@@ -19,7 +19,6 @@ let listSocket = new Set()
 let modemSocket = undefined
 let secretKey = "1234567890"
 let bodyParser = require('body-parser')
-
 //Connect to database
 // mongoose.connect('mongodb://ndenelson:Picsou_88modulus@jello.modulusmongo.net:27017/iG8apaze', (err) => {
 // // mongoose.connect('mongodb://localhost:27017/paiement_api_db', (err) =>{
@@ -114,39 +113,46 @@ io.on('connection', (socket) => {
                     if(!data.status){
                         switch(data.errorCode){
                             //impossible d'établir la connexion avec le port du modem
-                            case '100': 
+                            case 100: 
                                 console.log("100");
                                 result.message = "Flitpay api error";
                                 break;
                             //argument from web server is in wrong format
-                            case '101':
+                            case 101:
                                 console.log("101");
-                                result.message = "Wrong data";
+                                result.message = "Wrong data.";
                                 break;
                             //erreur survenue lors de l'initiation du paiement
-                            case '102':
+                            case 102:
                                 console.log("102");
-                                result.message = "Mobile network error";
+                                result.message = "Mobile network error. Close and try again.";
                                 break;
                             //delai dépassé lors de l'attente de la réponse du client
-                            case '103':
+                            case 103:
                                 console.log("103");
-                                result.message = "Session timeout";
+                                result.message = "Session timeout. Action not complete.";
                                 break;
                             //fond insuffisant pour initier la commande
-                            case '104':
+                            case 104:
                                 console.log("104");
-                                result.message = "Insufficient funds";
+                                result.message = "Insufficient funds.";
+                                break;
+                            //En attente de confirmation de l'opération sur le téléphone
+                            case 105:
+                                console.log('Attente de la réponse');
+                                result.message = "Complete paiement by dialing *126*1#";
                                 break;
                             default:
                                 console.log(data.errorCode);
-                                result.message = 'Unknown error';
+                                result.message = 'Unknown error.';
                         }
                     }else{
                         result.message = "Check the phone"
                     }
                     socket.emit('wearetechapi_server_response', result)
-                    socket.disconnect();
+                    if(data.errorCode != 105){
+                        socket.disconnect();
+                    }
                 }
             })
         }
