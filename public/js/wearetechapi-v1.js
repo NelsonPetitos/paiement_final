@@ -7,9 +7,18 @@ function WRTechAPI(){
     };
 }
 
+function getButton(anid){
+    for(let i=0; i < btnStack.length; i++){
+        if(btnStack[i].id == anid){
+            return btnStack[i].amount;
+        }
+    }
+    return null;
+}
+
 WRTechAPI.prototype.setApiKey = function(newKey){
     this.apiKey = newKey;
-    console.log("new api key = "+ newKey);
+    // console.log("new api key = "+ newKey);
 }
 
 WRTechAPI.prototype.setErrorButton = function(errorButton){
@@ -31,6 +40,14 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
     let btns = document.querySelectorAll('[data-wearetechbtn]');
     for(let i = 0; i < btns.length; i++){
         let btn = btns[i];
+        let randNum = (Math.random()*1e32).toString(36);
+        btn.dataset.wearetechkey = randNum;
+        btnStack[btnStack.length] = {
+            id: randNum,
+            amount: btn.dataset.amount
+        }
+        
+        // (Math.random()*1e32).toString(36)
         if(btn.dataset.wearetechbtn != 0){
             btn.addEventListener("click", function(){
                 var xhttp;
@@ -46,14 +63,23 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
                 }
 
                 let amount = this.dataset.amount;
+                // console.log(this.dataset.wearetechkey);
+
                 if(typeof amount !== 'undefined'){
-                    // let url = "http://192.168.15.192:5000/initpopup";
-                    let url = "https://paiementback.herokuapp.com/initpopup";
-                    xhttp.open("POST", url, true);
-                    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                    xhttp.send('amount='+amount);
+                    let testAmount = getButton(this.dataset.wearetechkey);
+                    if(testAmount != null && testAmount == amount){
+                        // let url = "http://192.168.15.192:5000/initpopup";
+                        let url = "https://paiementback.herokuapp.com/initpopup";
+                        xhttp.open("POST", url, true);
+                        xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                        xhttp.send('amount='+amount);
+                    }else{
+                        alert('Security issues');
+                        return;
+                    }
+                    
                 }else{
-                    console.log("Set data-amount attribute to your button");
+                    alert("Set data-amount attribute to your button");
                     return;
                 }
 
@@ -93,6 +119,7 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
             console.log("This button is not handle");
         }
     }
+    // console.log(btnStack);
 }
 
 //TThis method will set the callback of the
@@ -103,14 +130,17 @@ WRTechAPI.prototype.setApiCallback = function(resolve){
 }
 
 WRTechAPI.prototype.setValidateButtonEventListemer = function(){
-    this.validateButton.addEventListener("click", function () {
+    this.validateButton.addEventListener("click", function (even) {
         if(typeof io !== 'undefined'){
             let phone = document.getElementById('wearetech_phone_number').value;
 
             let amount = document.getElementById('wearetech_transaction_amount').value;
 
             if(typeof phone == 'undefined' || /^[1-9][0-9]{8,}/.test(phone) == false ){
-                document.getElementById('wearetech_message').style.display = 'block';
+                let msgSpan = document.getElementById('wearetech_message');
+                msgSpan.style.display = 'block';
+                msgSpan.style.backgroundColor = '#EF4836';
+                msgSpan.style.color = '#FFF';
             }else{
 
                 let socket = io.connect('https://paiementback.herokuapp.com');
@@ -237,7 +267,8 @@ WRTechAPI.prototype.handleResponse = function(result) {
 
 const CODE_WAITING = 105;
 const WAPI = new WRTechAPI();
+var btnStack = [];
 WAPI.setApiButtonEventListener();
 WAPI.loadScript('https://cdn.socket.io/socket.io-1.4.5.js', function(){
-    console.log("Le script a été chargé avec succès.");
+    // console.log("Le script a été chargé avec succès.");
 })

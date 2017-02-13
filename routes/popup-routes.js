@@ -245,8 +245,10 @@ router.post('/', (request, response) => {
 								</div>
 							</div>
 						</div>
+                        
 						<div style="margin-top:20px;">
-							<div style="background:white;border-radius:5px;height:84px;">
+							<span style="border-radius: 4px;display:inline-block; text-align:center; font-weight:bold; font-size:12px; background-color:#3ea8e5;color:#FFF;">Pour recevoir un reçu par mail entrez votre email</span>
+                            <div style="background:white;border-radius:5px;height:84px;">    
 								<div style="margin-bottom:0px;z-index:10;position:relative;">
 									<input id="wearetech_client_email" style="width:82%;border:none;height:38px;padding-left:35px;padding-right:5px;font-size:13px;border-top-left-radius:5px;border-top-right-radius:5px;border:1px solid rgba(0,0,0,0.15);margin-bottom:0px;background:transparent;" placeholder="Email" type="email">
 								</div>
@@ -275,7 +277,6 @@ router.post('/', (request, response) => {
 							</div>
 						</div>
 						<div style="margin-top:20px;">
-
 							<button style="" class="checkout paiement" id="wearetech_validate">
 								Pay ${amount} CFA
 							</button>
