@@ -13,12 +13,14 @@ let accountRoute = require('./routes/account-routes')
 let adressRoute = require('./routes/adress-routes');
 let modemRoute = require('./routes/modem-routes');
 let cashierRoute  = require('./routes/cashier-routes');
+let tokenRoute = require('./routes/token-routes');
 // let mongoose = require('mongoose')
     // var cleanup = new (require('./public/js/cleanup'))();
 let listSocket = new Set()
 let modemSocket = undefined
 let secretKey = "1234567890"
 let bodyParser = require('body-parser')
+const WAITING_CODE = 105;
 //Connect to database
 // mongoose.connect('mongodb://ndenelson:Picsou_88modulus@jello.modulusmongo.net:27017/iG8apaze', (err) => {
 // // mongoose.connect('mongodb://localhost:27017/paiement_api_db', (err) =>{
@@ -46,6 +48,9 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PATCH, DELETE');
+    req.listSocket = listSocket;
+    req.modemSocket = modemSocket;
+    req.secretKey = secretKey;
     next();
 });
 
@@ -60,6 +65,7 @@ app.use('/api/account', accountRoute)
 app.use('/api/adress', adressRoute)
 app.use('/api/cashier', cashierRoute)
 app.use('/api/transactions', modemRoute)
+app.use('/api', tokenRoute)
 app.use('*', homeRoute)
 
 
@@ -72,30 +78,65 @@ io.on('connection', (socket) => {
 
     //All to do if socket it's not the server
     socket.on('wearetechapi_client_emit', (data) => {
-        console.log('A browser just send me this data ')
-        console.log(data)
-
-        if (typeof modemSocket == 'undefined') {
-            //Le modem n'est pas connecte
-            console.log('Le modem n\'est pas connecte ');
+        // console.log(data)
+        //Verifier le numéro de téléphone et la clé publique
+        let randNum = (Math.random()*1e32).toString(36);
+        let phone = data.phone;
+        
+        if(!verifiedPhone(phone)){
             let result = {
-                result: null,
                 error: true,
-                message: "modem unavailable"
+                message: "Phone number incorrect.",
+                code: null
             }
-            socket.emit('wearetechapi_server_response', result)
-            socket.disconnect();
-        } else {
-            //Send my request to the Mobile server and wait for the validation
-            let message = {
-                phone: data.phone,
-                socket: socket.id,
-                apikey: data.apiKey,
-                secretkey: secretKey,
-                amount: data.amount,
+            // console.log('Invalid phone number.');
+            socket.emit('wearetechapi_server_response', result);
+        }else{
+            if (typeof modemSocket == 'undefined') {
+                //Le modem n'est pas connecte
+                // console.log('Le modem n\'est pas connecte ');
+                let result = {
+                    data: null,
+                    error: true,
+                    code: null,
+                    message: "Service down. Try again later."
+                }
+                socket.emit('wearetechapi_server_response', result)
+                socket.disconnect();
+            }else{
+                // console.log('Valid phone number');
+                let token = {
+                    amount: data.amount,
+                    apikey: data.apikey,
+                    token: randNum,
+                    phone:  data.phone,
+                    socketid: socket.id
+                }
+                saveToken(token, socket);
             }
-            modemSocket.emit('paiement', message);
+            
         }
+        // if (typeof modemSocket == 'undefined') {
+        //     //Le modem n'est pas connecte
+        //     console.log('Le modem n\'est pas connecte ');
+        //     let result = {
+        //         result: null,
+        //         error: true,
+        //         message: "modem unavailable"
+        //     }
+        //     socket.emit('wearetechapi_server_response', result)
+        //     socket.disconnect();
+        // } else {
+        //     //Send my request to the Mobile server and wait for the validation
+            // let message = {
+            //     phone: data.phone,
+            //     socket: socket.id,
+            //     apikey: data.apiKey,
+            //     secretkey: secretKey,
+            //     amount: data.amount,
+            // }
+            // modemSocket.emit('paiement', message);
+        // }
     });
 
     socket.on('paiement', (data) => {
@@ -108,33 +149,34 @@ io.on('connection', (socket) => {
                         // result: data.airtime,
                         error: !data.status,
                         message: "",
-                        code: data.errorCode
+                        code: data.errorCode,
+                        data: null
                     }
                     if(!data.status){
                         switch(data.errorCode){
                             //impossible d'établir la connexion avec le port du modem
                             case 100: 
-                                console.log("100");
+                                // console.log("100");
                                 result.message = "Flitpay api error";
                                 break;
                             //argument from web server is in wrong format
                             case 101:
-                                console.log("101");
+                                // console.log("101");
                                 result.message = "Wrong data.";
                                 break;
                             //erreur survenue lors de l'initiation du paiement
                             case 102:
-                                console.log("102");
+                                // console.log("102");
                                 result.message = "Mobile network error. Close and try again.";
                                 break;
                             //delai dépassé lors de l'attente de la réponse du client
                             case 103:
-                                console.log("103");
+                                // console.log("103");
                                 result.message = "Session timeout. Action not complete.";
                                 break;
                             //fond insuffisant pour initier la commande
                             case 104:
-                                console.log("104");
+                                // console.log("104");
                                 result.message = "Insufficient funds.";
                                 break;
                             //En attente de confirmation de l'opération sur le téléphone
@@ -186,10 +228,70 @@ io.on('connection', (socket) => {
     });
 })
 
+function verifiedPhone(phone){
+    return !(typeof phone == 'undefined' || phone == null || /^[1-9][0-9]{8,}/.test(phone) == false)
+}
+
+function saveToken(data, socket){
+    var options = {
+            hostname: server.address().address,
+            port: server.address().port,
+            path: '/api/tokens',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+    };
+    var req = http.request(options, function(res) {
+        res.setEncoding('utf8');
+        res.on('data', function (token) {
+            // console.log(chunk);
+            if(token.err){
+                //Il y'a erreur
+                console.log('Error creating the token');
+                let result = {
+                    data: null,
+                    error: true,
+                    code: null,
+                    message: "Service down. Try again in few minutes."
+                }
+                socket.emit('wearetechapi_server_response', result)
+                socket.disconnect();
+            }else{
+                //Send my request to the Mobile server and wait for the validation
+                console.log('Attente de la requete par le back de l\'application du client');
+                let data = (JSON.parse(token)).data;
+                let result = {
+                    data:{apikey: data.apikey, amount: data.amount, token: data.token},
+                    error: true,
+                    code: WAITING_CODE,
+                    message: "Token send back. Do not refresh the page."
+                }
+                socket.emit('wearetechapi_server_response', result)
+            }
+        });
+    });
+    req.on('error', function(e) {
+        console.log('problem with request: ' + e.message);
+        let result = {
+            data: null,
+            error: true,
+            code: null,
+            message: "Service down. Try again in few minutes."
+        }
+        socket.emit('wearetechapi_server_response', result)
+        socket.disconnect();
+    });
+    // write data to request body
+    req.write(JSON.stringify(data));
+    req.end();
+}
+
 // process.on('exit',  () => {
 //     console.log('On exit event occur...')
 // })
 
-server.listen(process.env.PORT || 5000, () => {
-    console.log(`Server running on port ${process.env.PORT || 5000}`)
+server.listen(process.env.PORT || 5000, (err) => {
+    console.log(`Server running on port ${process.env.PORT || server.address().port}`)
+    console.log(server.address().port);
 })

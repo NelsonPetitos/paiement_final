@@ -7,10 +7,10 @@ let mongoose = require('mongoose')
 let bcrypt = require('bcrypt')
 const saltRounds = 10;
 
-
 router.post('/', function(req, res) {
     let user = new User()
     user.apikey = crypto.randomBytes(20).toString('hex');
+    user.privatekey = crypto.randomBytes(20).toString('hex');
     user.email = req.body.email;
     user.password = req.body.password;
     console.log(`email : ${req.body.email}`);

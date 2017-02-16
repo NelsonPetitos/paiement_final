@@ -9,6 +9,7 @@ let mySchema = new Schema({
     email: {type: String, lowercase: true, required: true, unique: true},
     password: {type: String, required: true},
     apikey: {type: String, required: true, unique: true},
+    privatekey: {type: String, required: true, unique: true}
 });
 
 mySchema.plugin( uniqueValidator );

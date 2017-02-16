@@ -14,8 +14,12 @@ import { User } from '../../models/user';
                 <div class="panel-body">
                     <table class="table table-striped">
                         <tr>
-                            <td>Api key : </td>
+                            <td>Public key : </td>
                             <td>{{profile.apikey}}</td>
+                        </tr>
+                        <tr>
+                            <td>Private key : </td>
+                            <td>{{profile.privatekey}}</td>
                         </tr>
                         <tr>
                             <td>Email : </td>

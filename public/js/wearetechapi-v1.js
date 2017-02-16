@@ -2,8 +2,8 @@
 
 function WRTechAPI(){
     this.apiKey = "0000000000000000000000";
-    this.apiCallback = function(data){
-        console.log(data);
+    this.apiCallback = function(){
+        alert("Set the callback method");
     };
 }
 
@@ -14,6 +14,10 @@ function getButton(anid){
         }
     }
     return null;
+}
+
+function verifiedPhone(phone){
+    return !(typeof phone == 'undefined' || phone == null || /^[1-9][0-9]{8,}/.test(phone) == false)
 }
 
 WRTechAPI.prototype.setApiKey = function(newKey){
@@ -40,6 +44,8 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
     let btns = document.querySelectorAll('[data-wearetechbtn]');
     for(let i = 0; i < btns.length; i++){
         let btn = btns[i];
+
+        //Verifier que l'identification du boutton
         let randNum = (Math.random()*1e32).toString(36);
         btn.dataset.wearetechkey = randNum;
         btnStack[btnStack.length] = {
@@ -68,7 +74,7 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
                 if(typeof amount !== 'undefined'){
                     let testAmount = getButton(this.dataset.wearetechkey);
                     if(testAmount != null && testAmount == amount){
-                        // let url = "http://192.168.15.192:5000/initpopup";
+                        // let url = "http://localhost:5000/initpopup";
                         let url = "https://paiementback.herokuapp.com/initpopup";
                         xhttp.open("POST", url, true);
                         xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -94,19 +100,18 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
                         document.body.insertAdjacentHTML('beforeend', this.responseText);
 
                         let errorBtn = document.getElementById("wearetech_error");
-                        let successBtn = document.getElementById("wearetech_success");
-
                         if(errorBtn){
                             WAPI.setErrorButton(errorBtn);
                         }
 
+                        let successBtn = document.getElementById("wearetech_success");
                         if(successBtn){
                             WAPI.setSuccessButton(successBtn);
                         }
 
-                        if(successBtn){
-                            WAPI.setErrorButton(errorBtn);
-                        }
+                        // if(successBtn){
+                        //     WAPI.setErrorButton(errorBtn);
+                        // }
 
                         let valBtn = document.getElementById("wearetech_validate");
                         if(valBtn){
@@ -133,10 +138,10 @@ WRTechAPI.prototype.setValidateButtonEventListemer = function(){
     this.validateButton.addEventListener("click", function (even) {
         if(typeof io !== 'undefined'){
             let phone = document.getElementById('wearetech_phone_number').value;
-
+            let email = document.getElementById('wearetech_client_email').value;
             let amount = document.getElementById('wearetech_transaction_amount').value;
 
-            if(typeof phone == 'undefined' || /^[1-9][0-9]{8,}/.test(phone) == false ){
+            if(!verifiedPhone(phone)){
                 let msgSpan = document.getElementById('wearetech_message');
                 msgSpan.style.display = 'block';
                 msgSpan.style.backgroundColor = '#EF4836';
@@ -144,10 +149,10 @@ WRTechAPI.prototype.setValidateButtonEventListemer = function(){
             }else{
 
                 let socket = io.connect('https://paiementback.herokuapp.com');
-                // let socket = io.connect('http://192.168.15.192:5000');
+                // let socket = io.connect('http://localhost:5000');
 
                 if(typeof socket !== 'undefined'){
-                    let message = {phone: phone, code: 237, apiKey: WAPI.apiKey, amount: amount};
+                    let message = {phone: phone, code: 237, apikey: WAPI.apiKey, amount: amount, email: email};
                     socket.emit('wearetechapi_client_emit', message);
 
                     //dismiss modal view after the connect has been send
@@ -155,7 +160,7 @@ WRTechAPI.prototype.setValidateButtonEventListemer = function(){
 
                     socket.on('wearetechapi_server_response', function(result) {
                         WAPI.handleResponse(result);
-                        WAPI.apiCallback(result);
+                        // WAPI.apiCallback(result);
                     });
                 }else{
                     console.log("Socket connection with wearetech server failed.");
@@ -239,6 +244,10 @@ WRTechAPI.prototype.handleResponse = function(result) {
                 error.style.display = 'block';
             }
         }else{
+            if(result.data != null){
+                //Le token a été crée et envoie au client avec succès
+                WAPI.apiCallback(result.data);
+            }
             if(message){
                 message.innerHTML = result.message;
                 message.style.display = 'block';
