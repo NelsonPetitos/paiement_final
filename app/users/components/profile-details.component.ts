@@ -57,7 +57,7 @@ export class ProfileDetailsComponent implements OnInit{
 
     ngOnInit(){
         this.profile = JSON.parse(localStorage.getItem('profile'));
-        // console.log(this.profile);
+        console.log(this.profile);
         this.userId = this.profile.user_id.split("|")[1];
         
     }

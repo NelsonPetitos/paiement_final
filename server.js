@@ -233,6 +233,7 @@ function verifiedPhone(phone){
 }
 
 function saveToken(data, socket){
+    let rawData = '';
     var options = {
             hostname: server.address().address,
             port: server.address().port,
@@ -244,8 +245,13 @@ function saveToken(data, socket){
     };
     var req = http.request(options, function(res) {
         res.setEncoding('utf8');
-        res.on('data', function (token) {
-            // console.log(chunk);
+        
+        res.on('data', function (chunk) {
+            rawData += chunk;
+        });
+
+        res.on('end', function(){
+            let token = JSON.parse(rawData);
             if(token.err){
                 //Il y'a erreur
                 console.log('Error creating the token');
@@ -271,6 +277,7 @@ function saveToken(data, socket){
             }
         });
     });
+
     req.on('error', function(e) {
         console.log('problem with request: ' + e.message);
         let result = {
