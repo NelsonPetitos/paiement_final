@@ -253,6 +253,7 @@ function saveToken(data, socket){
 
         res.on('end', function(){
             let token = JSON.parse(rawData);
+            // console.log(token);
             if(token.err){
                 //Il y'a erreur
                 console.log('Error creating the token');
@@ -267,7 +268,7 @@ function saveToken(data, socket){
             }else{
                 //Send my request to the Mobile server and wait for the validation
                 console.log('Attente de la requete par le back de l\'application du client');
-                let data = (JSON.parse(token)).data;
+                let data = token.data;
                 let result = {
                     data:{apikey: data.apikey, amount: data.amount, token: data.token},
                     error: true,

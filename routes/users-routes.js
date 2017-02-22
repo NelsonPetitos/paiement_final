@@ -21,8 +21,8 @@ router.post('/', function(req, res) {
 
     if (user.email == '' || user.email == null || user.password == '' || user.password == null || user.apikey == '' || user.apikey == null) {
         res.send({ err: true, msg: "Make sure that all required fields are provided", data: null })
-    } else {
-        //Pour les base de données nosql mongoose
+    } else {    
+        // Pour les base de données nosql mongoose
         // user.save().then((data) => {
         //     console.log(`User create`);
         //     res.send({ err: false, msg: 'user create.', data: data });
@@ -30,7 +30,8 @@ router.post('/', function(req, res) {
         //     console.log(`Erreur de sauvegarde du user. ${err}`);
         //     res.send({ err: true, msg: 'Invalid unique rule. User exist already.', data: JSON.stringify(err) });
         // });
-        user.password = bcrypt.hashSync(user.password, saltRounds);
+
+        // user.password = bcrypt.hashSync(user.password, saltRounds);
 
         pg.connect(req.dburl, function(err, client, done) {
             if(err){
@@ -38,9 +39,8 @@ router.post('/', function(req, res) {
                 console.error(err); 
                 return res.send({ err: true, msg: 'Database connection error.', data: null });
             }
-            client.query('INSERT INTO users(email, password, apikey, privatekey) VALUES ($1, $2, $3, $4)', [user.email, user.password, user.apikey, user.privatekey], function(err, result) {
+            client.query('INSERT INTO users(email, password) VALUES ($1, $2)', [user.email, user.password], function(err, result) {
                 done();
-                
                 if(err){ 
                     console.error('Erreur requete'); 
                     console.log(err);

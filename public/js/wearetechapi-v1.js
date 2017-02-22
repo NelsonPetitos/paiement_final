@@ -3,7 +3,7 @@
 function WRTechAPI(){
     this.apiKey = "0000000000000000000000";
     this.apiCallback = function(){
-        alert("Set the callback method");
+        alert("Set the callback method to handle the result.");
     };
 }
 
@@ -70,11 +70,10 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
 
                 let amount = this.dataset.amount;
                 // console.log(this.dataset.wearetechkey);
-
                 if(typeof amount !== 'undefined'){
                     let testAmount = getButton(this.dataset.wearetechkey);
                     if(testAmount != null && testAmount == amount){
-                        // let url = "http://localhost:5000/initpopup";
+                        // let url = "http://192.168.15.192:5000/initpopup";
                         let url = "https://paiementback.herokuapp.com/initpopup";
                         xhttp.open("POST", url, true);
                         xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -149,7 +148,7 @@ WRTechAPI.prototype.setValidateButtonEventListemer = function(){
             }else{
 
                 let socket = io.connect('https://paiementback.herokuapp.com');
-                // let socket = io.connect('http://localhost:5000');
+                // let socket = io.connect('http://192.168.15.192:5000');
 
                 if(typeof socket !== 'undefined'){
                     let message = {phone: phone, code: 237, apikey: WAPI.apiKey, amount: amount, email: email};
@@ -229,7 +228,7 @@ WRTechAPI.prototype.handleResponse = function(result) {
     let error = document.getElementById('wearetech_error');
     let success = document.getElementById('wearetech_success');
 
-    console.log(result.message);
+    console.log("Je resoit la reponse");
 
     if(result.error == true){
         if(result.code != CODE_WAITING){
