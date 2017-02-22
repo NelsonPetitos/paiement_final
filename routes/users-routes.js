@@ -47,7 +47,7 @@ router.post('/', function(req, res) {
                     return res.send({ err: true, msg: 'Recording error.', data: null });
                 }
                 
-                console.log(result);
+                console.log(result.rows);
                 res.send({ err: false, msg: 'User create.', data: null });
             });
         });
