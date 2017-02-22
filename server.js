@@ -51,6 +51,7 @@ app.use((req, res, next) => {
     req.listSocket = listSocket;
     req.modemSocket = modemSocket;
     req.secretKey = secretKey;
+    req.dburl = process.env.DATABASE_URL || "postgres://ikntzckuoezhir:98e35a9b920941670cbcaab37b3a0e57caef933a74e880842d0ef5e754625f51@ec2-23-21-204-166.compute-1.amazonaws.com:5432/d26n73vncdubt1";
     next();
 });
 
@@ -300,5 +301,5 @@ function saveToken(data, socket){
 
 server.listen(process.env.PORT || 5000, (err) => {
     console.log(`Server running on port ${process.env.PORT || server.address().port}`)
-    console.log(server.address().port);
+    // console.log(server.address().port);
 })

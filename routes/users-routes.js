@@ -1,29 +1,55 @@
-let express = require('express')
-let router = express.Router()
-let User = require('../models/user')
-let crypto = require('crypto')
-let mongoose = require('mongoose')
+let express = require('express');
+let router = express.Router();
+let User = require('../models/user');
+let crypto = require('crypto');
+let mongoose = require('mongoose');
+let pg = require('pg');
 
 let bcrypt = require('bcrypt')
 const saltRounds = 10;
 
+
+//Les url sur une base de données mongoose
 router.post('/', function(req, res) {
     let user = new User()
     user.apikey = crypto.randomBytes(20).toString('hex');
     user.privatekey = crypto.randomBytes(20).toString('hex');
     user.email = req.body.email;
     user.password = req.body.password;
-    console.log(`email : ${req.body.email}`);
-    console.log(`password: ${req.body.password}`);
+
+    console.log(req.dburl);
+
     if (user.email == '' || user.email == null || user.password == '' || user.password == null || user.apikey == '' || user.apikey == null) {
         res.send({ err: true, msg: "Make sure that all required fields are provided", data: null })
     } else {
-        user.save().then((data) => {
-            console.log(`User create`);
-            res.send({ err: false, msg: 'user create.', data: data });
-        }, (err) => {
-            console.log(`Erreur de sauvegarde du user. ${err}`);
-            res.send({ err: true, msg: 'Invalid unique rule. User exist already.', data: JSON.stringify(err) });
+        //Pour les base de données nosql mongoose
+        // user.save().then((data) => {
+        //     console.log(`User create`);
+        //     res.send({ err: false, msg: 'user create.', data: data });
+        // }, (err) => {
+        //     console.log(`Erreur de sauvegarde du user. ${err}`);
+        //     res.send({ err: true, msg: 'Invalid unique rule. User exist already.', data: JSON.stringify(err) });
+        // });
+        user.password = bcrypt.hashSync(user.password, saltRounds);
+
+        pg.connect(req.dburl, function(err, client, done) {
+            if(err){
+                console.log('Erreur connection a la bd');
+                console.error(err); 
+                return res.send({ err: true, msg: 'Database connection error.', data: null });
+            }
+            client.query('INSERT INTO users(email, password, apikey, privatekey) VALUES ($1, $2, $3, $4)', [user.email, user.password, user.apikey, user.privatekey], function(err, result) {
+                done();
+                
+                if(err){ 
+                    console.error('Erreur requete'); 
+                    console.log(err);
+                    return res.send({ err: true, msg: 'Recording error.', data: null });
+                }
+                
+                console.log(result);
+                res.send({ err: false, msg: 'User create.', data: null });
+            });
         });
     }
 })
@@ -93,5 +119,7 @@ router.post('/change-pwd', function(req, res) {
     }
 })
 
-
 module.exports = router
+
+
+
