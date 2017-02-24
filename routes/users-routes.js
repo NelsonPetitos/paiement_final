@@ -19,7 +19,7 @@ router.post('/', function(req, res) {
 
     console.log(req.dburl);
 
-    if (user.email == '' || user.email == null || user.password == '' || user.password == null || user.apikey == '' || user.apikey == null) {
+    if (user.email == '' || user.email == null || user.password == '' || user.password == null ) {
         res.send({ err: true, msg: "Make sure that all required fields are provided", data: null })
     } else {    
         // Pour les base de données nosql mongoose
@@ -58,17 +58,37 @@ router.post('/login', function(req, res) {
     if (req.body.email == '' || req.body.email == null || req.body.password == '' || req.body.password == null) {
         res.send({ err: true, msg: "Make sure that there is no empty fields", data: null })
     } else {
-        User.findOne({ email: req.body.email }, (err, user) => {
-            if (err != null || user == null) {
-                console.log(`erreur de recherche d'un user: ${err}`);
-                res.send({ err: true, msg: 'User does not exist', data: err });
-            } else if (user.comparePassword(req.body.password)) {
-                console.log(`User find`);
-                res.send({ err: false, msg: 'user login', data: user });
-            } else {
-                console.log(`User - password couple does not fit`);
-                res.send({ err: true, msg: 'Wrong email or password', data: null });
+
+        // User.findOne({ email: req.body.email }, (err, user) => {
+        //     if (err != null || user == null) {
+        //         console.log(`erreur de recherche d'un user: ${err}`);
+        //         res.send({ err: true, msg: 'User does not exist', data: err });
+        //     } else if (user.comparePassword(req.body.password)) {
+        //         console.log(`User find`);
+        //         res.send({ err: false, msg: 'user login', data: user });
+        //     } else {
+        //         console.log(`User - password couple does not fit`);
+        //         res.send({ err: true, msg: 'Wrong email or password', data: null });
+        //     }
+        // });
+
+        pg.connect(req.dburl, function(err, client, done) {
+            if(err){
+                console.log('Erreur connection a la bd');
+                console.error(err); 
+                return res.send({ err: true, msg: 'Database connection error.', data: null });
             }
+            client.query('SELECT * FROM users WHERE email = $1 AND password = crypt($2, password) ', [req.body.email, req.body.password], function(err, result) {
+                done();
+                if(err){ 
+                    console.error('Erreur requete'); 
+                    console.log(err);
+                    return res.send({ err: true, msg: 'Recording error.', data: null });
+                }
+                
+                console.log(result.rows);
+                res.send({ err: false, msg: 'User create.', data: null });
+            });
         });
     }
 })
