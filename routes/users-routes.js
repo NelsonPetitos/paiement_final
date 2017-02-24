@@ -51,7 +51,12 @@ router.post('/', function(req, res) {
                 if(result.rows.length !== 1){
                     res.status(500).json({ err: false, msg: 'Multiple results not expected.', data: null });
                 }else{
-                    res.status(200).json({ err: false, msg: 'User create.', data: result.rows[0] });
+                    let data = {
+                        email: result.rows[0].email,
+                        privatekey : result.rows[0].privatekey,
+                        apikey: result.rows[0].apikey
+                    }
+                    res.status(200).json({ err: false, msg: 'User create.', data: data });
                 }
             });
         });
@@ -94,7 +99,12 @@ router.post('/login', function(req, res) {
                 if(result.rows.length !== 1){
                     res.status(403).json({ err: true, msg: 'Multiple results not expected.', data: null });
                 }else{
-                    res.status(200).json({ err: false, msg: 'User login.', data: result.rows[0] });
+                    let data = {
+                        email: result.rows[0].email,
+                        privatekey : result.rows[0].privatekey,
+                        apikey: result.rows[0].apikey
+                    }
+                    res.status(200).json({ err: false, msg: 'User login.', data: data });
                 }
                 
             });
