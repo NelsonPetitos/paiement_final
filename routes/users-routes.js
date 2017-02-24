@@ -48,7 +48,11 @@ router.post('/', function(req, res) {
                 }
                 
                 console.log(result.rows);
-                res.send({ err: false, msg: 'User create.', data: null });
+                if(result.rows.length !== 1){
+                    res.send({ err: true, msg: 'Multiple results not expected.', data: null });
+                }else{
+                    res.send({ err: false, msg: 'User create.', data: result.rows[0] });
+                }
             });
         });
     }
@@ -87,7 +91,12 @@ router.post('/login', function(req, res) {
                 }
                 
                 console.log(result.rows.length);
-                res.send({ err: false, msg: 'User login.', data: null });
+                if(result.rows.length !== 1){
+                    res.send({ err: true, msg: 'Multiple results not expected.', data: null });
+                }else{
+                    res.send({ err: false, msg: 'User login.', data: result.rows[0] });
+                }
+                
             });
         });
     }
