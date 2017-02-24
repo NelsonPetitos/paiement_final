@@ -39,7 +39,7 @@ router.post('/', function(req, res) {
                 console.error(err); 
                 res.status(500).json({ err: true, msg: 'Database connection error.', data: null });
             }
-            client.query('INSERT INTO users(email, password) VALUES ($1, $2)', [req.body.email, req.body.password], function(err, result) {
+            client.query('INSERT INTO users(email, password) VALUES ($1, $2) returning email, apikey, privatekey', [req.body.email, req.body.password], function(err, result) {
                 done();
                 if(err){ 
                     console.error('Erreur requete'); 
