@@ -97,7 +97,7 @@ router.post('/login', function(req, res) {
                 
                 console.log(result.rows.length);
                 if(result.rows.length !== 1){
-                    res.status(403).json({ err: true, msg: 'Multiple results not expected.', data: null });
+                    res.status(403).json({ err: true, msg: 'Wrong users infos.', data: result.rows });
                 }else{
                     let data = {
                         email: result.rows[0].email,
