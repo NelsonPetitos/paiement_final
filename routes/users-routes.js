@@ -11,16 +11,16 @@ const saltRounds = 10;
 
 //Les url sur une base de données mongoose
 router.post('/', function(req, res) {
-    let user = new User()
-    user.apikey = crypto.randomBytes(20).toString('hex');
-    user.privatekey = crypto.randomBytes(20).toString('hex');
-    user.email = req.body.email;
-    user.password = req.body.password;
+    // let user = new User()
+    // user.apikey = crypto.randomBytes(20).toString('hex');
+    // user.privatekey = crypto.randomBytes(20).toString('hex');
+    // user.email = req.body.email;
+    // user.password = req.body.password;
 
     console.log(req.dburl);
 
-    if (user.email == '' || user.email == null || user.password == '' || user.password == null ) {
-        res.send({ err: true, msg: "Make sure that all required fields are provided", data: null })
+    if (req.body.email == '' || req.body.email == null || req.body.password == '' || req.body.password == null ) {
+        res.status(400).json({ err: true, msg: "Send valid not empty parameters.", data: null })
     } else {    
         // Pour les base de données nosql mongoose
         // user.save().then((data) => {
@@ -37,21 +37,21 @@ router.post('/', function(req, res) {
             if(err){
                 console.log('Erreur connection a la bd');
                 console.error(err); 
-                return res.send({ err: true, msg: 'Database connection error.', data: null });
+                res.status(500).json({ err: true, msg: 'Database connection error.', data: null });
             }
-            client.query('INSERT INTO users(email, password) VALUES ($1, $2)', [user.email, user.password], function(err, result) {
+            client.query('INSERT INTO users(email, password) VALUES ($1, $2)', [req.body.email, req.body.password], function(err, result) {
                 done();
                 if(err){ 
                     console.error('Erreur requete'); 
                     console.log(err);
-                    return res.send({ err: true, msg: 'Recording error.', data: null });
+                    res.status(400).json({ err: true, msg: 'User exist already.', data: null });
                 }
                 
                 console.log(result.rows);
                 if(result.rows.length !== 1){
-                    res.send({ err: true, msg: 'Multiple results not expected.', data: null });
+                    res.status(500).json({ err: false, msg: 'Multiple results not expected.', data: null });
                 }else{
-                    res.send({ err: false, msg: 'User create.', data: result.rows[0] });
+                    res.status(200).json({ err: false, msg: 'User create.', data: result.rows[0] });
                 }
             });
         });
@@ -60,7 +60,7 @@ router.post('/', function(req, res) {
 
 router.post('/login', function(req, res) {
     if (req.body.email == '' || req.body.email == null || req.body.password == '' || req.body.password == null) {
-        res.send({ err: true, msg: "Make sure that there is no empty fields", data: null })
+        res.status(400).json({ err: true, msg: "Send valid not empty parameters.", data: null })
     } else {
 
         // User.findOne({ email: req.body.email }, (err, user) => {
@@ -80,21 +80,21 @@ router.post('/login', function(req, res) {
             if(err){
                 console.log('Erreur connection a la bd');
                 console.error(err); 
-                return res.send({ err: true, msg: 'Database connection error.', data: null });
+                res.status(500).json({ err: true, msg: 'Database connection error.', data: null });
             }
             client.query('SELECT * FROM users WHERE email = $1 AND password = crypt($2, password) ', [req.body.email, req.body.password], function(err, result) {
                 done();
                 if(err){ 
                     console.error('Erreur requete'); 
                     console.log(err);
-                    return res.send({ err: true, msg: 'Recording error.', data: null });
+                    res.status(500).json({ err: true, msg: 'Fetching error.', data: null });
                 }
                 
                 console.log(result.rows.length);
                 if(result.rows.length !== 1){
-                    res.send({ err: true, msg: 'Multiple results not expected.', data: null });
+                    res.status(403).json({ err: true, msg: 'Multiple results not expected.', data: null });
                 }else{
-                    res.send({ err: false, msg: 'User login.', data: result.rows[0] });
+                    res.status(200).json({ err: false, msg: 'User login.', data: result.rows[0] });
                 }
                 
             });
