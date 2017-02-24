@@ -57,7 +57,7 @@ router.post('/', function(req, res) {
                     }
                     res.status(200).json({ err: false, msg: 'User create.', data: data });
                 }else{
-                    res.status(500).json({ err: false, msg: 'Multiple results not expected.', data: null});
+                    res.status(500).json({ err: false, msg: 'Multiple results not expected.', data: result.rows});
                 }
 
             });
