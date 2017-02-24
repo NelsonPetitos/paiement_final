@@ -67,6 +67,7 @@ router.post('/', function(req, res) {
 
 router.post('/login', function(req, res) {
     if (req.body.email == '' || req.body.email == null || req.body.password == '' || req.body.password == null) {
+        console.log(req.body);
         res.status(400).json({ err: true, msg: "Send valid not empty parameters.", data: null })
     } else {
 
