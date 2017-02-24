@@ -44,18 +44,11 @@ router.post('/', function(req, res) {
                 if(err){ 
                     console.error('Erreur requete'); 
                     console.log(err);
-                    res.status(500).json({ err: true, msg: 'Database saving error.', data: null });
+                    res.status(400).json({ err: true, msg: 'User exist already.', data: null});
                 }
                 
                 console.log(result.rows);
-                if(result.rows.length > 1){
-                    res.status(500).json({ err: false, msg: 'Multiple results not expected.', data: null });
-                }
-
-                if(result.rows.length === 0){
-                    res.status(400).json({ err: false, msg: 'User exist already.', data: null });
-                }
-
+                
                 if(result.rows.length === 1){
                     let data = {
                         email: result.rows[0].email,
@@ -63,7 +56,10 @@ router.post('/', function(req, res) {
                         apikey: result.rows[0].apikey
                     }
                     res.status(200).json({ err: false, msg: 'User create.', data: data });
+                }else{
+                    res.status(500).json({ err: false, msg: 'Multiple results not expected.', data: null});
                 }
+
             });
         });
     }
@@ -98,7 +94,7 @@ router.post('/login', function(req, res) {
                 if(err){ 
                     console.error('Erreur requete'); 
                     console.log(err);
-                    res.status(500).json({ err: true, msg: 'Fetching error.', data: null });
+                    res.status(500).json({ err: true, msg: 'Fetching user error.', data: null });
                 }
                 
                 console.log(result.rows.length);
