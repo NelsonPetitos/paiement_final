@@ -20,7 +20,7 @@ router.post('/', function(req, res) {
     console.log(req.dburl);
 
     if (req.body.email == '' || req.body.email == null || req.body.password == '' || req.body.password == null ) {
-        res.status(400).json({ err: true, msg: "Send valid not empty parameters.", data: null })
+        res.status(200).json({ err: true, msg: "Send valid not empty parameters.", data: null })
     } else {    
         // Pour les base de données nosql mongoose
         // user.save().then((data) => {
@@ -37,14 +37,14 @@ router.post('/', function(req, res) {
             if(err){
                 console.log('Erreur connection a la bd');
                 console.error(err); 
-                res.status(500).json({ err: true, msg: 'Database connection error.', data: null });
+                res.status(200).json({ err: true, msg: 'Database connection error.', data: null });
             }
             client.query('INSERT INTO users(email, password) VALUES ($1, $2) returning email, apikey, privatekey', [req.body.email, req.body.password], function(err, result) {
                 done();
                 if(err){ 
                     console.error('Erreur requete'); 
                     console.log(err);
-                    res.status(400).json({ err: true, msg: 'User exist already.', data: null});
+                    res.status(200).json({ err: true, msg: 'User exist already.', data: null});
                 }
                 
                 console.log(result.rows);
@@ -57,7 +57,7 @@ router.post('/', function(req, res) {
                     }
                     res.status(200).json({ err: false, msg: 'User create.', data: data });
                 }else{
-                    res.status(500).json({ err: false, msg: 'Multiple results not expected.', data: result.rows});
+                    res.status(200).json({ err: false, msg: 'Multiple results not expected.', data: result.rows});
                 }
 
             });
@@ -68,7 +68,7 @@ router.post('/', function(req, res) {
 router.post('/login', function(req, res) {
     if (req.body.email == '' || req.body.email == null || req.body.password == '' || req.body.password == null) {
         console.log(req.body);
-        res.status(400).json({ err: true, msg: "Send valid not empty parameters.", data: null })
+        res.status(200).json({ err: true, msg: "Send valid not empty parameters.", data: null })
     } else {
 
         // User.findOne({ email: req.body.email }, (err, user) => {
@@ -88,24 +88,24 @@ router.post('/login', function(req, res) {
             if(err){
                 console.log('Erreur connection a la bd');
                 console.error(err); 
-                res.status(500).json({ err: true, msg: 'Database connection error.', data: null });
+                res.status(200).json({ err: true, msg: 'Database connection error.', data: null });
             }
             client.query('SELECT * FROM users WHERE email = $1 AND password = crypt($2, password) ', [req.body.email, req.body.password], function(err, result) {
                 done();
                 if(err){ 
                     console.error('Erreur requete'); 
                     console.log(err);
-                    res.status(500).json({ err: true, msg: 'Fetching user error.', data: null });
+                    res.status(200).json({ err: true, msg: 'Fetching user error.', data: null });
                 }
                 
                 console.log(result.rows.length);
                 
                 if(result.rows.length === 0){
-                    res.status(403).json({ err: true, msg: 'Wrong users infos.', data: null });
+                    res.status(200).json({ err: true, msg: 'Wrong users infos.', data: null });
                 }
                 
                 if(result.rows.length > 1){
-                    res.status(500).json({err: true, msg: 'Multiple request responses unexpecte', data: null})
+                    res.status(200).json({err: true, msg: 'Multiple request responses unexpecte', data: null})
                 }
 
                 if(result.rows.length === 1){
