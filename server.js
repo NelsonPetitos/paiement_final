@@ -61,8 +61,8 @@ app.use((req, res, next) => {
 // app.use('/lib', express.static(__dirname + '/node_modules'))
 // app.use('/app', express.static(__dirname + '/app'))
 app.use('/assets', express.static(__dirname + '/public'));
-app.use(express.static(__dirname + '/sites'));
-app.use(express.static(__dirname + '/sites/src'));
+app.use(express.static(__dirname + '/quickstart'));
+app.use(express.static(__dirname + '/quickstart/src'));
 // app.use('/lib', express.static(__dirname + '/node_modules'));
 // app.use('/app', express.static(__dirname + '/site/src'));
 
