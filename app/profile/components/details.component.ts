@@ -5,14 +5,14 @@ import { OnInit } from '@angular/core';
     selector: '',
     template:`
         <div class="page-header">
-            <h1>{{profile.email}} <small>details</small></h1>
+            <h1>{{profile.email}}</h1>
         </div>
         <div class="row well">
-            <ol>
+            <ul>
                 <li>Email : {{profile.email}}</li>
                 <li>Public key : {{profile.apikey}}</li>
                 <li>Private key : {{profile.privatekey}}</li>
-            </ol>
+            </ul>
         </div>
     `
 })

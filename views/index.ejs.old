@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <base href="/">
+        <title>WearetecAPi documentation</title>
+
+        <!-- META DATA -->
+        <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <meta name="description" content="Lunar Documentation" />
+        <meta name="author" content="Erilisdesign.com" />
+
+        <!-- CSS Global Compulsory -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+        
+        <link rel="stylesheet" href="assets/css/styles.css">
+        <script src="https://cdn.auth0.com/js/lock/10.6/lock.min.js"></script>
+
+        <link rel="stylesheet" href="assets/css/font-awesome.min.css" />
+
+
+        <!-- JS -->
+        <script src="assets/js/myscript.js"></script>
+
+            <!-- FONTS -->
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic%7CRoboto:400,300,100,500,700' rel='stylesheet' type='text/css'>
+
+        <!-- Polyfill(s) for older browsers -->
+        <script src="lib/core-js/client/shim.min.js"></script>
+
+        <script src="lib/zone.js/dist/zone.js"></script>
+        <script src="lib/reflect-metadata/Reflect.js"></script>
+        <script src="lib/systemjs/dist/system.src.js"></script>
+
+        <script src="assets/js/systemjs.config.js"></script>
+        <script>
+            System.import('app').catch(function(err){ console.error(err); });
+        </script>
+    </head>
+    <base href="/">
+    <body>
+
+        <my-app>
+            <span style="position: absolute;top: 50%;left: 50%;transform: translateX(-50%) translateY(-50%);">
+                <div class="wrap clearfix">
+                    <section class="clearfix">
+                    <ul class="rotate_wrapper">
+                        <li class="rotate_item"><span></span></li>
+                        <li class="rotate_item delay1"><span></span></li>
+                        <li class="rotate_item delay2"><span></span></li>
+                        <li class="rotate_item delay3"><span></span></li>
+                        <li class="rotate_item delay4"><span></span></li>
+                    </ul>
+                    </section>
+                </div>
+            </span> 
+        </my-app>
+
+        <!-- JS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    </body>
+</html>
