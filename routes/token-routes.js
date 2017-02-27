@@ -10,7 +10,7 @@ let testParamater = function (argument) {
             argument.apikey == null ||  argument.apikey == '' ||
             argument.amount == null || argument.amount == '' ||
             argument.phone == null ||  argument.phone == '' ||
-            phoneSchema.test(argument.phone) == false))
+            phoneSchema.test(argument.phone) == false)
 }
 
 router.post('/tokens', (request, response) => {

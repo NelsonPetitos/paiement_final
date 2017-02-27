@@ -109,7 +109,7 @@ io.on('connection', (socket) => {
                 let token = {
                     amount: data.amount,
                     apikey: data.apikey,
-                    token: randNum,
+                    // token: randNum,
                     phone:  data.phone,
                     socketid: socket.id
                 }
