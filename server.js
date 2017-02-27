@@ -81,7 +81,7 @@ io.on('connection', (socket) => {
     socket.on('wearetechapi_client_emit', (data) => {
         // console.log(data)
         //Verifier le numéro de téléphone et la clé publique
-        // let randNum = (Math.random()*1e32).toString(36);
+        let randNum = (Math.random()*1e32).toString(36);
         let phone = data.phone;
         
         if(!verifiedPhone(phone)){
@@ -109,7 +109,7 @@ io.on('connection', (socket) => {
                 let token = {
                     amount: data.amount,
                     apikey: data.apikey,
-                    // token: randNum,
+                    token: randNum,
                     phone:  data.phone,
                     socketid: socket.id
                 }
