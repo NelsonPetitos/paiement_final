@@ -58,8 +58,8 @@ app.use((req, res, next) => {
 
 //Middleware
 app.use('/assets', express.static(__dirname + '/public'))
-app.use(express.static(__dirname + '/site'));
-app.use(express.static(__dirname + '/site/src'));
+app.use(express.static(__dirname + '/sites'));
+app.use(express.static(__dirname + '/sites/src'));
 // app.use('/lib', express.static(__dirname + '/node_modules'));
 // app.use('/app', express.static(__dirname + '/site/src'));
 
