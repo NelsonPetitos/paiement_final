@@ -9,20 +9,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var my_auth_service_1 = require('./services/my-auth.service');
-var AppComponent = (function () {
-    function AppComponent(auth) {
-        this.auth = auth;
+var documentation_routing_module_1 = require('./documentation-routing.module');
+var pagenotfound_component_1 = require('./components/pagenotfound.component');
+var home_component_1 = require('./components/home.component');
+var DocumentationModule = (function () {
+    function DocumentationModule() {
     }
-    AppComponent = __decorate([
-        core_1.Component({
-            moduleId: module.id,
-            selector: 'my-app',
-            templateUrl: './app.component.html',
+    DocumentationModule = __decorate([
+        core_1.NgModule({
+            imports: [documentation_routing_module_1.DocumentationRoutingModule],
+            declarations: [home_component_1.HomeComponent, pagenotfound_component_1.PageNotFoundComponent]
         }), 
-        __metadata('design:paramtypes', [my_auth_service_1.AuthWRT])
-    ], AppComponent);
-    return AppComponent;
+        __metadata('design:paramtypes', [])
+    ], DocumentationModule);
+    return DocumentationModule;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.DocumentationModule = DocumentationModule;
+//# sourceMappingURL=documentation.module.js.map

@@ -9,34 +9,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
 var platform_browser_1 = require('@angular/platform-browser');
-var forms_1 = require('@angular/forms');
-// import { HttpModule }           from '@angular/http';
-// import { Ng2PageScrollModule }  from 'ng2-page-scroll/ng2-page-scroll';
 var angular2_jwt_1 = require('angular2-jwt');
-var app_component_1 = require('./app.component');
-// import { UsersService }         from './services/users.service';
+var documentation_module_1 = require('./documentation/documentation.module');
+var profile_module_1 = require('./profile/profile.module');
 var auth_service_1 = require('./services/auth.service');
-var app_routing_module_1 = require('./app-routing.module');
-var site_module_1 = require('./site/site.module');
-var users_module_1 = require('./users/users.module');
+var my_auth_service_1 = require('./services/my-auth.service');
+var app_component_1 = require('./app.component');
+var defaultRoutes = [];
 var AppModule = (function () {
     function AppModule() {
     }
     AppModule = __decorate([
         core_1.NgModule({
-            imports: [
-                platform_browser_1.BrowserModule,
-                forms_1.FormsModule,
-                app_routing_module_1.AppRoutingModule,
-                site_module_1.SiteModule,
-                users_module_1.UsersModule
-            ],
-            declarations: [
-                app_component_1.AppComponent
-            ],
-            providers: [auth_service_1.Auth, angular2_jwt_1.AUTH_PROVIDERS],
-            bootstrap: [app_component_1.AppComponent]
+            imports: [platform_browser_1.BrowserModule, router_1.RouterModule.forRoot(defaultRoutes),
+                profile_module_1.ProfileModule, documentation_module_1.DocumentationModule],
+            declarations: [app_component_1.AppComponent],
+            bootstrap: [app_component_1.AppComponent],
+            providers: [angular2_jwt_1.AUTH_PROVIDERS, auth_service_1.Auth, my_auth_service_1.AuthWRT]
         }), 
         __metadata('design:paramtypes', [])
     ], AppModule);

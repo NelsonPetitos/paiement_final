@@ -1,35 +1,24 @@
-import { NgModule }             from '@angular/core';
-import { BrowserModule }        from '@angular/platform-browser';
-import { Routes, RouterModule}  from '@angular/router';
-import { FormsModule }          from '@angular/forms';
-// import { HttpModule }           from '@angular/http';
-// import { Ng2PageScrollModule }  from 'ng2-page-scroll/ng2-page-scroll';
+import { NgModule }      from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { BrowserModule } from '@angular/platform-browser';
+
 import { AUTH_PROVIDERS } from 'angular2-jwt';
 
-import { AppComponent }         from './app.component';
+import { DocumentationModule } from './documentation/documentation.module';
+import { ProfileModule } from './profile/profile.module';
 
-// import { UsersService }         from './services/users.service';
 import { Auth } from './services/auth.service';
+import { AuthWRT } from './services/my-auth.service';
 
-import { AppRoutingModule } from './app-routing.module';
-import { SiteModule } from './site/site.module'
-import { UsersModule } from './users/users.module';
+import { AppComponent }  from './app.component';
 
+const defaultRoutes: Routes = [];
 
 @NgModule({
-    imports: [
-        BrowserModule,
-        FormsModule,
-        AppRoutingModule,
-        SiteModule,
-        UsersModule
-        // Ng2PageScrollModule.forRoot()
-    ],
-    declarations: [
-        AppComponent
-    ],
-    providers: [Auth, AUTH_PROVIDERS ],
-    bootstrap: [ AppComponent ]
+  imports: [  BrowserModule, RouterModule.forRoot(defaultRoutes), 
+              ProfileModule, DocumentationModule],
+  declarations: [ AppComponent ],
+  bootstrap:    [ AppComponent ],
+  providers: [ AUTH_PROVIDERS, Auth, AuthWRT ]
 })
-export class AppModule {
-}
+export class AppModule { }

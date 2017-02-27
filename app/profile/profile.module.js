@@ -9,20 +9,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var my_auth_service_1 = require('./services/my-auth.service');
-var AppComponent = (function () {
-    function AppComponent(auth) {
-        this.auth = auth;
+var common_1 = require('@angular/common');
+var profile_routing_module_1 = require('./profile-routing.module');
+var profile_component_1 = require('./components/profile.component');
+var details_component_1 = require('./components/details.component');
+var ProfileModule = (function () {
+    function ProfileModule() {
     }
-    AppComponent = __decorate([
-        core_1.Component({
-            moduleId: module.id,
-            selector: 'my-app',
-            templateUrl: './app.component.html',
+    ProfileModule = __decorate([
+        core_1.NgModule({
+            imports: [common_1.CommonModule, profile_routing_module_1.ProfileRoutingModule],
+            declarations: [profile_component_1.ProfileComponent, details_component_1.DetailsComponent],
+            providers: []
         }), 
-        __metadata('design:paramtypes', [my_auth_service_1.AuthWRT])
-    ], AppComponent);
-    return AppComponent;
+        __metadata('design:paramtypes', [])
+    ], ProfileModule);
+    return ProfileModule;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.ProfileModule = ProfileModule;
+//# sourceMappingURL=profile.module.js.map

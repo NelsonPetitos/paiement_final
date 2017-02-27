@@ -9,20 +9,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var my_auth_service_1 = require('./services/my-auth.service');
-var AppComponent = (function () {
-    function AppComponent(auth) {
-        this.auth = auth;
+var PageNotFoundComponent = (function () {
+    function PageNotFoundComponent() {
     }
-    AppComponent = __decorate([
+    PageNotFoundComponent = __decorate([
         core_1.Component({
-            moduleId: module.id,
-            selector: 'my-app',
-            templateUrl: './app.component.html',
+            template: "\n        <div class=\"container\">\n            <div class=\"row\">\n                <h1>404 Page not found</h1>\n            </div>\n        </div>\n    "
         }), 
-        __metadata('design:paramtypes', [my_auth_service_1.AuthWRT])
-    ], AppComponent);
-    return AppComponent;
+        __metadata('design:paramtypes', [])
+    ], PageNotFoundComponent);
+    return PageNotFoundComponent;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.PageNotFoundComponent = PageNotFoundComponent;
+//# sourceMappingURL=pagenotfound.component.js.map

@@ -1,18 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { Auth } from './services/auth.service';
+import { Component } from '@angular/core';
+
+import { AuthWRT } from './services/my-auth.service';
 
 @Component({
-    moduleId: module.id,
-    selector: 'my-app',
-    templateUrl: './app.template.html'
+  moduleId: module.id,
+  selector: 'my-app',
+  templateUrl: './app.component.html',
 })
+export class AppComponent  {
 
-export class AppComponent { 
-    private profile: any;
-
-    constructor(private auth: Auth){}
-
-    ngOnInit(){
-        this.profile = JSON.parse(localStorage.getItem('profile'))
-    }
+  constructor(private auth: AuthWRT){}
+  
 }
