@@ -1,56 +1,49 @@
-
 <!DOCTYPE html>
-<html lang="en-US">
-    <head>
-        
-        <title>WearetecAPi documentation</title>
+<html>
+  <head>
+    <title>Flipay documentation</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="assets/css/styles.css">
 
-        <!-- META DATA -->
-        <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-        <meta name="description" content="Lunar Documentation" />
-        <meta name="author" content="Erilisdesign.com" />
+    <!--Import bootstrap-->
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
 
-        <!-- CSS Global Compulsory -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
-        <link rel="stylesheet" href="assets/css/documentation.css" />
-        <script src="https://cdn.auth0.com/js/lock/10.6/lock.min.js"></script>
+    <!--Auth0 login box-->
+    <!--<script src="https://cdn.auth0.com/js/lock/10.8/lock.min.js"></script>-->
 
-        <link rel="stylesheet" href="assets/css/font-awesome.min.css" />
-        <!-- <link rel="stylesheet" href="css/magnific-popup.css"> -->
+    <!-- Polyfill(s) for older browsers -->
+    <script src="node_modules/core-js/client/shim.min.js"></script>
 
+    <script src="node_modules/zone.js/dist/zone.js"></script>
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
 
-        <!-- JS -->
-        <script type="text/javascript" src="assets/js/modernizr.js"></script>
+    <script src="assets/js/myscript.js"></script>    
+    <script src="systemjs.config.js"></script>
+    <script>
+      System.import('main.js').catch(function(err){ console.error(err); });
+    </script>
+  </head>
 
-            <!-- FONTS -->
-        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic%7CRoboto:400,300,100,500,700' rel='stylesheet' type='text/css'>
-
-        <!-- Polyfill(s) for older browsers -->
-        <script src="lib/core-js/client/shim.min.js"></script>
-
-        <script src="lib/zone.js/dist/zone.js"></script>
-        <script src="lib/reflect-metadata/Reflect.js"></script>
-        <script src="lib/systemjs/dist/system.src.js"></script>
-
-        <script src="assets/js/systemjs.config.js"></script>
-        <script>
-            System.import('app').catch(function(err){ console.error(err); });
-        </script>
-    </head>
+  <body>
     <base href="/">
-    <body>
-
-        <my-app>
-            <Loading...
-        </my-app>
-
-        <!-- JS -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-        <script type="text/javascript" src="assets/js/prism.js"></script>
-        <script type="text/javascript" src="assets/js/plugins.js"></script>
-        <script type="text/javascript" src="assets/js/documentation.js"></script>
-
-    </body>
+    <my-app>
+      <span style="position: absolute;top: 50%;left: 50%;transform: translateX(-50%) translateY(-50%);">
+          <div class="wrap clearfix">
+            <section class="clearfix">
+              <ul class="rotate_wrapper">
+                <li class="rotate_item"><span></span></li>
+                <li class="rotate_item delay1"><span></span></li>
+                <li class="rotate_item delay2"><span></span></li>
+                <li class="rotate_item delay3"><span></span></li>
+                <li class="rotate_item delay4"><span></span></li>
+              </ul>
+            </section>
+          </div>
+      </span> 
+    </my-app>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  </body>
 </html>

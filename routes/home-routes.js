@@ -1,7 +1,7 @@
 let express = require('express')
 let router = express.Router()
 
-router.get('/', (request, response, next) => {
+router.get('', (request, response, next) => {
     console.log('Connection a la home page')
     response.render('index', {title: "home page"})
 })

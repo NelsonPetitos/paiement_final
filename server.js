@@ -58,8 +58,11 @@ app.use((req, res, next) => {
 
 //Middleware
 app.use('/assets', express.static(__dirname + '/public'))
-app.use('/lib', express.static(__dirname + '/node_modules'))
-app.use('/app', express.static(__dirname + '/app'))
+app.use(express.static(__dirname + '/site'));
+app.use(express.static(__dirname + '/site/src'));
+// app.use('/lib', express.static(__dirname + '/node_modules'));
+// app.use('/app', express.static(__dirname + '/site/src'));
+
 app.use('/initpopup', popupRoute)
 app.use('/api/users', userRoute)
 app.use('/api/account', accountRoute)
@@ -68,6 +71,7 @@ app.use('/api/cashier', cashierRoute)
 app.use('/api/transactions', modemRoute)
 app.use('/api', tokenRoute)
 app.use('*', homeRoute)
+
 
 
 
