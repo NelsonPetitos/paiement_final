@@ -13,7 +13,7 @@ let testParamater = function (argument) {
             phoneSchema.test(argument.phone) == false)
 }
 
-router.post('/tokens', (request, response) => {
+router.post('/tokens', (req, res) => {
     let params = {
         phone: request.body.phone,
         amount: request.body.amount,
