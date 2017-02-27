@@ -21,7 +21,7 @@ router.post('/tokens', (req, res) => {
         socketid: req.body.socketid
     }
 
-    console.log(request.body);
+    console.log(req.body);
     let test = testParamater(params);
     if (test){
         // response.send({ err: true, msg: "Invalid phone number", data: null })
