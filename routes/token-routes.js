@@ -109,47 +109,54 @@ router.post('/init-paiement', (req, res) => {
                     }
 
                     if(result.rows.length === 1){
-                        client.query('SELECT * FROM tokens WHERE token = $1 AND amount = $2 AND apikey = $3', [params.token, params.amount, params.publickey], function(err, result) {
-                            done();
-                            if(err){ 
-                                console.error('Erreur requete'); 
-                                console.log(err);
-                                res.status(200).json({ err: true, msg: 'Fetching token error.', data: null });
+                        pg.connect(req.dburl, function(err, client, done){
+                            if(err){
+                                console.log('Erreur connection a la bd');
+                                console.error(err); 
+                                res.status(200).json({ err: true, msg: 'Database connection error.', data: null });
                             }
-                            // console.log(result.rows.length);
-                            if(result.rows.length === 0){
-                                res.status(200).json({ err: true, msg: 'Security problem. Wrong token or the amount may have been change.', data: null });
-                            }
-                            
-                            if(result.rows.length > 1){
-                                res.status(200).json({err: true, msg: 'Multiple request responses unexpecte.', data: null})
-                            }
-
-                            if(result.rows.length === 1){
-                                let token = result.rows[0];
-                                // console.log(`I can pass check if the socketid exist. size = ${req.listSocket.size}`);
-                                let socketiter = req.listSocket.values();
-                                let socket = socketiter.next().value;
-                                while(socket){
-                                    if(socket.id == token.socketid){
-                                        let message = {
-                                            phone: token.phone,
-                                            socket: token.socketid,
-                                            apikey: token.apikey,
-                                            secretkey: req.secretKey,
-                                            amount: token.amount,
-                                        }
-                                        req.modemSocket.emit('paiement', message);
-                                        res.send({ err: false, msg: 'Paiement sucessfully initiate.', data: null });
-                                        return;
-                                    }
-                                    socket = socketiter.next().value;
+                            client.query('SELECT * FROM tokens WHERE token = $1 AND amount = $2 AND apikey = $3', [params.token, params.amount, params.publickey], function(err, result) {
+                                done();
+                                if(err){ 
+                                    console.error('Erreur requete'); 
+                                    console.log(err);
+                                    res.status(200).json({ err: true, msg: 'Fetching token error.', data: null });
                                 }
-                                res.status(200).json({err: true, msg: 'The user refresh the page and close the socket.', data: null})
-                                // res.send({ err: true, msg: 'The user refresh the page and close the socket.', data: null });
-                            }
-                            
-                        });
+                                // console.log(result.rows.length);
+                                if(result.rows.length === 0){
+                                    res.status(200).json({ err: true, msg: 'Security problem. Wrong token or the amount may have been change.', data: null });
+                                }
+                                
+                                if(result.rows.length > 1){
+                                    res.status(200).json({err: true, msg: 'Multiple request responses unexpecte.', data: null})
+                                }
+
+                                if(result.rows.length === 1){
+                                    let token = result.rows[0];
+                                    // console.log(`I can pass check if the socketid exist. size = ${req.listSocket.size}`);
+                                    let socketiter = req.listSocket.values();
+                                    let socket = socketiter.next().value;
+                                    while(socket){
+                                        if(socket.id == token.socketid){
+                                            let message = {
+                                                phone: token.phone,
+                                                socket: token.socketid,
+                                                apikey: token.apikey,
+                                                secretkey: req.secretKey,
+                                                amount: token.amount,
+                                            }
+                                            req.modemSocket.emit('paiement', message);
+                                            res.send({ err: false, msg: 'Paiement sucessfully initiate.', data: null });
+                                            return;
+                                        }
+                                        socket = socketiter.next().value;
+                                    }
+                                    res.status(200).json({err: true, msg: 'The user refresh the page and close the socket.', data: null})
+                                    // res.send({ err: true, msg: 'The user refresh the page and close the socket.', data: null });
+                                }
+                                
+                            });
+                        })
                     }
                     
                 });
