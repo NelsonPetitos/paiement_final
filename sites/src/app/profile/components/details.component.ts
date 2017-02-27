@@ -8,16 +8,11 @@ import { OnInit } from '@angular/core';
             <h1>{{profile.email}} <small>details</small></h1>
         </div>
         <div class="row well">
-            <div class="col-xs-3">
-                <label>Email :</label><br/>
-                <label>Public key : </label><br/>
-                <label>Private key :</label><br/>
-            </div>
-            <div class="col-xs-9">
-                <label>{{profile.email}}</label><br/>
-                <label>{{profile.apikey}}</label><br/>
-                <label>{{profile.privatekey}}</label><br/>
-            </div>
+            <ol>
+                <li>Email : {{profile.email}}</li>
+                <li>Public key : {{profile.apikey}}</li>
+                <li>Private key : {{profile.privatekey}}</li>
+            </ol>
         </div>
     `
 })
