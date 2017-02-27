@@ -15,10 +15,10 @@ let testParamater = function (argument) {
 
 router.post('/tokens', (req, res) => {
     let params = {
-        phone: request.body.phone,
-        amount: request.body.amount,
-        apikey: request.body.apikey,
-        socketid: request.body.socketid
+        phone: req.body.phone,
+        amount: req.body.amount,
+        apikey: req.body.apikey,
+        socketid: req.body.socketid
     }
 
     // console.log(request.body);
