@@ -2,6 +2,7 @@ let express = require('express');
 let router = express.Router();
 let Token = require('../models/token');
 let User = require('../models/user')
+let pg = require('pg')
 
 let testParamater = function (argument) {
     // body... 
