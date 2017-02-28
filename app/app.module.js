@@ -9,13 +9,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var router_1 = require('@angular/router');
 var platform_browser_1 = require('@angular/platform-browser');
 var angular2_jwt_1 = require('angular2-jwt');
-var documentation_module_1 = require('./documentation/documentation.module');
-var profile_module_1 = require('./profile/profile.module');
-var auth_service_1 = require('./services/auth.service');
-var my_auth_service_1 = require('./services/my-auth.service');
 var app_component_1 = require('./app.component');
 var defaultRoutes = [];
 var AppModule = (function () {
@@ -23,11 +18,10 @@ var AppModule = (function () {
     }
     AppModule = __decorate([
         core_1.NgModule({
-            imports: [platform_browser_1.BrowserModule, router_1.RouterModule.forRoot(defaultRoutes),
-                profile_module_1.ProfileModule, documentation_module_1.DocumentationModule],
+            imports: [platform_browser_1.BrowserModule],
             declarations: [app_component_1.AppComponent],
             bootstrap: [app_component_1.AppComponent],
-            providers: [angular2_jwt_1.AUTH_PROVIDERS, auth_service_1.Auth, my_auth_service_1.AuthWRT]
+            providers: [angular2_jwt_1.AUTH_PROVIDERS]
         }), 
         __metadata('design:paramtypes', [])
     ], AppModule);

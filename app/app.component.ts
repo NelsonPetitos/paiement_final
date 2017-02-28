@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 
-import { AuthWRT } from './services/my-auth.service';
 
 @Component({
   moduleId: module.id,
@@ -9,6 +8,6 @@ import { AuthWRT } from './services/my-auth.service';
 })
 export class AppComponent  {
 
-  constructor(private auth: AuthWRT){}
+  constructor(){}
   
 }
