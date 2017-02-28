@@ -11,8 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var platform_browser_1 = require('@angular/platform-browser');
-// import { AUTH_PROVIDERS } from 'angular2-jwt';
-// import { DocumentationModule } from './documentation/documentation.module';
 // import { ProfileModule } from './profile/profile.module';
 // import { Auth } from './services/auth.service';
 // import { AuthWRT } from './services/my-auth.service';
