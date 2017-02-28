@@ -10,6 +10,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
+// import { HomeComponent } from './components/home.component';
+// import { PageNotFoundComponent } from './components/pagenotfound.component';
 var docRoutes = [];
 var DocumentationRoutingModule = (function () {
     function DocumentationRoutingModule() {
