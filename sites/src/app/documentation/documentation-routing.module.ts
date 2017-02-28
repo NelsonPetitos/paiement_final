@@ -5,19 +5,19 @@ import { HomeComponent } from './components/home.component';
 import { PageNotFoundComponent } from './components/pagenotfound.component';
 
 const docRoutes: Routes = [
-    {
-        path: 'home',
-        component: HomeComponent
-    },
-    { 
-        path: '',
-        redirectTo: '/home',
-        pathMatch: 'full'
-  },
-  {
-      path: '**',
-      component: PageNotFoundComponent
-  }
+    // {
+    //     path: 'home',
+    //     component: HomeComponent
+    // },
+    // { 
+    //     path: '',
+    //     redirectTo: '/home',
+    //     pathMatch: 'full'
+    // },
+    // {
+    //     path: '**',
+    //     component: PageNotFoundComponent
+    // }
 ]
 
 @NgModule({

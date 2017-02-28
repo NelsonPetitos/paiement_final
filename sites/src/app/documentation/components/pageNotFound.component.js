@@ -14,7 +14,7 @@ var PageNotFoundComponent = (function () {
     }
     PageNotFoundComponent = __decorate([
         core_1.Component({
-            template: ""
+            template: "\n        <div class=\"container\">\n            <div class=\"row\">\n                <h1>404 Page not found</h1>\n            </div>\n        </div>\n    "
         }), 
         __metadata('design:paramtypes', [])
     ], PageNotFoundComponent);

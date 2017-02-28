@@ -10,23 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
-var home_component_1 = require('./components/home.component');
-var pagenotfound_component_1 = require('./components/pagenotfound.component');
-var docRoutes = [
-    {
-        path: 'home',
-        component: home_component_1.HomeComponent
-    },
-    {
-        path: '',
-        redirectTo: '/home',
-        pathMatch: 'full'
-    },
-    {
-        path: '**',
-        component: pagenotfound_component_1.PageNotFoundComponent
-    }
-];
+var docRoutes = [];
 var DocumentationRoutingModule = (function () {
     function DocumentationRoutingModule() {
     }
