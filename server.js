@@ -57,12 +57,9 @@ app.use((req, res, next) => {
 
 
 //Middleware
-// app.use('/assets', express.static(__dirname + '/public'))
-// app.use('/lib', express.static(__dirname + '/node_modules'))
-// app.use('/app', express.static(__dirname + '/app'))
-app.use('/assets', express.static(__dirname + '/public'));
-app.use(express.static(__dirname + '/quickstart'));
-app.use(express.static(__dirname + '/quickstart/src'));
+app.use('/assets', express.static(__dirname + '/public'))
+app.use(express.static(__dirname + '/sites'));
+app.use(express.static(__dirname + '/sites/src'));
 // app.use('/lib', express.static(__dirname + '/node_modules'));
 // app.use('/app', express.static(__dirname + '/site/src'));
 
@@ -124,6 +121,7 @@ io.on('connection', (socket) => {
             }
             
         }
+        
         // if (typeof modemSocket == 'undefined') {
         //     //Le modem n'est pas connecte
         //     console.log('Le modem n\'est pas connecte ');

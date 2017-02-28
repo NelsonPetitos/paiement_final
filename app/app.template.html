@@ -1,0 +1,41 @@
+<div class="main-container">
+    <header class="site-header">
+        <nav class="site-nav navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <!-- Header Logo -->
+                    <a class="header-logo load-content" href="#home">
+                        <img src="assets/img/logo.png" style="height:100%; width:75px;" alt="" class="logo-light">
+                    </a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse navbar-right">
+                    <ul class="nav navbar-nav">
+                        <li><a routerLink="home">Documentation</a></li>
+                        <!--<li><a pageScroll>About</a></li>
+                        <li><a pageScroll>Get started</a></li>
+                        <li><a pageScroll>Docs</a></li>-->
+
+                        <li *ngIf="!auth.authenticated()"><a (click)="auth.login()">Member space</a></li>
+                        <li *ngIf="auth.authenticated()" class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">Account <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a routerLink="profile">Profile</a></li>
+                                <li><a (click)="auth.logout()">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <router-outlet></router-outlet>
+
+</div>

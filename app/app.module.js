@@ -10,18 +10,33 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var platform_browser_1 = require('@angular/platform-browser');
+var forms_1 = require('@angular/forms');
+// import { HttpModule }           from '@angular/http';
+// import { Ng2PageScrollModule }  from 'ng2-page-scroll/ng2-page-scroll';
 var angular2_jwt_1 = require('angular2-jwt');
 var app_component_1 = require('./app.component');
-var defaultRoutes = [];
+// import { UsersService }         from './services/users.service';
+var auth_service_1 = require('./services/auth.service');
+var app_routing_module_1 = require('./app-routing.module');
+var site_module_1 = require('./site/site.module');
+var users_module_1 = require('./users/users.module');
 var AppModule = (function () {
     function AppModule() {
     }
     AppModule = __decorate([
         core_1.NgModule({
-            imports: [platform_browser_1.BrowserModule],
-            declarations: [app_component_1.AppComponent],
-            bootstrap: [app_component_1.AppComponent],
-            providers: [angular2_jwt_1.AUTH_PROVIDERS]
+            imports: [
+                platform_browser_1.BrowserModule,
+                forms_1.FormsModule,
+                app_routing_module_1.AppRoutingModule,
+                site_module_1.SiteModule,
+                users_module_1.UsersModule
+            ],
+            declarations: [
+                app_component_1.AppComponent
+            ],
+            providers: [auth_service_1.Auth, angular2_jwt_1.AUTH_PROVIDERS],
+            bootstrap: [app_component_1.AppComponent]
         }), 
         __metadata('design:paramtypes', [])
     ], AppModule);
