@@ -1,10 +1,10 @@
 import { NgModule }      from '@angular/core';
-// import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 
 // import { AUTH_PROVIDERS } from 'angular2-jwt';
 
-// import { DocumentationModule } from './documentation/documentation.module';
+import { DocumentationModule } from './documentation/documentation.module';
 // import { ProfileModule } from './profile/profile.module';
 
 // import { Auth } from './services/auth.service';
@@ -12,10 +12,10 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent }  from './app.component';
 
-// const defaultRoutes: Routes = [];
+const defaultRoutes: Routes = [];
 
 @NgModule({
-  imports: [ BrowserModule ],
+  imports: [ BrowserModule , DocumentationModule, RouterModule.forRoot(defaultRoutes)],
   declarations: [ AppComponent ],
   bootstrap:    [ AppComponent ],
   providers: []

@@ -9,21 +9,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-// import { Routes, RouterModule } from '@angular/router';
+var router_1 = require('@angular/router');
 var platform_browser_1 = require('@angular/platform-browser');
 // import { AUTH_PROVIDERS } from 'angular2-jwt';
-// import { DocumentationModule } from './documentation/documentation.module';
+var documentation_module_1 = require('./documentation/documentation.module');
 // import { ProfileModule } from './profile/profile.module';
 // import { Auth } from './services/auth.service';
 // import { AuthWRT } from './services/my-auth.service';
 var app_component_1 = require('./app.component');
-// const defaultRoutes: Routes = [];
+var defaultRoutes = [];
 var AppModule = (function () {
     function AppModule() {
     }
     AppModule = __decorate([
         core_1.NgModule({
-            imports: [platform_browser_1.BrowserModule],
+            imports: [platform_browser_1.BrowserModule, documentation_module_1.DocumentationModule, router_1.RouterModule.forRoot(defaultRoutes)],
             declarations: [app_component_1.AppComponent],
             bootstrap: [app_component_1.AppComponent],
             providers: []

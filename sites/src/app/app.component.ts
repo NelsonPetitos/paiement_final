@@ -3,9 +3,9 @@ import { Component } from '@angular/core';
 import { AuthWRT } from './services/my-auth.service';
 
 @Component({
-  // moduleId: module.id,
+  moduleId: module.id,
   selector: 'my-app',
-  template: '<h1>Hello world</h1>',
+  templateUrl: 'app.component.html'
 })
 export class AppComponent  {
 
