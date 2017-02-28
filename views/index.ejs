@@ -1,1 +1,46 @@
-<h1>Hello world</h1>
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Doesn't load from node_modules! -->
+    <!-- Set the base href -->
+    <base href="/">
+    <title>Flippay documentation</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Polyfills -->
+    <script src="https://unpkg.com/core-js/client/shim.min.js"></script>
+    <!-- Update these package versions as needed -->
+    <script src="https://unpkg.com/zone.js@0.7.4?main=browser"></script>
+    <script src="https://unpkg.com/systemjs@0.19.39/dist/system.src.js"></script>
+    <!--Mon script-->
+    <script src="myscript.js"></script>
+    <!-- This SystemJS configuration loads umd packages from the web -->
+    <script src="systemjs.config.server.js"></script>
+    <script>
+      System.import('main.js')
+            .catch(function(err){ console.error(err); });
+    </script>
+  </head>
+
+  <body>
+    <my-app>
+      <span style="position: absolute;top: 50%;left: 50%;transform: translateX(-50%) translateY(-50%);">
+          <div class="wrap clearfix">
+            <section class="clearfix">
+              <ul class="rotate_wrapper">
+                <li class="rotate_item"><span></span></li>
+                <li class="rotate_item delay1"><span></span></li>
+                <li class="rotate_item delay2"><span></span></li>
+                <li class="rotate_item delay3"><span></span></li>
+                <li class="rotate_item delay4"><span></span></li>
+              </ul>
+            </section>
+          </div>
+      </span> 
+    </my-app>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  </body>
+</html>

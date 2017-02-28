@@ -74,7 +74,6 @@ app.use('*', homeRoute)
 
 
 
-
 //need to be improve to handle client paiement request
 io.on('connection', (socket) => {
     console.log(`New socket connection with identifier: ${socket.id}`)

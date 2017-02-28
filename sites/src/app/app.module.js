@@ -9,25 +9,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var router_1 = require('@angular/router');
+// import { Routes, RouterModule } from '@angular/router';
 var platform_browser_1 = require('@angular/platform-browser');
-var angular2_jwt_1 = require('angular2-jwt');
-var documentation_module_1 = require('./documentation/documentation.module');
-var profile_module_1 = require('./profile/profile.module');
-var auth_service_1 = require('./services/auth.service');
-var my_auth_service_1 = require('./services/my-auth.service');
+// import { AUTH_PROVIDERS } from 'angular2-jwt';
+// import { DocumentationModule } from './documentation/documentation.module';
+// import { ProfileModule } from './profile/profile.module';
+// import { Auth } from './services/auth.service';
+// import { AuthWRT } from './services/my-auth.service';
 var app_component_1 = require('./app.component');
-var defaultRoutes = [];
+// const defaultRoutes: Routes = [];
 var AppModule = (function () {
     function AppModule() {
     }
     AppModule = __decorate([
         core_1.NgModule({
-            imports: [platform_browser_1.BrowserModule, router_1.RouterModule.forRoot(defaultRoutes),
-                profile_module_1.ProfileModule, documentation_module_1.DocumentationModule],
+            imports: [platform_browser_1.BrowserModule],
             declarations: [app_component_1.AppComponent],
             bootstrap: [app_component_1.AppComponent],
-            providers: [angular2_jwt_1.AUTH_PROVIDERS, auth_service_1.Auth, my_auth_service_1.AuthWRT]
+            providers: []
         }), 
         __metadata('design:paramtypes', [])
     ], AppModule);
