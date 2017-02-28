@@ -12,19 +12,35 @@ var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var platform_browser_1 = require('@angular/platform-browser');
 // import { AUTH_PROVIDERS } from 'angular2-jwt';
-var documentation_module_1 = require('./documentation/documentation.module');
+// import { DocumentationModule } from './documentation/documentation.module';
 // import { ProfileModule } from './profile/profile.module';
 // import { Auth } from './services/auth.service';
 // import { AuthWRT } from './services/my-auth.service';
 var app_component_1 = require('./app.component');
-var defaultRoutes = [];
+var home_component_1 = require('./components/home.component');
+var pagenotfound_component_1 = require('./components/pagenotfound.component');
+var defaultRoutes = [
+    {
+        path: 'home',
+        component: home_component_1.HomeComponent
+    },
+    {
+        path: '',
+        redirectTo: '/home',
+        pathMatch: 'full'
+    },
+    {
+        path: '**',
+        component: pagenotfound_component_1.PageNotFoundComponent
+    }
+];
 var AppModule = (function () {
     function AppModule() {
     }
     AppModule = __decorate([
         core_1.NgModule({
-            imports: [platform_browser_1.BrowserModule, documentation_module_1.DocumentationModule, router_1.RouterModule.forRoot(defaultRoutes)],
-            declarations: [app_component_1.AppComponent],
+            imports: [platform_browser_1.BrowserModule, router_1.RouterModule.forRoot(defaultRoutes)],
+            declarations: [app_component_1.AppComponent, home_component_1.HomeComponent, pagenotfound_component_1.PageNotFoundComponent],
             bootstrap: [app_component_1.AppComponent],
             providers: []
         }), 

@@ -9,17 +9,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var HomeComponent = (function () {
-    function HomeComponent() {
+var PageNotFoundComponent = (function () {
+    function PageNotFoundComponent() {
     }
-    HomeComponent = __decorate([
+    PageNotFoundComponent = __decorate([
         core_1.Component({
-            moduleId: module.id,
-            templateUrl: 'home.component.html'
+            template: "\n        <div class=\"container\">\n            <div class=\"row\">\n                <h1>404 Page not found</h1>\n            </div>\n        </div>\n    "
         }), 
         __metadata('design:paramtypes', [])
-    ], HomeComponent);
-    return HomeComponent;
+    ], PageNotFoundComponent);
+    return PageNotFoundComponent;
 }());
-exports.HomeComponent = HomeComponent;
-//# sourceMappingURL=home.component.js.map
+exports.PageNotFoundComponent = PageNotFoundComponent;
+//# sourceMappingURL=pagenotfound.component.js.map
