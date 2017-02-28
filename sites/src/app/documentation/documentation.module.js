@@ -10,14 +10,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var documentation_routing_module_1 = require('./documentation-routing.module');
-// import { PageNotFoundComponent } from './components/pagenotfound.component';
-// import { HomeComponent } from './components/home.component';
+var pagenotfound_component_1 = require('./components/pagenotfound.component');
+var home_component_1 = require('./components/home.component');
 var DocumentationModule = (function () {
     function DocumentationModule() {
     }
     DocumentationModule = __decorate([
         core_1.NgModule({
             imports: [documentation_routing_module_1.DocumentationRoutingModule],
+            declarations: [home_component_1.HomeComponent, pagenotfound_component_1.PageNotFoundComponent]
         }), 
         __metadata('design:paramtypes', [])
     ], DocumentationModule);
