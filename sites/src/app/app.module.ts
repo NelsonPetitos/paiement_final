@@ -15,7 +15,7 @@ import { AppComponent }  from './app.component';
 const defaultRoutes: Routes = [];
 
 @NgModule({
-  imports: [ BrowserModule, RouterModule.forRoot(defaultRoutes)],
+  imports: [ BrowserModule, DocumentationModule, RouterModule.forRoot(defaultRoutes)],
   declarations: [ AppComponent ],
   bootstrap:    [ AppComponent ],
   providers: []

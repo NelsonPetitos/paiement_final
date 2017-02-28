@@ -11,6 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var platform_browser_1 = require('@angular/platform-browser');
+// import { AUTH_PROVIDERS } from 'angular2-jwt';
+var documentation_module_1 = require('./documentation/documentation.module');
 // import { ProfileModule } from './profile/profile.module';
 // import { Auth } from './services/auth.service';
 // import { AuthWRT } from './services/my-auth.service';
@@ -21,7 +23,7 @@ var AppModule = (function () {
     }
     AppModule = __decorate([
         core_1.NgModule({
-            imports: [platform_browser_1.BrowserModule, router_1.RouterModule.forRoot(defaultRoutes)],
+            imports: [platform_browser_1.BrowserModule, documentation_module_1.DocumentationModule, router_1.RouterModule.forRoot(defaultRoutes)],
             declarations: [app_component_1.AppComponent],
             bootstrap: [app_component_1.AppComponent],
             providers: []

@@ -16,7 +16,7 @@ var HomeComponent = (function () {
         core_1.Component({
             // moduleId: module.id,
             // templateUrl: 'home.component.html'
-            template: "<h1>La documentation</h1>"
+            template: "\n        <div class=\"container\">\n            <div class=\"row\">\n                <h1>La documentation</h1>\n            </div>\n        </div>\n        "
         }), 
         __metadata('design:paramtypes', [])
     ], HomeComponent);
