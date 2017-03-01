@@ -14,9 +14,8 @@ var HomeComponent = (function () {
     }
     HomeComponent = __decorate([
         core_1.Component({
-            // moduleId: module.id,
-            // templateUrl: 'home.component.html'
-            template: "<h1>Hello home</h1>"
+            moduleId: module.id,
+            templateUrl: '../templates/home.component.html'
         }), 
         __metadata('design:paramtypes', [])
     ], HomeComponent);

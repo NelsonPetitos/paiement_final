@@ -11,11 +11,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AuthWRT } from './services/my-auth.service';
 
 import { AppComponent }  from './app.component';
-import { HomeComponent } from './components/home.component';
-import { PageNotFoundComponent } from './components/pagenotfound.component';
+import { HomeComponent } from './components/home/home.component';
+import { PageNotFoundComponent } from './components/error/pagenotfound.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
+// Define the routes
 const defaultRoutes: Routes = [
-  {
+    {
         path: 'home',
         component: HomeComponent
     },
@@ -30,10 +32,11 @@ const defaultRoutes: Routes = [
     }
 ];
 
+// Module and component related to this application
 @NgModule({
   imports: [ BrowserModule, RouterModule.forRoot(defaultRoutes)],
-  declarations: [ AppComponent, HomeComponent, PageNotFoundComponent ],
+  declarations: [ AppComponent, HomeComponent, PageNotFoundComponent, ProfileComponent ],
   bootstrap:    [ AppComponent ],
   providers: [ AuthWRT ]
 })
-export class AppModule { }
+export class AppModule {}

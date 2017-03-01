@@ -17,8 +17,10 @@ var platform_browser_1 = require('@angular/platform-browser');
 // import { Auth } from './services/auth.service';
 var my_auth_service_1 = require('./services/my-auth.service');
 var app_component_1 = require('./app.component');
-var home_component_1 = require('./components/home.component');
-var pagenotfound_component_1 = require('./components/pagenotfound.component');
+var home_component_1 = require('./components/home/home.component');
+var pagenotfound_component_1 = require('./components/error/pagenotfound.component');
+var profile_component_1 = require('./components/profile/profile.component');
+// Define the routes
 var defaultRoutes = [
     {
         path: 'home',
@@ -34,13 +36,14 @@ var defaultRoutes = [
         component: pagenotfound_component_1.PageNotFoundComponent
     }
 ];
+// Module and component related to this application
 var AppModule = (function () {
     function AppModule() {
     }
     AppModule = __decorate([
         core_1.NgModule({
             imports: [platform_browser_1.BrowserModule, router_1.RouterModule.forRoot(defaultRoutes)],
-            declarations: [app_component_1.AppComponent, home_component_1.HomeComponent, pagenotfound_component_1.PageNotFoundComponent],
+            declarations: [app_component_1.AppComponent, home_component_1.HomeComponent, pagenotfound_component_1.PageNotFoundComponent, profile_component_1.ProfileComponent],
             bootstrap: [app_component_1.AppComponent],
             providers: [my_auth_service_1.AuthWRT]
         }), 
