@@ -14,9 +14,20 @@ import { AppComponent }  from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { PageNotFoundComponent } from './components/error/pagenotfound.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { DetailsComponent } from './components/profile/details/details.component';
 
 // Define the routes
 const defaultRoutes: Routes = [
+    {
+        path: 'profile',
+        component: ProfileComponent,
+        children: [
+            {
+                path: '',
+                component : DetailsComponent,
+            }
+        ]
+    },
     {
         path: 'home',
         component: HomeComponent
@@ -35,7 +46,7 @@ const defaultRoutes: Routes = [
 // Module and component related to this application
 @NgModule({
   imports: [ BrowserModule, RouterModule.forRoot(defaultRoutes)],
-  declarations: [ AppComponent, HomeComponent, PageNotFoundComponent, ProfileComponent ],
+  declarations: [ AppComponent, HomeComponent, PageNotFoundComponent, ProfileComponent, DetailsComponent ],
   bootstrap:    [ AppComponent ],
   providers: [ AuthWRT ]
 })

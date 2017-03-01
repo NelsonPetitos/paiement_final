@@ -20,8 +20,19 @@ var app_component_1 = require('./app.component');
 var home_component_1 = require('./components/home/home.component');
 var pagenotfound_component_1 = require('./components/error/pagenotfound.component');
 var profile_component_1 = require('./components/profile/profile.component');
+var details_component_1 = require('./components/profile/details/details.component');
 // Define the routes
 var defaultRoutes = [
+    {
+        path: 'profile',
+        component: profile_component_1.ProfileComponent,
+        children: [
+            {
+                path: '',
+                component: details_component_1.DetailsComponent,
+            }
+        ]
+    },
     {
         path: 'home',
         component: home_component_1.HomeComponent
@@ -43,7 +54,7 @@ var AppModule = (function () {
     AppModule = __decorate([
         core_1.NgModule({
             imports: [platform_browser_1.BrowserModule, router_1.RouterModule.forRoot(defaultRoutes)],
-            declarations: [app_component_1.AppComponent, home_component_1.HomeComponent, pagenotfound_component_1.PageNotFoundComponent, profile_component_1.ProfileComponent],
+            declarations: [app_component_1.AppComponent, home_component_1.HomeComponent, pagenotfound_component_1.PageNotFoundComponent, profile_component_1.ProfileComponent, details_component_1.DetailsComponent],
             bootstrap: [app_component_1.AppComponent],
             providers: [my_auth_service_1.AuthWRT]
         }), 
