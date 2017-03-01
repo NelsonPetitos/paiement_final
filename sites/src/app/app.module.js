@@ -16,6 +16,7 @@ var platform_browser_1 = require('@angular/platform-browser');
 // import { ProfileModule } from './profile/profile.module';
 // import { Auth } from './services/auth.service';
 var my_auth_service_1 = require('./services/my-auth.service');
+var guard_service_1 = require('./services/guard.service');
 var app_component_1 = require('./app.component');
 var home_component_1 = require('./components/home/home.component');
 var pagenotfound_component_1 = require('./components/error/pagenotfound.component');
@@ -26,6 +27,7 @@ var defaultRoutes = [
     {
         path: 'profile',
         component: profile_component_1.ProfileComponent,
+        canActivate: [guard_service_1.AuthGuard],
         children: [
             {
                 path: '',
@@ -56,7 +58,7 @@ var AppModule = (function () {
             imports: [platform_browser_1.BrowserModule, router_1.RouterModule.forRoot(defaultRoutes)],
             declarations: [app_component_1.AppComponent, home_component_1.HomeComponent, pagenotfound_component_1.PageNotFoundComponent, profile_component_1.ProfileComponent, details_component_1.DetailsComponent],
             bootstrap: [app_component_1.AppComponent],
-            providers: [my_auth_service_1.AuthWRT]
+            providers: [my_auth_service_1.AuthWRT, guard_service_1.AuthGuard]
         }), 
         __metadata('design:paramtypes', [])
     ], AppModule);

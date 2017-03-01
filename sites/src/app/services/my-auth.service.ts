@@ -7,14 +7,16 @@ declare var WRTLock: any;
 export class AuthWRT {
     
     private lock: any; 
+    private redirectUrl = '/home';
 
     constructor(private router: Router){
         // this.lock.initConfig();
         this.lock = new WRTLock();
-        this.lock.loginCallback = function(profile: any){
+        this.lock.loginCallback = (profile: any) =>{
             if(profile){
                 localStorage.setItem('profile', JSON.stringify(profile));
-                // console.log('profile define in the');
+                this.router.navigate([this.redirectUrl]);
+                console.log(`profile define in the and redirenction done to ${this.redirectUrl}`);
             }
         }
     }
@@ -30,6 +32,11 @@ export class AuthWRT {
 
     public logout() {
         localStorage.removeItem('profile');
-        this.router.navigate(['/home']);
+        this.router.navigate([this.redirectUrl]);
+    }
+
+    public setRedirectUrl(url: string){
+        console.log(`redirect url set to ${url}`);
+        this.redirectUrl = url;
     }
 }

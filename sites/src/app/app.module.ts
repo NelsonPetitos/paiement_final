@@ -9,6 +9,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 // import { Auth } from './services/auth.service';
 import { AuthWRT } from './services/my-auth.service';
+import { AuthGuard } from './services/guard.service';
 
 import { AppComponent }  from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -21,6 +22,7 @@ const defaultRoutes: Routes = [
     {
         path: 'profile',
         component: ProfileComponent,
+        canActivate: [AuthGuard],
         children: [
             {
                 path: '',
@@ -48,6 +50,6 @@ const defaultRoutes: Routes = [
   imports: [ BrowserModule, RouterModule.forRoot(defaultRoutes)],
   declarations: [ AppComponent, HomeComponent, PageNotFoundComponent, ProfileComponent, DetailsComponent ],
   bootstrap:    [ AppComponent ],
-  providers: [ AuthWRT ]
+  providers: [ AuthWRT, AuthGuard ]
 })
 export class AppModule {}

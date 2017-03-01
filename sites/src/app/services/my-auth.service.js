@@ -12,12 +12,16 @@ var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var AuthWRT = (function () {
     function AuthWRT(router) {
+        var _this = this;
         this.router = router;
+        this.redirectUrl = '/home';
         // this.lock.initConfig();
         this.lock = new WRTLock();
         this.lock.loginCallback = function (profile) {
             if (profile) {
                 localStorage.setItem('profile', JSON.stringify(profile));
+                _this.router.navigate([_this.redirectUrl]);
+                console.log("profile define in the and redirenction done to " + _this.redirectUrl);
             }
         };
     }
@@ -30,7 +34,11 @@ var AuthWRT = (function () {
     };
     AuthWRT.prototype.logout = function () {
         localStorage.removeItem('profile');
-        this.router.navigate(['/home']);
+        this.router.navigate([this.redirectUrl]);
+    };
+    AuthWRT.prototype.setRedirectUrl = function (url) {
+        console.log("redirect url set to " + url);
+        this.redirectUrl = url;
     };
     AuthWRT = __decorate([
         core_1.Injectable(), 
