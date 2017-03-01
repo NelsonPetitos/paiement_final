@@ -47,7 +47,7 @@ router.post('/', function(req, res) {
                     res.status(200).json({ err: true, msg: 'User exist already.', data: null});
                 }
                 
-                console.log(result.rows);
+                // console.log(result.rows);
                 
                 if(result.rows.length === 1){
                     let data = {
@@ -67,7 +67,7 @@ router.post('/', function(req, res) {
 
 router.post('/login', function(req, res) {
     if (req.body.email == '' || req.body.email == null || req.body.password == '' || req.body.password == null) {
-        console.log(req.body);
+        // console.log(req.body);
         res.status(200).json({ err: true, msg: "Send valid not empty parameters.", data: null })
     } else {
 
@@ -98,7 +98,7 @@ router.post('/login', function(req, res) {
                     res.status(200).json({ err: true, msg: 'Fetching user error.', data: null });
                 }
                 
-                console.log(result.rows.length);
+                // console.log(result.rows.length);
                 
                 if(result.rows.length === 0){
                     res.status(200).json({ err: true, msg: 'Wrong users infos.', data: null });
