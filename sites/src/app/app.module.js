@@ -15,7 +15,7 @@ var platform_browser_1 = require('@angular/platform-browser');
 // import { DocumentationModule } from './documentation/documentation.module';
 // import { ProfileModule } from './profile/profile.module';
 // import { Auth } from './services/auth.service';
-// import { AuthWRT } from './services/my-auth.service';
+var my_auth_service_1 = require('./services/my-auth.service');
 var app_component_1 = require('./app.component');
 var home_component_1 = require('./components/home.component');
 var pagenotfound_component_1 = require('./components/pagenotfound.component');
@@ -42,7 +42,7 @@ var AppModule = (function () {
             imports: [platform_browser_1.BrowserModule, router_1.RouterModule.forRoot(defaultRoutes)],
             declarations: [app_component_1.AppComponent, home_component_1.HomeComponent, pagenotfound_component_1.PageNotFoundComponent],
             bootstrap: [app_component_1.AppComponent],
-            providers: []
+            providers: [my_auth_service_1.AuthWRT]
         }), 
         __metadata('design:paramtypes', [])
     ], AppModule);

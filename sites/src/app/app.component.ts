@@ -8,7 +8,5 @@ import { AuthWRT } from './services/my-auth.service';
   templateUrl: 'app.component.html'
 })
 export class AppComponent  {
-
-  // constructor(private auth: AuthWRT){}
-  
+  constructor(private auth: AuthWRT){}
 }

@@ -8,7 +8,7 @@ import { BrowserModule } from '@angular/platform-browser';
 // import { ProfileModule } from './profile/profile.module';
 
 // import { Auth } from './services/auth.service';
-// import { AuthWRT } from './services/my-auth.service';
+import { AuthWRT } from './services/my-auth.service';
 
 import { AppComponent }  from './app.component';
 import { HomeComponent } from './components/home.component';
@@ -34,6 +34,6 @@ const defaultRoutes: Routes = [
   imports: [ BrowserModule, RouterModule.forRoot(defaultRoutes)],
   declarations: [ AppComponent, HomeComponent, PageNotFoundComponent ],
   bootstrap:    [ AppComponent ],
-  providers: []
+  providers: [ AuthWRT ]
 })
 export class AppModule { }
