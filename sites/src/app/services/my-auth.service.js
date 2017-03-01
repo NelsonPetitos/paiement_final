@@ -15,12 +15,14 @@ var AuthWRT = (function () {
         var _this = this;
         this.router = router;
         this.redirectUrl = '/home';
+        this.logoutRediredtURl = '/home';
         // this.lock.initConfig();
         this.lock = new WRTLock();
         this.lock.loginCallback = function (profile) {
             if (profile) {
                 localStorage.setItem('profile', JSON.stringify(profile));
                 _this.router.navigate([_this.redirectUrl]);
+                _this.redirectUrl = _this.logoutRediredtURl;
                 console.log("profile define in the and redirenction done to " + _this.redirectUrl);
             }
         };
@@ -34,7 +36,7 @@ var AuthWRT = (function () {
     };
     AuthWRT.prototype.logout = function () {
         localStorage.removeItem('profile');
-        this.router.navigate([this.redirectUrl]);
+        this.router.navigate([this.logoutRediredtURl]);
     };
     AuthWRT.prototype.setRedirectUrl = function (url) {
         console.log("redirect url set to " + url);

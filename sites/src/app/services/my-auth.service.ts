@@ -8,6 +8,8 @@ export class AuthWRT {
     
     private lock: any; 
     private redirectUrl = '/home';
+    private logoutRediredtURl = '/home';
+    
 
     constructor(private router: Router){
         // this.lock.initConfig();
@@ -16,6 +18,7 @@ export class AuthWRT {
             if(profile){
                 localStorage.setItem('profile', JSON.stringify(profile));
                 this.router.navigate([this.redirectUrl]);
+                this.redirectUrl = this.logoutRediredtURl;
                 console.log(`profile define in the and redirenction done to ${this.redirectUrl}`);
             }
         }
@@ -32,7 +35,7 @@ export class AuthWRT {
 
     public logout() {
         localStorage.removeItem('profile');
-        this.router.navigate([this.redirectUrl]);
+        this.router.navigate([this.logoutRediredtURl]);
     }
 
     public setRedirectUrl(url: string){
