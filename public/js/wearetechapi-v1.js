@@ -275,8 +275,11 @@ WRTechAPI.prototype.handleResponse = function(result) {
 
 const CODE_WAITING = 105;
 const WAPI = new WRTechAPI();
+const SOCKET_IO_URL = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js";
+// const SOCKETIOURL = "https://cdn.socket.io/socket.io-1.4.5.js";
 var btnStack = [];
 WAPI.setApiButtonEventListener();
-WAPI.loadScript('https://cdn.socket.io/socket.io-1.4.5.js', function(){
+
+WAPI.loadScript(SOCKET_IO_URL, function(){
     // console.log("Le script a été chargé avec succès.");
 })
