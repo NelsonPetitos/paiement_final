@@ -115,6 +115,9 @@ router.post('/init-paiement', (req, res) => {
                                 console.error(err); 
                                 return res.status(200).json({ err: true, msg: 'Database connection error.', data: null });
                             }
+                            console.log(params.token);
+                            console.log(params.amount);
+                            console.log(params.apikey);
                             client.query('SELECT * FROM tokens WHERE token = $1 AND amount = $2 AND apikey = $3', [params.token, params.amount, params.publickey], function(err, result) {
                                 done();
                                 if(err){ 
