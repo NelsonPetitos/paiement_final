@@ -280,6 +280,7 @@ const SOCKET_IO_URL = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/so
 var btnStack = [];
 WAPI.setApiButtonEventListener();
 
-WAPI.loadScript(SOCKET_IO_URL, function(){
-    // console.log("Le script a été chargé avec succès.");
+WAPI.loadScript(SOCKET_IO_URL, function(result){
+    console.log("Le script a été chargé avec succès.");
+    console.log(result);
 })
