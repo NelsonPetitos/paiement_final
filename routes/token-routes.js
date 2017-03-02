@@ -78,34 +78,34 @@ router.post('/init-paiement', (req, res) => {
         privatekey: req.body.privatekey
     }
     if(req.modemSocket == null){
-        res.status(200).json({ err: true, msg: "Service temporary down. Contact API managers", data: null })
+        return res.status(200).json({ err: true, msg: "Service temporary down. Contact API managers", data: null })
         // res.send({ err: true, msg: 'Service temporary down. Contact API managers.', data: null });
     }else{
         //
         if(params.amount == null || params.token == null || params.privatekey == null || params.publickey  == null || params.phone == null){
-            res.send({ err: true, msg: 'Missing request body parameters.', data: null });
+            return res.send({ err: true, msg: 'Missing request body parameters.', data: null });
         }else{
             // res.send({ err: true, msg: 'Controle ok', data: null });
             pg.connect(req.dburl, function(err, client, done) {
                 if(err){
                     console.log('Erreur connection a la bd');
                     console.error(err); 
-                    res.status(200).json({ err: true, msg: 'Database connection error.', data: null });
+                    return res.status(200).json({ err: true, msg: 'Database connection error.', data: null });
                 }
                 client.query('SELECT * FROM users WHERE privatekey = $1 AND apikey = $2 ', [params.privatekey, params.publickey], function(err, result) {
                     done();
                     if(err){ 
                         console.error('Erreur requete'); 
                         console.log(err);
-                        res.status(200).json({ err: true, msg: 'Fetching user error.', data: null });
+                        return res.status(200).json({ err: true, msg: 'Fetching user error.', data: null });
                     }
                     // console.log(result.rows.length);
                     if(result.rows.length === 0){
-                        res.status(200).json({ err: true, msg: 'Wrong private or public key.', data: null });
+                        return res.status(200).json({ err: true, msg: 'Wrong private or public key.', data: null });
                     }
                     
                     if(result.rows.length > 1){
-                        res.status(200).json({err: true, msg: 'Multiple request responses unexpecte.', data: null})
+                        return res.status(200).json({err: true, msg: 'Multiple request responses unexpecte.', data: null})
                     }
 
                     if(result.rows.length === 1){
@@ -113,22 +113,22 @@ router.post('/init-paiement', (req, res) => {
                             if(err){
                                 console.log('Erreur connection a la bd');
                                 console.error(err); 
-                                res.status(200).json({ err: true, msg: 'Database connection error.', data: null });
+                                return res.status(200).json({ err: true, msg: 'Database connection error.', data: null });
                             }
                             client.query('SELECT * FROM tokens WHERE token = $1 AND amount = $2 AND apikey = $3', [params.token, params.amount, params.publickey], function(err, result) {
                                 done();
                                 if(err){ 
                                     console.error('Erreur requete'); 
                                     console.log(err);
-                                    res.status(200).json({ err: true, msg: 'Fetching token error.', data: null });
+                                    return res.status(200).json({ err: true, msg: 'Fetching token error.', data: null });
                                 }
                                 // console.log(result.rows.length);
                                 if(result.rows.length === 0){
-                                    res.status(200).json({ err: true, msg: 'Security problem. Wrong token or the amount may have been change.', data: null });
+                                    return res.status(200).json({ err: true, msg: 'Security problem. Wrong token or the amount may have been change.', data: null });
                                 }
                                 
                                 if(result.rows.length > 1){
-                                    res.status(200).json({err: true, msg: 'Multiple request responses unexpecte.', data: null})
+                                    return res.status(200).json({err: true, msg: 'Multiple request responses unexpecte.', data: null})
                                 }
 
                                 if(result.rows.length === 1){
@@ -146,12 +146,11 @@ router.post('/init-paiement', (req, res) => {
                                                 amount: token.amount,
                                             }
                                             req.modemSocket.emit('paiement', message);
-                                            res.send({ err: false, msg: 'Paiement sucessfully initiate.', data: null });
-                                            return;
+                                            return res.send({ err: false, msg: 'Paiement sucessfully initiate.', data: null });
                                         }
                                         socket = socketiter.next().value;
                                     }
-                                    res.status(200).json({err: true, msg: 'The user refresh the page and close the socket.', data: null})
+                                    return res.status(200).json({err: true, msg: 'The user refresh the page and close the socket.', data: null})
                                     // res.send({ err: true, msg: 'The user refresh the page and close the socket.', data: null });
                                 }
                                 
