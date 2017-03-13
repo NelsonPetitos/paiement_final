@@ -117,7 +117,7 @@ router.post('/init-paiement', (req, res) => {
                             }
                             console.log(params.token);
                             console.log(params.amount);
-                            console.log(params.apikey);
+                            console.log(params.publickey);
                             client.query('SELECT * FROM tokens WHERE token = $1 AND amount = $2 AND apikey = $3', [params.token, params.amount, params.publickey], function(err, result) {
                                 done();
                                 if(err){ 

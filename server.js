@@ -14,6 +14,8 @@ let adressRoute = require('./routes/adress-routes');
 let modemRoute = require('./routes/modem-routes');
 let cashierRoute  = require('./routes/cashier-routes');
 let tokenRoute = require('./routes/token-routes');
+let phoneOperatorRoute = require('./routes/phone_operator-routes');
+let countryRoute = require('./routes/country-routes');
 // let mongoose = require('mongoose')
     // var cleanup = new (require('./public/js/cleanup'))();
 let listSocket = new Set()
@@ -70,6 +72,8 @@ app.use('/api/adress', adressRoute)
 app.use('/api/cashier', cashierRoute)
 app.use('/api/transactions', modemRoute)
 app.use('/api', tokenRoute)
+app.use('/api', phoneOperatorRoute)
+app.use('/api', countryRoute)
 app.use('*', homeRoute)
 
 

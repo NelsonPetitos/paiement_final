@@ -22,6 +22,7 @@ var home_component_1 = require('./components/home/home.component');
 var pagenotfound_component_1 = require('./components/error/pagenotfound.component');
 var profile_component_1 = require('./components/profile/profile.component');
 var details_component_1 = require('./components/profile/details/details.component');
+var apireference_component_1 = require('./components/apireference/apireference.component');
 // Define the routes
 var defaultRoutes = [
     {
@@ -34,6 +35,10 @@ var defaultRoutes = [
                 component: details_component_1.DetailsComponent,
             }
         ]
+    },
+    {
+        path: 'api-reference',
+        component: apireference_component_1.ApiReferenceComponent
     },
     {
         path: 'home',
@@ -56,7 +61,9 @@ var AppModule = (function () {
     AppModule = __decorate([
         core_1.NgModule({
             imports: [platform_browser_1.BrowserModule, router_1.RouterModule.forRoot(defaultRoutes)],
-            declarations: [app_component_1.AppComponent, home_component_1.HomeComponent, pagenotfound_component_1.PageNotFoundComponent, profile_component_1.ProfileComponent, details_component_1.DetailsComponent],
+            declarations: [app_component_1.AppComponent, home_component_1.HomeComponent, pagenotfound_component_1.PageNotFoundComponent, profile_component_1.ProfileComponent, details_component_1.DetailsComponent,
+                apireference_component_1.ApiReferenceComponent
+            ],
             bootstrap: [app_component_1.AppComponent],
             providers: [my_auth_service_1.AuthWRT, guard_service_1.AuthGuard]
         }), 

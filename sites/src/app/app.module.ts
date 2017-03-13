@@ -16,6 +16,7 @@ import { HomeComponent } from './components/home/home.component';
 import { PageNotFoundComponent } from './components/error/pagenotfound.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { DetailsComponent } from './components/profile/details/details.component';
+import { ApiReferenceComponent } from './components/apireference/apireference.component';
 
 // Define the routes
 const defaultRoutes: Routes = [
@@ -29,6 +30,10 @@ const defaultRoutes: Routes = [
                 component : DetailsComponent,
             }
         ]
+    },
+    {
+        path: 'api-reference',
+        component: ApiReferenceComponent
     },
     {
         path: 'home',
@@ -48,7 +53,9 @@ const defaultRoutes: Routes = [
 // Module and component related to this application
 @NgModule({
   imports: [ BrowserModule, RouterModule.forRoot(defaultRoutes)],
-  declarations: [ AppComponent, HomeComponent, PageNotFoundComponent, ProfileComponent, DetailsComponent ],
+  declarations: [ AppComponent, HomeComponent, PageNotFoundComponent, ProfileComponent, DetailsComponent,
+                  ApiReferenceComponent
+                ],
   bootstrap:    [ AppComponent ],
   providers: [ AuthWRT, AuthGuard ]
 })

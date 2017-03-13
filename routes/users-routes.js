@@ -122,51 +122,51 @@ router.post('/login', function(req, res) {
     }
 })
 
-router.get('/:userid', function(req, res) {
-    if (req.params.userid == '' || req.params.userid == null) {
-        res.send({ err: true, msg: "No users specified.", data: null })
-    } else {
-        User.findOne({ _id: mongoose.Types.ObjectId(req.params.userid) }, (err, user) => {
-            if (err) {
-                console.log(`erreur de recherche utilisateur ${err}`);
-                res.send({ err: true, msg: 'Error fetching user.', data: err });
-            } else {
-                console.log(`User find`);
-                res.send({ err: false, msg: 'User find.', data: user });
-            }
-        });
-    }
-})
+// router.get('/:userid', function(req, res) {
+//     if (req.params.userid == '' || req.params.userid == null) {
+//         res.send({ err: true, msg: "No users specified.", data: null })
+//     } else {
+//         User.findOne({ _id: mongoose.Types.ObjectId(req.params.userid) }, (err, user) => {
+//             if (err) {
+//                 console.log(`erreur de recherche utilisateur ${err}`);
+//                 res.send({ err: true, msg: 'Error fetching user.', data: err });
+//             } else {
+//                 console.log(`User find`);
+//                 res.send({ err: false, msg: 'User find.', data: user });
+//             }
+//         });
+//     }
+// })
 
-router.post('/change-pwd', function(req, res) {
-    if (req.body.user == '' || req.body.user == null || req.body.password == '' || req.body.password == null || req.body.oldPassword == '' || req.body.oldPassword == null || req.body.confirmPassword == '' || req.body.confirmPassword == null || req.body.confirmPassword != req.body.password) {
-        res.send({ err: true, msg: "Make sure that the passwords or user id match.", data: null })
-    } else {
-        User.findOne({ _id: mongoose.Types.ObjectId(req.body.user) }, (err, user) => {
-            if (err) {
-                res.send({ err: true, msg: 'Error fetching user.', data: err });
-            } else {
-                if (user) {
-                    if (bcrypt.compareSync(req.body.oldPassword, user.password)) {
-                        user.password = req.body.password;
-                        user.save().then(
-                            (data) => {
-                                res.send({ err: false, msg: 'Password change.', data: null });
-                            },
-                            (err) => {
-                                res.send({ err: true, msg: 'Server error password not change.', data: null })
-                            }
-                        )
-                    } else {
-                        res.send({ err: true, msg: 'Wrong old password.', data: null });
-                    }
-                } else {
-                    res.send({ err: true, msg: 'No user identified.', data: null });
-                }
-            }
-        });
-    }
-})
+// router.post('/change-pwd', function(req, res) {
+//     if (req.body.user == '' || req.body.user == null || req.body.password == '' || req.body.password == null || req.body.oldPassword == '' || req.body.oldPassword == null || req.body.confirmPassword == '' || req.body.confirmPassword == null || req.body.confirmPassword != req.body.password) {
+//         res.send({ err: true, msg: "Make sure that the passwords or user id match.", data: null })
+//     } else {
+//         User.findOne({ _id: mongoose.Types.ObjectId(req.body.user) }, (err, user) => {
+//             if (err) {
+//                 res.send({ err: true, msg: 'Error fetching user.', data: err });
+//             } else {
+//                 if (user) {
+//                     if (bcrypt.compareSync(req.body.oldPassword, user.password)) {
+//                         user.password = req.body.password;
+//                         user.save().then(
+//                             (data) => {
+//                                 res.send({ err: false, msg: 'Password change.', data: null });
+//                             },
+//                             (err) => {
+//                                 res.send({ err: true, msg: 'Server error password not change.', data: null })
+//                             }
+//                         )
+//                     } else {
+//                         res.send({ err: true, msg: 'Wrong old password.', data: null });
+//                     }
+//                 } else {
+//                     res.send({ err: true, msg: 'No user identified.', data: null });
+//                 }
+//             }
+//         });
+//     }
+// })
 
 module.exports = router
 

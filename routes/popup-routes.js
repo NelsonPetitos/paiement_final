@@ -7,8 +7,7 @@ router.post('/', (request, response) => {
     console.log(request.body.amount);
     let amount = request.body.amount;
 
-    let box =`
-    	
+    let box =` 	
 	<div id="wearetech_modal" class="wearetechmodalContainer" style="height:100%;">
 	    <style>
             .wearetechmodalContainer .wearetechmodal{
