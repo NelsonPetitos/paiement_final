@@ -12,7 +12,7 @@ router.get('/operators/:countryid', function(req, res){
             }
             console.log(parseInt(req.params.countryid));
             if(req.params.countryid){
-                client.query('SELECT name FROM phone_operators WERE country_id = $1', [parseInt(req.params.countryid)], function(err, result) {
+                client.query('SELECT name FROM phone_operators WHERE country_id = $1', [parseInt(req.params.countryid)], function(err, result) {
                     done();
                     if(err){ 
                         console.error('Erreur requete'); 
