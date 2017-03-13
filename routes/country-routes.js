@@ -10,7 +10,7 @@ router.get('/countries', function(req, res){
                 console.error(err); 
                 res.status(500).json({ err: true, msg: 'Database connection error.', data: null });
             }
-            client.query('SELECT id as reference, name, code FROM countries', [], function(err, result) {
+            client.query('SELECT id, name, code FROM countries', [], function(err, result) {
                 done();
                 if(err){ 
                     console.error('Erreur requete'); 
