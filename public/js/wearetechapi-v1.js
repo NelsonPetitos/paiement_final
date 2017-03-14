@@ -96,7 +96,9 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
                 xhttp.onload = function(){
                     if(this.readyState == 4 && this.status == 200){
                         //Il faut faire un controle avant d'inserer de nouveau le code suivant.
-                        document.body.insertAdjacentHTML('beforeend', this.responseText.box);
+                        let result = JSON.parse(this.responseText);
+                        console.log(result);
+                        document.body.insertAdjacentHTML('beforeend', result.box);
 
                         let errorBtn = document.getElementById("wearetech_error");
                         if(errorBtn){
