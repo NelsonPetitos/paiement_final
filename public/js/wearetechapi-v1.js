@@ -213,8 +213,8 @@ WRTechAPI.prototype.setSuccessButtonEventListener = function() {
 }
 
 WRTechAPI.prototype.setCountriesChangeEventListener = function(){
-    this.countriesSelectList.addEventListener('change', function(){
-        this.showCountriesSpinner();
+    this.countriesSelectList.addEventListener("change", function(){
+        WAPI.showCountriesSpinner();
         setTimeout(function(){
             WAPI.hideCountriesSpinner();
         }, 5000)
