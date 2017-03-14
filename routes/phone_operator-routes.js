@@ -12,14 +12,14 @@ router.get('/operators/:countryid', function(req, res){
             }
             console.log(parseInt(req.params.countryid));
             if(req.params.countryid){
-                client.query('SELECT name FROM phone_operators WHERE country_id = $1', [parseInt(req.params.countryid)], function(err, result) {
+                client.query('SELECT id, name FROM phone_operators WHERE country_id = $1', [parseInt(req.params.countryid)], function(err, result) {
                     done();
                     if(err){ 
                         console.error('Erreur requete'); 
                         console.log(err);
                         res.status(500).json({ err: true, msg: 'Queries execution error', data: null});
                     }
-                    res.status(200).json({ err: false, msg: 'Return operators.', data: result.rows });
+                    res.status(200).json({ err: false, msg: 'Return phone operators.', data: result.rows });
                 });
             }else{
                 console.log('Bad request country id');

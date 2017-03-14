@@ -1,15 +1,91 @@
 let express = require('express');
 let router = express.Router();
-
+let pg = require('pg');
 
 
 router.post('/', (request, response) => {
-    console.log(request.body.amount);
+    console.log(request.ips);
     let amount = request.body.amount;
 
     let box =` 	
 	<div id="wearetech_modal" class="wearetechmodalContainer" style="height:100%;">
 	    <style>
+            div.wearetech_spinner {
+                position: absolute;
+                display: inline-block;
+                margin-left: 0;
+                padding: 10px;
+            }
+
+            div.wearetech_spinner div {
+                width: 6%;
+                height: 16%;
+                background: #69717d;
+                position: absolute;
+                left: 49%;
+                top: 50%;
+                opacity: 0;
+                -webkit-border-radius: 50px;
+                -webkit-box-shadow: 0 0 3px rgba(0,0,0,0.2);
+                -webkit-animation: fade 1s linear infinite;
+            }
+
+            @-webkit-keyframes fade {
+                from {opacity: 1;}
+                to {opacity: 0.25;}
+            }
+
+            div.wearetech_spinner div.bar1 {
+                -webkit-transform:rotate(0deg) translate(0, -130%);
+                -webkit-animation-delay: 0s;
+            }    
+
+            div.wearetech_spinner div.bar2 {
+                -webkit-transform:rotate(30deg) translate(0, -130%); 
+                -webkit-animation-delay: -0.9167s;
+            }
+
+            div.wearetech_spinner div.bar3 {
+                -webkit-transform:rotate(60deg) translate(0, -130%); 
+                -webkit-animation-delay: -0.833s;
+            }
+            div.wearetech_spinner div.bar4 {
+                -webkit-transform:rotate(90deg) translate(0, -130%); 
+                -webkit-animation-delay: -0.7497s;
+            }
+            div.wearetech_spinner div.bar5 {
+                -webkit-transform:rotate(120deg) translate(0, -130%); 
+                -webkit-animation-delay: -0.667s;
+            }
+            div.wearetech_spinner div.bar6 {
+                -webkit-transform:rotate(150deg) translate(0, -130%); 
+                -webkit-animation-delay: -0.5837s;
+            }
+            div.wearetech_spinner div.bar7 {
+                -webkit-transform:rotate(180deg) translate(0, -130%); 
+                -webkit-animation-delay: -0.5s;
+            }
+            div.wearetech_spinner div.bar8 {
+                -webkit-transform:rotate(210deg) translate(0, -130%); 
+                -webkit-animation-delay: -0.4167s;
+            }
+            div.wearetech_spinner div.bar9 {
+                -webkit-transform:rotate(240deg) translate(0, -130%); 
+                -webkit-animation-delay: -0.333s;
+            }
+            div.wearetech_spinner div.bar10 {
+                -webkit-transform:rotate(270deg) translate(0, -130%); 
+                -webkit-animation-delay: -0.2497s;
+            }
+            div.wearetech_spinner div.bar11 {
+                -webkit-transform:rotate(300deg) translate(0, -130%); 
+                -webkit-animation-delay: -0.167s;
+            }
+            div.wearetech_spinner div.bar12 {
+                -webkit-transform:rotate(330deg) translate(0, -130%); 
+                -webkit-animation-delay: -0.0833s;
+            }
+
             .wearetechmodalContainer .wearetechmodal{
                 display: inline-block;
                 border-radius: 6px;
@@ -223,16 +299,27 @@ router.post('/', (request, response) => {
                     <div id="wearetech_message" style="display: none; padding: 3px; text-align: center;background-color: #EF4836;color: #fff">Give a valid phone number</div>
 
 					<div style="background:#f5f5f5;padding:10px 30px 10px 30px;border-top:1px solid silver;border-top-left-radius:5px;border-top-right-radius:5px;">
-					<input type='hidden' value="${amount}" id="wearetech_transaction_amount"/>
+					    <input type='hidden' value="${amount}" id="wearetech_transaction_amount"/>
 						<div style="margin-top:20px;">	
 							<div style="background:white;height:37px;border-radius:5px;-webkit-border-radius:5px;-moz-border-radius:5px;-o-border-radius:5px;">
 								<div style="position:relative;z-index:1;">
 									<select id="wearetech_country_code">
-										<option value="237" style="">Cameroun - (+237)</option>
-										<option value="239">Côte d'ivoire - (+..)</option>
-										<option value="241">Gabon - (...)</option>
-										<option value="240">Nigéria - (...)</option>
+                                        <option value="">Selectionner votre pays</option>
 									</select>
+                                    <div id="country_spinner" class="wearetech_spinner">
+                                        <div class="bar1"></div>
+                                        <div class="bar2"></div>
+                                        <div class="bar3"></div>
+                                        <div class="bar4"></div>
+                                        <div class="bar5"></div>
+                                        <div class="bar6"></div>
+                                        <div class="bar7"></div>
+                                        <div class="bar8"></div>
+                                        <div class="bar9"></div>
+                                        <div class="bar10"></div>
+                                        <div class="bar11"></div>
+                                        <div class="bar12"></div>
+                                    </div>
 								</div>
 								<div style="position:relative;top:-27px;margin-bottom:-30px;z-index:0;">
 									<span>
@@ -297,41 +384,27 @@ router.post('/', (request, response) => {
 			</div>
 		</span>
 	</div>
-
 `
 
-    let popup = `
-        <div id='wearetech_modal' style='box-sizing: border-box; display:block;padding-top:10%;padding-left: 35%;background-color: rgba(0, 0, 0, 0.7);z-index: 9999;position: fixed;margin: 0;top: 0;left: 0;bottom: 0;right: 0;'>
-			<div style='overflow:hidden;width: 400px;height:200px;border-radius:6px;background-color: #ffffff;box-shadow:0px 10px 50px rgba(0, 0, 0, 0.8);'>
-				<span style='padding-top: 10px;margin:0;width:100%;height:30px;display:block;position: relative;top: 0;left: 0;right: 0;background-color: #80d6a3;color:#ffffff;text-align: center;border-top-left-radius: 6px;border-top-right-radius: 6px;'>
-				    Total amount: ${amount}
-                </span>
-                <form style='margin:0; display: block;'>
-                    <input type='hidden' value="${amount}" id="wearetech_transaction_amount"/>
-                    <div style='margin:20px 30px 30px 20px; padding: 0;'>
-                        <label style='display: inline-block; width: 20%; margin: 0; padding: 0; margin: 0;'>Indicatif</label>
-                        <select style='display: inline; width: 75%; margin: 0; padding:0;' id="country_code">
-                            <option>(+237) - Cameroun</option>
-                            <option>(+237) - Gabon</option>
-                            <option>(+237) - République Centrafricaine</option>
-                        </select>
-                    </div>
-                    <div style='margin: 0; margin: 0px 30px 20px 20px; padding: 0;'>
-                        <label style='display: inline-block; width: 20%; margin: 0; padding: 0; margin: 0;'>Tél : </label>
-                        <input type='text' style='display: inline; width: 75%; margin: 0; padding:0;' id='wearetech_phone_number' placeholder='Numéro de téléphone' />
-                    </div>
-                    <div style='text-align: right; margin:0 30px 20px 0px; padding: 0;'>
-                        <button type='button' id="wearetech_validate">Valider</button>
-                        <button type='button' id="wearetech_closemodal">Annuler</button>
-                    </div>
-                </form>
-			</div>
-		</div>
-
-    `
-
-    response.end(box)
-
+    if(request.dburl){
+        pg.connect(request.dburl, function(err, client, done) {
+            if(err){
+                console.log('Erreur connection a la bd');
+                response.status(200).json({box: box, countries: null})
+            }
+            client.query('SELECT id, name, code FROM countries', [], function(err, result) {
+                done();
+                if(err){ 
+                    console.error('Erreur requete'); 
+                    response.status(200).json({box: box, countries: null})
+                }
+                response.status(200).json({box: box, countries: result.rows})
+            });
+        });
+    }else{
+        console.log('Pensez a definir l\'url de la base de données');
+        response.status(200).json({box: box, countries: null})
+    }
 
 })
 
