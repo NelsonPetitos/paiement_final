@@ -12,7 +12,7 @@ router.post('/', (request, response) => {
 	    <style>
             div.wearetech_spinner {
                 position: absolute;
-                display: inline-block;
+                display: none;
                 margin-left: 0;
                 padding: 10px;
             }
@@ -306,7 +306,7 @@ router.post('/', (request, response) => {
 									<select id="wearetech_country_code">
                                         <option value="">Selectionner votre pays</option>
 									</select>
-                                    <div id="country_spinner" class="wearetech_spinner">
+                                    <div id="countries_spinner" class="wearetech_spinner">
                                         <div class="bar1"></div>
                                         <div class="bar2"></div>
                                         <div class="bar3"></div>

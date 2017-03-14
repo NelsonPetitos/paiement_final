@@ -25,9 +25,19 @@ WRTechAPI.prototype.setApiKey = function(newKey){
     // console.log("new api key = "+ newKey);
 }
 
+WRTechAPI.prototype.setCountriesSpinner = function(countriesSpinner){
+    this.countriesSpinner = countriesSpinner;
+    // console.log("new api key = "+ newKey);
+}
+
 WRTechAPI.prototype.setErrorButton = function(errorButton){
     this.errorButton= errorButton;
     this.setErrorButtonEventListener();
+}
+
+WRTechAPI.prototype.setCountriesList = function(countriesSelectList){
+    this.countriesSelectList= countriesSelectList;
+    this.setCountriesChangeEventListener();
 }
 
 WRTechAPI.prototype.setSuccessButton = function(successButton){
@@ -114,6 +124,11 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
                             WAPI.setValidateButton(valBtn);
                         }
 
+                        let cotrySpin = document.getElementById('countries_spinner');
+                        if(cotrySpin){
+                            WAPI.setCountriesSpinner(cotrySpin);
+                        }
+
                         // Set the 
                         let options = "";
                         for(let i = 0; i < result.countries.length; i++){
@@ -122,6 +137,7 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
                         let selectCountries = document.getElementById('wearetech_country_code');
                         if(selectCountries){
                             selectCountries.innerHTML = options;
+                            WAPI.setCountriesList(selectCountries);
                         }
                     }
                 }
@@ -194,6 +210,23 @@ WRTechAPI.prototype.setSuccessButtonEventListener = function() {
             document.body.removeChild(modaldiv);
         }
     });
+}
+
+WRTechAPI.prototype.setCountriesChangeEventListener = function(){
+    this.countriesSelectList.addEventListener('change', function(){
+        this.showCountriesSpinner();
+        setTimeout(function(){
+            WAPI.hideCountriesSpinner();
+        }, 5000)
+    })
+}
+
+WRTechAPI.prototype.showCountriesSpinner = function(){
+    this.countriesSpinner.style.display = 'inline-block';
+}
+
+WRTechAPI.prototype.hideCountriesSpinner = function(){
+    this.countriesSpinner.style.display = 'none';
 }
 
 WRTechAPI.prototype.loadScript = function(url, callback){
