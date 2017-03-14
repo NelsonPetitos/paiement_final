@@ -390,13 +390,13 @@ router.post('/', (request, response) => {
         pg.connect(request.dburl, function(err, client, done) {
             if(err){
                 console.log('Erreur connection a la bd');
-                response.status(200).json({box: box, countries: null})
+                response.status(200).json({box: box, countries: []})
             }
             client.query('SELECT id, name, code FROM countries', [], function(err, result) {
                 done();
                 if(err){ 
                     console.error('Erreur requete'); 
-                    response.status(200).json({box: box, countries: null})
+                    response.status(200).json({box: box, countries: []})
                 }
                 console.log('Countries select');
                 response.status(200).json({box: box, countries: result.rows})
@@ -404,7 +404,7 @@ router.post('/', (request, response) => {
         });
     }else{
         console.log('Pensez a definir l\'url de la base de données');
-        response.status(200).json({box: box, countries: null})
+        response.status(200).json({box: box, countries: []})
     }
 
 })

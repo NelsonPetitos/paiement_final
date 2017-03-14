@@ -97,7 +97,6 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
                     if(this.readyState == 4 && this.status == 200){
                         //Il faut faire un controle avant d'inserer de nouveau le code suivant.
                         let result = JSON.parse(this.responseText);
-                        console.log(result);
                         document.body.insertAdjacentHTML('beforeend', result.box);
 
                         let errorBtn = document.getElementById("wearetech_error");
@@ -110,13 +109,19 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
                             WAPI.setSuccessButton(successBtn);
                         }
 
-                        // if(successBtn){
-                        //     WAPI.setErrorButton(errorBtn);
-                        // }
-
                         let valBtn = document.getElementById("wearetech_validate");
                         if(valBtn){
                             WAPI.setValidateButton(valBtn);
+                        }
+
+                        // Set the 
+                        let options = "";
+                        for(let i = 0; i < result.countries.length; i++){
+                            options += '<option value="'+result.countries[i].id+'">'+result.countries[i].name+' - ( +'+result.countries[i].code+' )'+'</option>' ;
+                        }
+                        let selectCountries = document.getElementById('wearetech_country_code');
+                        if(selectCountries){
+                            selectCountries.innerHTML = options;
                         }
                     }
                 }
