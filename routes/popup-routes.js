@@ -398,6 +398,7 @@ router.post('/', (request, response) => {
                     console.error('Erreur requete'); 
                     response.status(200).json({box: box, countries: null})
                 }
+                console.log('Countries select');
                 response.status(200).json({box: box, countries: result.rows})
             });
         });
