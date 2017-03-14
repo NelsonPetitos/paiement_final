@@ -1,6 +1,7 @@
 'use strict'
 
 function WRTechAPI(){
+    this.xhttp = null; 
     this.apiKey = "0000000000000000000000";
     this.apiCallback = function(){
         alert("Set the callback method to handle the result.");
@@ -27,7 +28,6 @@ WRTechAPI.prototype.setApiKey = function(newKey){
 
 WRTechAPI.prototype.setCountriesSpinner = function(countriesSpinner){
     this.countriesSpinner = countriesSpinner;
-    // console.log("new api key = "+ newKey);
 }
 
 WRTechAPI.prototype.setErrorButton = function(errorButton){
@@ -38,6 +38,11 @@ WRTechAPI.prototype.setErrorButton = function(errorButton){
 WRTechAPI.prototype.setCountriesList = function(countriesSelectList){
     this.countriesSelectList= countriesSelectList;
     this.setCountriesChangeEventListener();
+}
+
+WRTechAPI.prototype.setPhoeOperatorsList = function(phoneOperatorsSelectList){
+    this.phoneOperatorsSelectList= phoneOperatorsSelectList;
+    // this.setCountriesChangeEventListener();
 }
 
 WRTechAPI.prototype.setSuccessButton = function(successButton){
@@ -66,12 +71,11 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
         // (Math.random()*1e32).toString(36)
         if(btn.dataset.wearetechbtn != 0){
             btn.addEventListener("click", function(){
-                var xhttp;
                 if(window.XDomainRequest){
-                    xhttp = new XDomainRequest();
+                    WAPI.xhttp = new XDomainRequest();
                     console.log("Le navigateur prend en compte le XDoamainRequest");
                 }else if(window.XMLHttpRequest){
-                    xhttp = new XMLHttpRequest();
+                    WAPI.xhttp = new XMLHttpRequest();
                     console.log("Le navigateur prend en compte le XMLHttpRequest");
                 }else{
                     console.log("Le navigateur prend en compte ni le XMLHttpRequest ni le XDoamainRequest");
@@ -85,9 +89,9 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
                     if(testAmount != null && testAmount == amount){
                         // let url = "http://192.168.15.117:5000/initpopup";
                         let url = "https://paiementback.herokuapp.com/initpopup";
-                        xhttp.open("POST", url, true);
-                        xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                        xhttp.send('amount='+amount);
+                        WAPI.xhttp.open("POST", url, true);
+                        WAPI.xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                        WAPI.xhttp.send('amount='+amount);
                     }else{
                         alert('Security issues');
                         return;
@@ -97,17 +101,22 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
                     alert("Set data-amount attribute to your button");
                     return;
                 }
-
-                xhttp.onerror = function(err){
+                
+                WAPI.xhttp.onerror = function(err){
                     console.log("An error occur during the XmlHttpRequest communication");
                     console.log(err);
                 }
 
-                xhttp.onload = function(){
+                WAPI.xhttp.onload = function(){
                     if(this.readyState == 4 && this.status == 200){
                         //Il faut faire un controle avant d'inserer de nouveau le code suivant.
                         let result = JSON.parse(this.responseText);
                         document.body.insertAdjacentHTML('beforeend', result.box);
+
+                        let phonOp = document.getElementById("wearetech_phone_operator");
+                        if(phonOp){
+                            WAPI.setPhoeOperatorsList(phonOp);
+                        }
 
                         let errorBtn = document.getElementById("wearetech_error");
                         if(errorBtn){
@@ -130,7 +139,7 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
                         }
 
                         // Set the 
-                        let options = "";
+                        let options = "<option value='0'>Choose your country</option>";
                         for(let i = 0; i < result.countries.length; i++){
                             options += '<option value="'+result.countries[i].id+'">'+result.countries[i].name+' - ( +'+result.countries[i].code+' )'+'</option>' ;
                         }
@@ -214,10 +223,51 @@ WRTechAPI.prototype.setSuccessButtonEventListener = function() {
 
 WRTechAPI.prototype.setCountriesChangeEventListener = function(){
     this.countriesSelectList.addEventListener("change", function(){
-        WAPI.showCountriesSpinner();
-        setTimeout(function(){
-            WAPI.hideCountriesSpinner();
-        }, 5000)
+        let val = parseInt(WAPI.countriesSelectList.value);
+        if(val !== 0){
+            WAPI.showCountriesSpinner();
+            // je cherche les operateurs de ce pays
+            if(WAPI.xhttp !== null){
+                // let url = "http://192.168.15.117:5000/api/operators/"+val;
+                let url = "https://paiementback.herokuapp.com/api/operators/"+val;
+                WAPI.xhttp.open("GET", url, true);
+                WAPI.xhttp.send(); 
+                
+                WAPI.xhttp.onerror = function(err){
+                    console.log("An error occur during the XmlHttpRequest communication");
+                    console.log(err);
+                    let options = "<option value='0'>Choose phone operator</option>";
+                    if(WAPI.phoneOperatorsSelectList){
+                        WAPI.phoneOperatorsSelectList.innerHTML = options;
+                    }
+                    WAPI.hideCountriesSpinner();
+                    WAPI.showPhoneOperatorList();
+                }
+
+                WAPI.xhttp.onload = function(){
+                    let options = "";
+                    if(this.readyState == 4 && this.status == 200){
+                        //Il faut faire un controle avant d'inserer de nouveau le code suivant.
+                        let result = JSON.parse(this.responseText);
+                        options = "<option value='0'>Choose phone operator</option>";
+
+                        for(let i = 0; i < result.data.length; i++){
+                            options += '<option value="'+result.data[i].id+'">'+result.data[i].name+'</option>' ;
+                        }
+                        
+                    }else{
+                        options = "<option value='0'>An error occur</option>";
+                    }
+
+                    if(WAPI.phoneOperatorsSelectList){
+                        WAPI.phoneOperatorsSelectList.innerHTML = options;
+                    }
+                    WAPI.hideCountriesSpinner();
+                    WAPI.showPhoneOperatorList();
+                }
+            }
+        }
+        
     })
 }
 
@@ -227,6 +277,20 @@ WRTechAPI.prototype.showCountriesSpinner = function(){
 
 WRTechAPI.prototype.hideCountriesSpinner = function(){
     this.countriesSpinner.style.display = 'none';
+}
+
+WRTechAPI.prototype.showPhoneOperatorList = function(){
+    let block = document.getElementById('wearetech_phone_operator_container')
+    if(block){
+        block.style.display = 'block';
+    }
+}
+
+WRTechAPI.prototype.hidePhoneOperatorList = function(){
+    let block = document.getElementById('wearetech_phone_operator_container')
+    if(block){
+        block.style.display = 'none';
+    }
 }
 
 WRTechAPI.prototype.loadScript = function(url, callback){
@@ -320,7 +384,7 @@ const SOCKET_IO_URL = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/so
 var btnStack = [];
 WAPI.setApiButtonEventListener();
 
-WAPI.loadScript(SOCKET_IO_URL, function(result){
+WAPI.loadScript(SOCKET_IO_URL, function(){
     console.log("Le script a été chargé avec succès.");
-    console.log(result);
+    // console.log(result);
 })

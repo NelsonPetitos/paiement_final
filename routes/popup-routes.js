@@ -304,7 +304,6 @@ router.post('/', (request, response) => {
 							<div style="background:white;height:37px;border-radius:5px;-webkit-border-radius:5px;-moz-border-radius:5px;-o-border-radius:5px;">
 								<div style="position:relative;z-index:1;">
 									<select id="wearetech_country_code">
-                                        <option value="">Selectionner votre pays</option>
 									</select>
                                     <div id="countries_spinner" class="wearetech_spinner">
                                         <div class="bar1"></div>
@@ -331,7 +330,27 @@ router.post('/', (request, response) => {
 								</div>
 							</div>
 						</div>
-                        
+
+                    <div>	
+                        <div style="background:white;height:37px;border-radius:5px;-webkit-border-radius:5px;-moz-border-radius:5px;-o-border-radius:5px; display:none;" id="wearetech_phone_operator_container">
+                            <div style="position:relative;z-index:1;">
+                                <select id="wearetech_phone_operator">
+                                </select>
+                                <div style="position:relative;top:-27px;margin-bottom:-30px;z-index:0;">
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 492.308 492.308" style="width: 15px;margin-left:6px;" focusable="false" fill="#489cfd" xml:space="preserve" >
+                                            <g><g><rect y="321.457" width="19.692" height="161.004" fill="#489cfd"/></g></g>
+                                            <g><g><rect x="94.533" y="259.141" width="19.692" height="223.321" fill="#489cfd"/></g></g>
+                                            <g><g><rect x="189.046" y="196.815" width="19.692" height="285.637" fill="#489cfd"/></g></g>
+                                            <g><g><rect x="283.569" y="134.489" width="19.692" height="347.963" fill="#489cfd"/></g></g>
+                                            <g><g><rect x="378.092" y="72.172" width="19.692" height="410.289" fill="#489cfd"/></g></g>
+                                            
+                                        </svg>	
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
 						<div style="margin-top:20px;">
 							<span style="border-radius: 4px;display:inline-block; text-align:center; font-weight:bold; font-size:12px; background-color:#3ea8e5;color:#FFF;">Pour recevoir un reçu par mail entrez votre email</span>
                             <div style="background:white;border-radius:5px;height:84px;">    
@@ -386,27 +405,27 @@ router.post('/', (request, response) => {
 	</div>
 `
 
-    if(request.dburl){
-        pg.connect(request.dburl, function(err, client, done) {
-            if(err){
-                console.log('Erreur connection a la bd');
-                response.status(200).json({box: box, countries: []})
-            }
-            client.query('SELECT id, name, code FROM countries', [], function(err, result) {
-                done();
-                if(err){ 
-                    console.error('Erreur requete'); 
-                    response.status(200).json({box: box, countries: []})
-                }
-                console.log('Countries select');
-                response.status(200).json({box: box, countries: result.rows})
-            });
-        });
-    }else{
-        console.log('Pensez a definir l\'url de la base de données');
-        response.status(200).json({box: box, countries: []})
-    }
-
+    // if(request.dburl){
+    //     pg.connect(request.dburl, function(err, client, done) {
+    //         if(err){
+    //             console.log('Erreur connection a la bd');
+    //             response.status(200).json({box: box, countries: []})
+    //         }
+    //         client.query('SELECT id, name, code FROM countries', [], function(err, result) {
+    //             done();
+    //             if(err){ 
+    //                 console.error('Erreur requete'); 
+    //                 response.status(200).json({box: box, countries: []})
+    //             }
+    //             console.log('Countries select');
+    //             response.status(200).json({box: box, countries: result.rows})
+    //         });
+    //     });
+    // }else{
+    //     console.log('Pensez a definir l\'url de la base de données');
+    //     response.status(200).json({box: box, countries: []})
+    // }
+    response.status(200).json({box: box, countries: [{id: 3, name: "Cameroun", code: 237}, {id: 4, name: "Gabon", code: 241}]})
 })
 
 module.exports = router
