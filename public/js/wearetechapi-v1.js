@@ -196,7 +196,7 @@ WRTechAPI.prototype.setValidateButtonEventListemer = function(){
                     alert('Required field empty');
                 }
             }else{
-                console.lod('il n y a pas derreur de validation des champs')
+                console.log('il n y a pas derreur de validation des champs')
                 let socket = io.connect('https://paiementback.herokuapp.com');
                 // let socket = io.connect('http://192.168.15.117:5000');
 
