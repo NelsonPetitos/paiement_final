@@ -252,8 +252,8 @@ function verifiedPhone(phone, country, operator){
 }
 
 function saveToken(data, socket){
-    let rawData = '';
-    var options = {
+    let rawData ;
+    let options = {
             hostname: server.address().address,
             port: server.address().port,
             path: '/api/tokens',
@@ -262,7 +262,7 @@ function saveToken(data, socket){
                 'Content-Type': 'application/json',
             }
     };
-    var req = http.request(options, function(res) {
+    let req = http.request(options, function(res) {
         res.setEncoding('utf8');
         
         res.on('data', function (chunk) {
@@ -270,8 +270,9 @@ function saveToken(data, socket){
         });
 
         res.on('end', function(){
-            let token = JSON.parse(rawData);
-            // console.log(token);
+            // let token = JSON.parse(rawData);
+            let token = rawData;
+            console.log(token);
             if(token.err){
                 //Il y'a erreur
                 console.log('Error creating the token');
