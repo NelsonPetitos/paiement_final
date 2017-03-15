@@ -44,16 +44,18 @@ router.post('/tokens', (req, res) => {
         // });
         pg.connect(req.dburl, function(err, client, done) {
             if(err){
-                console.log('Erreur connection a la bd');
+                console.log('Erreur connection a la bd : tokens-routes');
                 console.error(err); 
                 res.status(200).json({ err: true, msg: 'Database connection error.', data: null });
+                return;
             }
             client.query('INSERT INTO tokens(phone, amount, apikey, socketid, adress_ip, phone_operator_id, country_id, email) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) returning token, phone, amount, apikey, socketid, adress_ip, phone_operator_id, country_id, email', [params.phone, params.amount, params.apikey, params.socketid, params.adress_ip, params.phone_operator_id, params.country_id, [arams.email]], function(err, result) {
                 done();
                 if(err){ 
-                    console.error('Erreur requete'); 
+                    console.error('Erreur requete : tokens-routes'); 
                     console.log(err);
                     res.status(200).json({ err: true, msg: 'Token constraints error.', data: null});
+                    return;
                 }
                 
                 // console.log(result.rows);
@@ -65,8 +67,10 @@ router.post('/tokens', (req, res) => {
                         amount : result.rows[0].amount,
                         apikey: result.rows[0].apikey
                     }
+                    console.log('Token save : tokens-routes');
                     res.status(200).json({ err: false, msg: 'Token create.', data: data });
                 }else{
+                    console.log('Resultats multiples : tokens-routes');
                     res.status(200).json({ err: false, msg: 'Multiple results not expected.', data: result.rows});
                 }
 

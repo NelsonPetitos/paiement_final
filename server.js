@@ -266,11 +266,13 @@ function saveToken(data, socket){
         res.setEncoding('utf8');
         
         res.on('data', function (chunk) {
+            console.log('une nouvelle piece de /api/tokens');
             rawData += chunk;
         });
 
         res.on('end', function(){
             // let token = JSON.parse(rawData);
+            console.log('Toutes les pieces de  /api/tokens');
             let token = rawData;
             console.log(token);
             if(token.err){
