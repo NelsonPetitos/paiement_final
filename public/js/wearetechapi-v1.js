@@ -212,11 +212,12 @@ WRTechAPI.prototype.setApiCallback = function(resolve){
 WRTechAPI.prototype.setValidateButtonEventListemer = function(){
     this.validateButton.addEventListener("click", function (even) {
         if(typeof io !== 'undefined'){
+            let phone, email;
             if(WAPI.emailInputText){
-                let email = WAPI.emailInputText.value;
+                email = WAPI.emailInputText.value;
             }
             if(WAPI.phoneInputText){
-                let phone = WAPI.phoneInputText.value;
+                phone = WAPI.phoneInputText.value;
             }
             let amount = document.getElementById('wearetech_transaction_amount').value;
             let country = WAPI.countriesSelectList.value;
