@@ -84,7 +84,7 @@ io.on('connection', (socket) => {
     
         // console.log(socket.client.conn)
     let clientIp = socket.request.connection.remoteAddress;
-    console.log(`New socket with ip adress  = ${clientIp}`)
+    console.log(`New socket with ip adress  = ${clientIp} and id = ${socket.id}`);
 
     listSocket.add(socket); //Keep a list of all socket connected to the server
 

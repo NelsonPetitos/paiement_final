@@ -6,17 +6,17 @@ router.get('/operators/:countryid', function(req, res){
     if(req.dburl){
         pg.connect(req.dburl, function(err, client, done) {
             if(err){
-                console.log('Erreur connection a la bd');
+                console.log('Erreur connection a la bd : phone_operators-routes');
                 console.error(err); 
                 res.status(500).json({ err: true, msg: 'Database connection error.', data: [] });
                 return;
             }
-            console.log(parseInt(req.params.countryid));
+            console.log(`Obtenir les operateur du pays d'id = ${parseInt(req.params.countryid)}`);
             if(req.params.countryid){
                 client.query('SELECT id, name FROM phone_operators WHERE country_id = $1', [parseInt(req.params.countryid)], function(err, result) {
                     done();
                     if(err){ 
-                        console.error('Erreur requete'); 
+                        console.error('Erreur requete : phone_operators-routes'); 
                         console.log(err);
                         res.status(500).json({ err: true, msg: 'Queries execution error', data: []});
                     }
@@ -28,7 +28,7 @@ router.get('/operators/:countryid', function(req, res){
             }
         });
     }else{
-        console.log('Pensez a definir l\'url de la base de données');
+        console.log('Pensez a definir l\'url de la base de données : phone_operators-routes');
         res.status(500).json({ err: true, msg: 'Database url error.', data: [] });
     }
 })
