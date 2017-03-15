@@ -332,7 +332,7 @@ router.post('/', (request, response) => {
 				</div>
 
                 <div style="margin-top:0px;">
-                    <div style="background:white;height:37px;border-radius:5px;-webkit-border-radius:5px;-moz-border-radius:5px;-o-border-radius:5px; display:block;" id="wearetech_phone_operator_container">
+                    <div style="background:white;height:37px;border-radius:5px;-webkit-border-radius:5px;-moz-border-radius:5px;-o-border-radius:5px; display:none;" id="wearetech_phone_operator_container">
                         <div style="position:relative;z-index:1;">
                             <select id="wearetech_phone_operator"></select>
                         </div>
