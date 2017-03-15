@@ -8,8 +8,11 @@ let testParamater = function (argument) {
     // body... 
     let phoneSchema = /^[1-9][0-9]{8,}/;
     return( argument.socketid == null || argument.socketid == ''  ||
-            argument.apikey == null ||  argument.apikey == '' ||
+            argument.apikey == null || argument.apikey == '' ||
             argument.amount == null || argument.amount == '' ||
+            argument.adress_ip == null || argument.adress_ip == '' ||
+            argument.country_id == null || argument.country_id == '' ||
+            argument.phone_operator_id == null || argument.phone_operator_id == '' ||
             argument.phone == null ||  argument.phone == '' ||
             phoneSchema.test(argument.phone) == false)
 }
@@ -19,7 +22,11 @@ router.post('/tokens', (req, res) => {
         phone: req.body.phone,
         amount: req.body.amount,
         apikey: req.body.apikey,
-        socketid: req.body.socketid
+        socketid: req.body.socketid,
+        country_id: req.body.country,
+        phone_operator_id: req.body.operator,
+        adress_ip:  req.body.adress_ip,
+        email: req.body.email
     }
 
     // console.log(req.body);
@@ -41,7 +48,7 @@ router.post('/tokens', (req, res) => {
                 console.error(err); 
                 res.status(200).json({ err: true, msg: 'Database connection error.', data: null });
             }
-            client.query('INSERT INTO tokens(phone, amount, apikey, socketid) VALUES ($1, $2, $3, $4) returning phone, amount, apikey, socketid, token', [params.phone, params.amount, params.apikey, params.socketid], function(err, result) {
+            client.query('INSERT INTO tokens(phone, amount, apikey, socketid, adress_ip, phone_operator_id, country_id, email) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) returning token, phone, amount, apikey, socketid, adress_ip, phone_operator_id, country_id, email', [params.phone, params.amount, params.apikey, params.socketid, params.adress_ip, params.phone_operator_id, params.country_id, [arams.email]], function(err, result) {
                 done();
                 if(err){ 
                     console.error('Erreur requete'); 
@@ -53,10 +60,10 @@ router.post('/tokens', (req, res) => {
                 
                 if(result.rows.length === 1){
                     let data = {
+                        token: result.rows[0].token,
                         phone: result.rows[0].phone,
                         amount : result.rows[0].amount,
-                        apikey: result.rows[0].apikey,
-                        token: result.rows[0].token
+                        apikey: result.rows[0].apikey
                     }
                     res.status(200).json({ err: false, msg: 'Token create.', data: data });
                 }else{

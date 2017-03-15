@@ -84,7 +84,7 @@ io.on('connection', (socket) => {
     
         // console.log(socket.client.conn)
     let clientIp = socket.request.connection.remoteAddress;
-    console.log(`Ip adress : ${clientIp}`)
+    console.log(`New socket with ip adress  = ${clientIp}`)
 
     listSocket.add(socket); //Keep a list of all socket connected to the server
 
@@ -126,6 +126,8 @@ io.on('connection', (socket) => {
                     country: country,
                     operator: operator,
                     phone:  data.phone,
+                    adress_ip: clientIp,
+                    email: data.email,
                     socketid: socket.id
                 }
                 saveToken(token, socket);

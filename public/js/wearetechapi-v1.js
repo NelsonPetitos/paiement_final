@@ -26,6 +26,11 @@ WRTechAPI.prototype.setApiKey = function(newKey){
     // console.log("new api key = "+ newKey);
 }
 
+WRTechAPI.prototype.setErrorMsgSpan = function(errorMsgSpan){
+    this.errorMsgSpan = errorMsgSpan;
+    // console.log("new api key = "+ newKey);
+}
+
 WRTechAPI.prototype.setCountriesSpinner = function(countriesSpinner){
     this.countriesSpinner = countriesSpinner;
 }
@@ -118,6 +123,11 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
                             WAPI.setPhoeOperatorsList(phonOp);
                         }
 
+                        let msgSpan = document.getElementById('wearetech_message');
+                        if(msgSpan){
+                            WAPI.setErrorMsgSpan(msgSpan)
+                        }
+
                         let errorBtn = document.getElementById("wearetech_error");
                         if(errorBtn){
                             WAPI.setErrorButton(errorBtn);
@@ -173,12 +183,16 @@ WRTechAPI.prototype.setValidateButtonEventListemer = function(){
             let amount = document.getElementById('wearetech_transaction_amount').value;
             let country = WAPI.countriesSelectList.value;
             let operator = WAPI.phoneOperatorsSelectList.value;
-
+            // let msgSpan = document.getElementById('wearetech_message');
             if(!verifiedPhone(phone, country, operator)){
-                let msgSpan = document.getElementById('wearetech_message');
-                msgSpan.style.display = 'block';
-                msgSpan.style.backgroundColor = '#EF4836';
-                msgSpan.style.color = '#FFF';
+                if(WAPI.errorMsgSpan){
+                    WAPI.errorMsgSpan.innerHTML = "Required field missing";
+                    WAPI.errorMsgSpan.style.display = 'block';
+                    WAPI.errorMsgSpan.style.backgroundColor = '#EF4836';
+                    WAPI.errorMsgSpan.style.color = '#FFF';
+                }else{
+                    alert('Required field empty');
+                }
             }else{
 
                 let socket = io.connect('https://paiementback.herokuapp.com');
@@ -190,6 +204,9 @@ WRTechAPI.prototype.setValidateButtonEventListemer = function(){
 
                     //dismiss modal view after the connect has been send
                     WAPI.waitingAction()
+                    if(WAPI.errorMsgSpan){
+                        WAPI.errorMsgSpan.style.display = 'none';
+                    }
 
                     socket.on('wearetechapi_server_response', function(result) {
                         WAPI.handleResponse(result);
