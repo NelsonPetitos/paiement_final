@@ -17,8 +17,8 @@ function getButton(anid){
     return null;
 }
 
-function verifiedPhone(phone){
-    return !(typeof phone == 'undefined' || phone == null || /^[1-9][0-9]{8,}/.test(phone) == false)
+function verifiedPhone(phone, country, operator){
+    return !(typeof phone == 'undefined' || phone == null || typeof country == 'undefined' || country == 0 || typeof operator == 'undefined' || operator == 0 || /^[1-9][0-9]{8,}/.test(phone) == false)
 }
 
 WRTechAPI.prototype.setApiKey = function(newKey){
@@ -171,8 +171,10 @@ WRTechAPI.prototype.setValidateButtonEventListemer = function(){
             let phone = document.getElementById('wearetech_phone_number').value;
             let email = document.getElementById('wearetech_client_email').value;
             let amount = document.getElementById('wearetech_transaction_amount').value;
+            let country = WAPI.countriesSelectList.value;
+            let operator = WAPI.phoneOperatorsSelectList.value;
 
-            if(!verifiedPhone(phone)){
+            if(!verifiedPhone(phone, country, operator)){
                 let msgSpan = document.getElementById('wearetech_message');
                 msgSpan.style.display = 'block';
                 msgSpan.style.backgroundColor = '#EF4836';
@@ -183,7 +185,7 @@ WRTechAPI.prototype.setValidateButtonEventListemer = function(){
                 // let socket = io.connect('http://192.168.15.117:5000');
 
                 if(typeof socket !== 'undefined'){
-                    let message = {phone: phone, code: 237, apikey: WAPI.apiKey, amount: amount, email: email};
+                    let message = {phone: phone, country: country, operator: operator, apikey: WAPI.apiKey, amount: amount, email: email};
                     socket.emit('wearetechapi_client_emit', message);
 
                     //dismiss modal view after the connect has been send
@@ -195,10 +197,12 @@ WRTechAPI.prototype.setValidateButtonEventListemer = function(){
                     });
                 }else{
                     console.log("Socket connection with wearetech server failed.");
+                    return;
                 }
             }
         }else{
             console.log("socket.io is not load in this application.");
+            return;
         }
     });
 }

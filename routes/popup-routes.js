@@ -404,28 +404,27 @@ router.post('/', (request, response) => {
 	</div>
 </div>
 `
-
-    // if(request.dburl){
-    //     pg.connect(request.dburl, function(err, client, done) {
-    //         if(err){
-    //             console.log('Erreur connection a la bd');
-    //             response.status(200).json({box: box, countries: []})
-    //         }
-    //         client.query('SELECT id, name, code FROM countries', [], function(err, result) {
-    //             done();
-    //             if(err){ 
-    //                 console.error('Erreur requete'); 
-    //                 response.status(200).json({box: box, countries: []})
-    //             }
-    //             console.log('Countries select');
-    //             response.status(200).json({box: box, countries: result.rows})
-    //         });
-    //     });
-    // }else{
-    //     console.log('Pensez a definir l\'url de la base de données');
-    //     response.status(200).json({box: box, countries: []})
-    // }
-    response.status(200).json({box: box, countries: [{id: 3, name: "Cameroun", code: 237}, {id: 4, name: "Gabon", code: 241}]})
+    if(request.dburl){
+        pg.connect(request.dburl, function(err, client, done) {
+            if(err){
+                console.log('Erreur connection a la bd');
+                response.status(200).json({box: box, countries: []})
+            }
+            client.query('SELECT id, name, code FROM countries', [], function(err, result) {
+                done();
+                if(err){ 
+                    console.error('Erreur requete'); 
+                    response.status(200).json({box: box, countries: []})
+                }
+                console.log('Countries select');
+                response.status(200).json({box: box, countries: result.rows})
+            });
+        });
+    }else{
+        console.log('Pensez a definir l\'url de la base de données');
+        response.status(200).json({box: box, countries: []})
+    }
+    // response.status(200).json({box: box, countries: [{id: 3, name: "Cameroun", code: 237}, {id: 4, name: "Gabon", code: 241}]})
 })
 
 module.exports = router

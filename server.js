@@ -80,21 +80,28 @@ app.use('*', homeRoute)
 
 //need to be improve to handle client paiement request
 io.on('connection', (socket) => {
-    console.log(`New socket connection with identifier: ${socket.id}`)
+    // console.log(`New socket connection with identifier: ${socket.id}`)
+    
         // console.log(socket.client.conn)
+    let clientIp = socket.request.connection.remoteAddress;
+    console.log(`Ip adress : ${clientIp}`)
+
     listSocket.add(socket); //Keep a list of all socket connected to the server
 
     //All to do if socket it's not the server
     socket.on('wearetechapi_client_emit', (data) => {
         // console.log(data)
         //Verifier le numéro de téléphone et la clé publique
-        let randNum = (Math.random()*1e32).toString(36);
+        // let randNum = (Math.random()*1e32).toString(36);
         let phone = data.phone;
+        let country = data.country;
+        let operator = data.operator;
+
         
-        if(!verifiedPhone(phone)){
+        if(!verifiedPhone(phone, country, operator)){
             let result = {
                 error: true,
-                message: "Phone number incorrect.",
+                message: "Incorrect parameters.",
                 code: null
             }
             // console.log('Invalid phone number.');
@@ -116,7 +123,8 @@ io.on('connection', (socket) => {
                 let token = {
                     amount: data.amount,
                     apikey: data.apikey,
-                    // token: randNum,
+                    country: country,
+                    operator: operator,
                     phone:  data.phone,
                     socketid: socket.id
                 }
@@ -237,8 +245,8 @@ io.on('connection', (socket) => {
     });
 })
 
-function verifiedPhone(phone){
-    return !(typeof phone == 'undefined' || phone == null || /^[1-9][0-9]{8,}/.test(phone) == false)
+function verifiedPhone(phone, country, operator){
+    return !(typeof phone == 'undefined' || phone == null || typeof country == 'undefined' || country == 0 || typeof operator == 'undefined' || operator == 0 || /^[1-9][0-9]{8,}/.test(phone) == false)
 }
 
 function saveToken(data, socket){
