@@ -271,9 +271,10 @@ function saveToken(data, socket){
         });
 
         res.on('end', function(){
-            // let token = JSON.parse(rawData);
+            let token = JSON.parse(rawData);
             console.log('Toutes les pieces de  /api/tokens');
-            let token = rawData;
+            // let token = rawData;
+            console.log(rawData);
             console.log(token);
             if(token.err){
                 //Il y'a erreur
