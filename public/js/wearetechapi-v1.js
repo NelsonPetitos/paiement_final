@@ -178,7 +178,7 @@ WRTechAPI.prototype.setApiCallback = function(resolve){
 WRTechAPI.prototype.setValidateButtonEventListemer = function(){
     this.validateButton.addEventListener("click", function (even) {
         if(typeof io !== 'undefined'){
-            console.log('Le io est bien definie dans ce fichier');
+            // console.log('Le io est bien definie dans ce fichier');
             let phone = document.getElementById('wearetech_phone_number').value;
             let email = document.getElementById('wearetech_client_email').value;
             let amount = document.getElementById('wearetech_transaction_amount').value;
@@ -186,7 +186,7 @@ WRTechAPI.prototype.setValidateButtonEventListemer = function(){
             let operator = WAPI.phoneOperatorsSelectList.value;
             // let msgSpan = document.getElementById('wearetech_message');
             if(!verifiedPhone(phone, country, operator)){
-                console.log('il ya eu une erreur de validation des champs');
+                // console.log('il ya eu une erreur de validation des champs');
                 if(WAPI.errorMsgSpan){
                     WAPI.errorMsgSpan.innerHTML = "Required field missing";
                     WAPI.errorMsgSpan.style.display = 'block';
@@ -196,12 +196,12 @@ WRTechAPI.prototype.setValidateButtonEventListemer = function(){
                     alert('Required field empty');
                 }
             }else{
-                console.log('il n y a pas derreur de validation des champs')
+                // console.log('il n y a pas derreur de validation des champs')
                 let socket = io.connect('https://paiementback.herokuapp.com');
                 // let socket = io.connect('http://192.168.15.117:5000');
 
                 if(typeof socket !== 'undefined'){
-                    console.log('Connection par socket avec le serveur reussie.'+socket.id);
+                    // console.log('Connection par socket avec le serveur reussie.'+socket.id);
                     let message = {phone: phone, country: country, operator: operator, apikey: WAPI.apiKey, amount: amount, email: email};
                     socket.emit('wearetechapi_client_emit', message);
 

@@ -90,7 +90,7 @@ io.on('connection', (socket) => {
 
     //All to do if socket it's not the server
     socket.on('wearetechapi_client_emit', (data) => {
-        // console.log(data)
+        console.log("Donnes recues du navigateur")
         //Verifier le numéro de téléphone et la clé publique
         // let randNum = (Math.random()*1e32).toString(36);
         let phone = data.phone;
@@ -104,12 +104,12 @@ io.on('connection', (socket) => {
                 message: "Incorrect parameters.",
                 code: null
             }
-            // console.log('Invalid phone number.');
+            console.log('Invalid phone number.');
             socket.emit('wearetechapi_server_response', result);
         }else{
             if (typeof modemSocket == 'undefined') {
                 //Le modem n'est pas connecte
-                // console.log('Le modem n\'est pas connecte ');
+                console.log('Le modem n\'est pas connecte ');
                 let result = {
                     data: null,
                     error: true,
@@ -119,7 +119,7 @@ io.on('connection', (socket) => {
                 socket.emit('wearetechapi_server_response', result)
                 socket.disconnect();
             }else{
-                // console.log('Valid phone number');
+                console.log('Valid phone number i call save token method');
                 let token = {
                     amount: data.amount,
                     apikey: data.apikey,
