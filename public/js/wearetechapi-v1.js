@@ -329,9 +329,9 @@ WRTechAPI.prototype.loadScript = function(url, callback){
 
 
 WRTechAPI.prototype.handlePhoneError = function () {
-    let message = document.getElementById('wearetech_message')
-    if(message.style.display == 'block'){
-        message.style.display = 'none';
+    // let message = document.getElementById('wearetech_message')
+    if(WAPI.errorMsgSpan.style.display == 'block'){
+        WAPI.errorMsgSpan.style.display = 'none';
     }
 }
 
@@ -353,42 +353,45 @@ WRTechAPI.prototype.handleResponse = function(result) {
     // document.getElementById('wearetech_client_email').disabled = false;
     // document.getElementById('wearetech_phone_number').disabled = false;
 
-    let message = document.getElementById('wearetech_message');
+    // let message = document.getElementById('wearetech_message');
     let waiting = document.getElementById('wearetech_waiting');
     let error = document.getElementById('wearetech_error');
     let success = document.getElementById('wearetech_success');
 
-    console.log("Je resoit la reponse");
+    // console.log("Je reçois la réponse");
 
     if(result.error == true){
         if(result.code != CODE_WAITING){
-            if(message){
-                message.innerHTML = result.message;
-                message.style.display = 'block';
-                message.style.color = 'white';
-                message.style.backgroundColor = '#EF4836';
+            // Tâche inachevée le token doit 
+            if(WAPI.errorMsgSpan){
+                WAPI.errorMsgSpan.innerHTML = result.message;
+                WAPI.errorMsgSpan.style.display = 'block';
+                WAPI.errorMsgSpan.style.color = 'white';
+                WAPI.errorMsgSpan.style.backgroundColor = '#EF4836';
             }
             if(error){
                 error.innerHTML = "Close";
                 error.style.display = 'block';
             }
         }else{
+            // une erreur c'est produite
             if(result.data != null){
                 //Le token a été crée et envoie au client avec succès
                 WAPI.apiCallback(result.data);
             }
-            if(message){
-                message.innerHTML = result.message;
-                message.style.display = 'block';
-                message.style.backgroundColor = '#3FC380';
-                message.style.color = 'white';
+            if(WAPI.errorMsgSpan){
+                WAPI.errorMsgSpan.innerHTML = result.message;
+                WAPI.errorMsgSpan.style.display = 'block';
+                WAPI.errorMsgSpan.style.backgroundColor = '#3FC380';
+                WAPI.errorMsgSpan.style.color = 'white';
             }
         }
     }else{
-        if(message){
-            message.innerHTML = result.message;
-            message.style.display = 'block';
-            message.style.backgroundColor = 'lightgreen';
+        // IL n'y a pas d'erreur appeler le callback pour lui deleguer la suite
+        if(WAPI.errorMsgSpan){
+            WAPI.errorMsgSpan.innerHTML = result.message;
+            WAPI.errorMsgSpan.style.display = 'block';
+            WAPI.errorMsgSpan.style.backgroundColor = 'lightgreen';
         }
         if(success){
             success.innerHTML = "Sucess";
@@ -398,9 +401,6 @@ WRTechAPI.prototype.handleResponse = function(result) {
     if(waiting && result.code != CODE_WAITING){
         waiting.style.display = 'none';
     }
-
-
-
 }
 
 const CODE_WAITING = 105;

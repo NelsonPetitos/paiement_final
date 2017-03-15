@@ -266,16 +266,16 @@ function saveToken(data, socket){
         res.setEncoding('utf8');
         
         res.on('data', function (chunk) {
-            console.log('une nouvelle piece de /api/tokens');
+            // console.log('une nouvelle piece de /api/tokens');
             rawData += chunk;
         });
 
         res.on('end', function(){
             let token = JSON.parse(rawData);
-            console.log('Toutes les pieces de  /api/tokens');
+            // console.log('Toutes les pieces de  /api/tokens');
             // let token = rawData;
-            console.log(rawData);
-            console.log(token);
+            // console.log(rawData);
+            // console.log(token);
             if(token.err){
                 //Il y'a erreur
                 console.log('Error creating the token');
@@ -289,7 +289,7 @@ function saveToken(data, socket){
                 socket.disconnect();
             }else{
                 //Send my request to the Mobile server and wait for the validation
-                console.log('Attente de la requete par le back de l\'application du client');
+                // console.log('Attente de la requete par le back de l\'application du client');
                 let data = token.data;
                 let result = {
                     data:{apikey: data.apikey, amount: data.amount, token: data.token},
