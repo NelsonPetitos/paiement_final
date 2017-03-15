@@ -266,6 +266,8 @@ WRTechAPI.prototype.setCountriesChangeEventListener = function(){
                     WAPI.showPhoneOperatorList();
                 }
             }
+        }else{
+            WAPI.hidePhoneOperatorList();
         }
         
     })
