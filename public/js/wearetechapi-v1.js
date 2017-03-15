@@ -23,20 +23,34 @@ function verifiedPhone(phone, country, operator){
 
 WRTechAPI.prototype.setApiKey = function(newKey){
     this.apiKey = newKey;
-    // console.log("new api key = "+ newKey);
 }
 
 WRTechAPI.prototype.setErrorMsgSpan = function(errorMsgSpan){
     this.errorMsgSpan = errorMsgSpan;
-    // console.log("new api key = "+ newKey);
+}
+
+WRTechAPI.prototype.setWaitingBtn = function(waitingBtn){
+    this.waitingBtn = waitingBtn;
+}
+
+WRTechAPI.prototype.setEmailInputText = function(emailInputText){
+    this.emailInputText = emailInputText;
+}
+
+WRTechAPI.prototype.setModalDiv = function(modalDiv){
+    this.modalDiv = modalDiv;
+}
+
+WRTechAPI.prototype.setPhoneInputText = function(phoneInputText){
+    this.phoneInputText = phoneInputText;
 }
 
 WRTechAPI.prototype.setCountriesSpinner = function(countriesSpinner){
     this.countriesSpinner = countriesSpinner;
 }
 
-WRTechAPI.prototype.setErrorButton = function(errorButton){
-    this.errorButton= errorButton;
+WRTechAPI.prototype.setErrorBtn = function(errorBtn){
+    this.errorBtn= errorBtn;
     this.setErrorButtonEventListener();
 }
 
@@ -50,8 +64,8 @@ WRTechAPI.prototype.setPhoeOperatorsList = function(phoneOperatorsSelectList){
     // this.setCountriesChangeEventListener();
 }
 
-WRTechAPI.prototype.setSuccessButton = function(successButton){
-    this.successButton = successButton;
+WRTechAPI.prototype.setSuccessBtn = function(successBtn){
+    this.successBtn = successBtn;
     this.setSuccessButtonEventListener()
 }
 
@@ -118,9 +132,29 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
                         let result = JSON.parse(this.responseText);
                         document.body.insertAdjacentHTML('beforeend', result.box);
 
+                        let modalDiv = document.getElementById('wearetech_modal');
+                        if(modalDiv){
+                            WAPI.setModalDiv(modalDiv);
+                        }
+
+                        let emailInput = document.getElementById('wearetech_client_email');
+                        if(emailInput){
+                            WAPI.setEmailInputText(emailInput);
+                        }
+
+                        let phoneInput = document.getElementById('wearetech_phone_number');
+                        if(phoneInput){
+                            WAPI.setPhoneInputText(phoneInput);
+                        }
+
                         let phonOp = document.getElementById("wearetech_phone_operator");
                         if(phonOp){
                             WAPI.setPhoeOperatorsList(phonOp);
+                        }
+
+                        let waitingBtn = document.getElementById('wearetech_waiting');
+                        if(waitingBtn){
+                            WAPI.setWaitingBtn(waitingBtn);
                         }
 
                         let msgSpan = document.getElementById('wearetech_message');
@@ -130,12 +164,12 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
 
                         let errorBtn = document.getElementById("wearetech_error");
                         if(errorBtn){
-                            WAPI.setErrorButton(errorBtn);
+                            WAPI.setErrorBtn(errorBtn);
                         }
 
                         let successBtn = document.getElementById("wearetech_success");
                         if(successBtn){
-                            WAPI.setSuccessButton(successBtn);
+                            WAPI.setSuccessBtn(successBtn);
                         }
 
                         let valBtn = document.getElementById("wearetech_validate");
@@ -178,9 +212,12 @@ WRTechAPI.prototype.setApiCallback = function(resolve){
 WRTechAPI.prototype.setValidateButtonEventListemer = function(){
     this.validateButton.addEventListener("click", function (even) {
         if(typeof io !== 'undefined'){
-            // console.log('Le io est bien definie dans ce fichier');
-            let phone = document.getElementById('wearetech_phone_number').value;
-            let email = document.getElementById('wearetech_client_email').value;
+            if(WAPI.emailInputText){
+                let email = WAPI.emailInputText.value;
+            }
+            if(WAPI.phoneInputText){
+                let phone = WAPI.phoneInputText.value;
+            }
             let amount = document.getElementById('wearetech_transaction_amount').value;
             let country = WAPI.countriesSelectList.value;
             let operator = WAPI.phoneOperatorsSelectList.value;
@@ -228,19 +265,17 @@ WRTechAPI.prototype.setValidateButtonEventListemer = function(){
 }
 
 WRTechAPI.prototype.setErrorButtonEventListener = function() {
-    this.errorButton.addEventListener("click", function() {
-        let modaldiv = document.getElementById('wearetech_modal');
-        if(modaldiv){
-            document.body.removeChild(modaldiv);
+    this.errorBtn.addEventListener("click", function() {
+        if(WAPI.modalDiv){
+            document.body.removeChild(WAPI.modalDiv);
         }
     });
 }
 
 WRTechAPI.prototype.setSuccessButtonEventListener = function() {
-    this.successButton.addEventListener("click", function() {
-        let modaldiv = document.getElementById('wearetech_modal');
-        if(modaldiv){
-            document.body.removeChild(modaldiv);
+    this.successBtn.addEventListener("click", function() {
+        if(WAPI.modalDiv){
+            document.body.removeChild(WAPI.modalDiv);
         }
     });
 }
@@ -337,69 +372,76 @@ WRTechAPI.prototype.handlePhoneError = function () {
 
 
 WRTechAPI.prototype.waitingAction = function () {
-    let waiting = document.getElementById('wearetech_waiting');
-    if(waiting){
-        waiting.style.display = 'inline-block';
-        waiting.disabled = true;
+    // let waiting = document.getElementById('wearetech_waiting');
+    if(this.waitingBtn){
+        this.waitingBtn.style.display = 'inline-block';
+        this.waitingBtn.disabled = true;
         this.validateButton.style.display = 'none';
 
-        document.getElementById('wearetech_client_email').disabled = true;
-        document.getElementById('wearetech_phone_number').disabled = true;
-        document.getElementById('wearetech_country_code').disabled = true;
+        if(this.emailInputText){
+            this.emailInputText.disabled = true;
+        }
+        if(this.phoneInputText){
+            this.phoneInputText.disabled = true;
+        }
+        // document.getElementById('wearetech_client_email').disabled = true;
+        // document.getElementById('wearetech_phone_number').disabled = true;
+        if(this.countriesSelectList){
+            this.countriesSelectList.disabled = true;
+        }
+        if(this.phoneOperatorsSelectList){
+            this.phoneOperatorsSelectList.disabled = true;
+        }
     }
 }
 
+// WRTechAPI.prototype.removeAll = function(){
+//     if(this.emailInputText){
+
+//     }
+// }
+
 WRTechAPI.prototype.handleResponse = function(result) {
-    // document.getElementById('wearetech_client_email').disabled = false;
-    // document.getElementById('wearetech_phone_number').disabled = false;
-
-    // let message = document.getElementById('wearetech_message');
-    let waiting = document.getElementById('wearetech_waiting');
-    let error = document.getElementById('wearetech_error');
-    let success = document.getElementById('wearetech_success');
-
-    // console.log("Je reçois la réponse");
-
     if(result.error == true){
         if(result.code != CODE_WAITING){
             // Tâche inachevée le token doit 
-            if(WAPI.errorMsgSpan){
-                WAPI.errorMsgSpan.innerHTML = result.message;
-                WAPI.errorMsgSpan.style.display = 'block';
-                WAPI.errorMsgSpan.style.color = 'white';
-                WAPI.errorMsgSpan.style.backgroundColor = '#EF4836';
+            if(this.errorMsgSpan){
+                this.errorMsgSpan.innerHTML = result.message;
+                this.errorMsgSpan.style.display = 'block';
+                this.errorMsgSpan.style.color = 'white';
+                this.errorMsgSpan.style.backgroundColor = '#EF4836';
             }
-            if(error){
-                error.innerHTML = "Close";
-                error.style.display = 'block';
+            if(this.errorBtn){
+                this.errorBtn.innerHTML = "Close";
+                this.errorBtn.style.display = 'block';
             }
         }else{
             // une erreur c'est produite
             if(result.data != null){
                 //Le token a été crée et envoie au client avec succès
-                WAPI.apiCallback(result.data);
+                this.apiCallback(result.data);
             }
-            if(WAPI.errorMsgSpan){
-                WAPI.errorMsgSpan.innerHTML = result.message;
-                WAPI.errorMsgSpan.style.display = 'block';
-                WAPI.errorMsgSpan.style.backgroundColor = '#3FC380';
-                WAPI.errorMsgSpan.style.color = 'white';
+            if(this.errorMsgSpan){
+                this.errorMsgSpan.innerHTML = result.message;
+                this.errorMsgSpan.style.display = 'block';
+                this.errorMsgSpan.style.backgroundColor = '#3FC380';
+                this.errorMsgSpan.style.color = 'white';
             }
         }
     }else{
         // IL n'y a pas d'erreur appeler le callback pour lui deleguer la suite
-        if(WAPI.errorMsgSpan){
-            WAPI.errorMsgSpan.innerHTML = result.message;
-            WAPI.errorMsgSpan.style.display = 'block';
-            WAPI.errorMsgSpan.style.backgroundColor = 'lightgreen';
+        if(this.errorMsgSpan){
+            this.errorMsgSpan.innerHTML = result.message;
+            this.errorMsgSpan.style.display = 'block';
+            this.errorMsgSpan.style.backgroundColor = 'lightgreen';
         }
-        if(success){
-            success.innerHTML = "Sucess";
-            success.style.display = 'block';
+        if(this.successBtn){
+            this.successBtn.innerHTML = "Sucess";
+            this.successBtn.style.display = 'block';
         }
     }
-    if(waiting && result.code != CODE_WAITING){
-        waiting.style.display = 'none';
+    if(this.waitingBtn && result.code != CODE_WAITING){
+        this.waitingBtn.style.display = 'none';
     }
 }
 
