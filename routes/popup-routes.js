@@ -4,7 +4,7 @@ let pg = require('pg');
 
 
 router.post('/', (request, response) => {
-    console.log(request.ips);
+    // console.log(request.ip);
     let amount = request.body.amount;
 
     let box =` 	
@@ -407,16 +407,16 @@ router.post('/', (request, response) => {
     if(request.dburl){
         pg.connect(request.dburl, function(err, client, done) {
             if(err){
-                console.log('Erreur connection a la bd');
+                console.log('Erreur connection a la bd : popup-routes');
                 response.status(200).json({box: box, countries: []})
             }
             client.query('SELECT id, name, code FROM countries', [], function(err, result) {
                 done();
                 if(err){ 
-                    console.error('Erreur requete'); 
+                    console.error('Erreur requete : popup-routes'); 
                     response.status(200).json({box: box, countries: []})
                 }
-                console.log('Countries select');
+                console.log('Countries select : popup-routes');
                 response.status(200).json({box: box, countries: result.rows})
             });
         });

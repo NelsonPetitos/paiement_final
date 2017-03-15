@@ -252,7 +252,7 @@ function verifiedPhone(phone, country, operator){
 }
 
 function saveToken(data, socket){
-    let rawData ;
+    let rawData = '';
     let options = {
             hostname: server.address().address,
             port: server.address().port,
