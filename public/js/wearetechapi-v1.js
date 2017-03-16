@@ -25,8 +25,21 @@ WRTechAPI.prototype.setApiKey = function(newKey){
     this.apiKey = newKey;
 }
 
+WRTechAPI.prototype.setMomoMsgSpan = function(momoMsgSpan){
+    this.momoMsgSpan = momoMsgSpan;
+}
+
 WRTechAPI.prototype.setErrorMsgSpan = function(errorMsgSpan){
     this.errorMsgSpan = errorMsgSpan;
+}
+
+WRTechAPI.prototype.setValidateReferenceBtn = function(validateReferenceBtn){
+    this.validateReferenceBtn = validateReferenceBtn;
+}
+
+WRTechAPI.prototype.setCancelReferenceBtn = function(cancelReferenceBtn){
+    this.cancelReferenceBtn = cancelReferenceBtn;
+    this.setCancelReferenceBtnEventListener();
 }
 
 WRTechAPI.prototype.setWaitingBtn = function(waitingBtn){
@@ -35,6 +48,10 @@ WRTechAPI.prototype.setWaitingBtn = function(waitingBtn){
 
 WRTechAPI.prototype.setEmailInputText = function(emailInputText){
     this.emailInputText = emailInputText;
+}
+
+WRTechAPI.prototype.setReferenceInputText = function(referenceInputText){
+    this.referenceInputText = referenceInputText;
 }
 
 WRTechAPI.prototype.setModalDiv = function(modalDiv){
@@ -69,8 +86,8 @@ WRTechAPI.prototype.setSuccessBtn = function(successBtn){
     this.setSuccessButtonEventListener()
 }
 
-WRTechAPI.prototype.setValidateButton = function(validateButton){
-    this.validateButton = validateButton;
+WRTechAPI.prototype.setValidateBtn = function(validateBtn){
+    this.validateBtn = validateBtn;
     this.setValidateButtonEventListemer();
 }
 
@@ -106,7 +123,7 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
                 if(typeof amount !== 'undefined'){
                     let testAmount = getButton(this.dataset.wearetechkey);
                     if(testAmount != null && testAmount == amount){
-                        // let url = "http://192.168.15.117:5000/initpopup";
+                        // let url = "http://localhost:5000/initpopup";
                         let url = "https://paiementback.herokuapp.com/initpopup";
                         WAPI.xhttp.open("POST", url, true);
                         WAPI.xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -131,6 +148,26 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
                         //Il faut faire un controle avant d'inserer de nouveau le code suivant.
                         let result = JSON.parse(this.responseText);
                         document.body.insertAdjacentHTML('beforeend', result.box);
+
+                        let momoMsg = document.getElementById('wearetech_momo_message');
+                        if(momoMsg){
+                            WAPI.setMomoMsgSpan(momoMsg);
+                        }
+
+                        let valRefBtn = document.getElementById('wearetech_validate_reference');
+                        if(valRefBtn){
+                            WAPI.setValidateReferenceBtn(valRefBtn);
+                        }
+
+                        let cancelRefBtn = document.getElementById('wearetech_cancelled_reference');
+                        if(cancelRefBtn){
+                            WAPI.setCancelReferenceBtn(cancelRefBtn);
+                        }
+
+                        let refInput = document.getElementById('wearetech_reference_number');
+                        if(refInput){
+                            WAPI.setReferenceInputText(refInput);
+                        }
 
                         let modalDiv = document.getElementById('wearetech_modal');
                         if(modalDiv){
@@ -174,7 +211,7 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
 
                         let valBtn = document.getElementById("wearetech_validate");
                         if(valBtn){
-                            WAPI.setValidateButton(valBtn);
+                            WAPI.setValidateBtn(valBtn);
                         }
 
                         let cotrySpin = document.getElementById('countries_spinner');
@@ -210,7 +247,7 @@ WRTechAPI.prototype.setApiCallback = function(resolve){
 }
 
 WRTechAPI.prototype.setValidateButtonEventListemer = function(){
-    this.validateButton.addEventListener("click", function (even) {
+    this.validateBtn.addEventListener("click", function (even) {
         if(typeof io !== 'undefined'){
             let phone, email;
             if(WAPI.emailInputText){
@@ -267,17 +304,19 @@ WRTechAPI.prototype.setValidateButtonEventListemer = function(){
 
 WRTechAPI.prototype.setErrorButtonEventListener = function() {
     this.errorBtn.addEventListener("click", function() {
-        if(WAPI.modalDiv){
-            document.body.removeChild(WAPI.modalDiv);
-        }
+        WAPI.closeModal();
+    });
+}
+
+WRTechAPI.prototype.setCancelReferenceBtnEventListener = function() {
+    this.cancelReferenceBtn.addEventListener("click", function() {
+        WAPI.closeModal();
     });
 }
 
 WRTechAPI.prototype.setSuccessButtonEventListener = function() {
     this.successBtn.addEventListener("click", function() {
-        if(WAPI.modalDiv){
-            document.body.removeChild(WAPI.modalDiv);
-        }
+        WAPI.closeModal();
     });
 }
 
@@ -377,7 +416,7 @@ WRTechAPI.prototype.waitingAction = function () {
     if(this.waitingBtn){
         this.waitingBtn.style.display = 'inline-block';
         this.waitingBtn.disabled = true;
-        this.validateButton.style.display = 'none';
+        this.validateBtn.style.display = 'none';
 
         if(this.emailInputText){
             this.emailInputText.disabled = true;
@@ -412,11 +451,18 @@ WRTechAPI.prototype.removeAll = function(){
 
 }
 
+WRTechAPI.prototype.closeModal = function(){
+    if(this.modalDiv){
+        this.modalDiv.parentNode.removeChild(this.modalDiv);
+    }
+}
+
+
 WRTechAPI.prototype.handleResponse = function(result) {
     this.removeAll();
     if(result.error == true){
         if(result.code != CODE_WAITING){
-            // Tâche inachevée le token doit 
+            // une erreur c'est produite
             if(this.errorMsgSpan){
                 this.errorMsgSpan.innerHTML = result.message;
                 this.errorMsgSpan.style.display = 'block';
@@ -427,8 +473,10 @@ WRTechAPI.prototype.handleResponse = function(result) {
                 this.errorBtn.innerHTML = "Close";
                 this.errorBtn.style.display = 'block';
             }
+        }else if(result.code == MESSAGE_CODE){
+
         }else{
-            // une erreur c'est produite
+            // 
             if(result.data != null){
                 //Le token a été crée et envoie au client avec succès
                 this.apiCallback(result.data);
@@ -458,6 +506,7 @@ WRTechAPI.prototype.handleResponse = function(result) {
 }
 
 const CODE_WAITING = 105;
+const MESSAGE_CODE = 106;
 const WAPI = new WRTechAPI();
 const SOCKET_IO_URL = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js";
 // const SOCKETIOURL = "https://cdn.socket.io/socket.io-1.4.5.js";

@@ -3,7 +3,7 @@ let router = express.Router();
 let Token = require('../models/token');
 let User = require('../models/user')
 let pg = require('pg')
-const WAITING_CODE = 105;
+const MESSAGE_CODE = 106;
 let testParamater = function (argument) {
     let phoneSchema = /^[1-9][0-9]{8,}/;
     return( argument.socketid == null || argument.socketid == ''  ||
@@ -164,7 +164,7 @@ router.post('/init-paiement', (req, res) => {
                                             let result = {
                                                 data:{amount: token.amount, token: token.token},
                                                 error: true,
-                                                code: WAITING_CODE,
+                                                code: MESSAGE_CODE,
                                                 message: "Message pour le code qu'il doit saisir #150*...#"
                                             }
                                             socket.emit('wearetechapi_server_response', result);
