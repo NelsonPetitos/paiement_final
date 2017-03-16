@@ -3,9 +3,8 @@ let router = express.Router();
 let Token = require('../models/token');
 let User = require('../models/user')
 let pg = require('pg')
-
+const WAITING_CODE = 105;
 let testParamater = function (argument) {
-    // body... 
     let phoneSchema = /^[1-9][0-9]{8,}/;
     return( argument.socketid == null || argument.socketid == ''  ||
             argument.apikey == null || argument.apikey == '' ||
@@ -16,6 +15,8 @@ let testParamater = function (argument) {
             argument.phone == null ||  argument.phone == '' ||
             phoneSchema.test(argument.phone) == false)
 }
+
+
 
 router.post('/tokens', (req, res) => {
     let params = {
@@ -28,38 +29,22 @@ router.post('/tokens', (req, res) => {
         adress_ip:  req.body.adress_ip,
         email: req.body.email
     }
-
-    // console.log(req.body);
-    // let test = testParamater(params);
     if (testParamater(params)){
-        // response.send({ err: true, msg: "Invalid phone number", data: null })
-        res.status(200).json({ err: true, msg: "Send valid not empty parameters.", data: null })
+        return res.status(200).json({ err: true, msg: "Send valid not empty parameters.", data: null });
     } else {
-        // token.save().then((data) => {
-        //     console.log(`Token save`);
-        //     response.send({ err: false, msg: 'Token save', data: data });
-        // }, (err) => {
-        //     console.log(`Erreur de sauvegarde du token. ${err}`);
-        //     response.send({ err: true, msg: 'Save operation fail an error occur.', data: null });
-        // });
         pg.connect(req.dburl, function(err, client, done) {
             if(err){
                 console.log('Erreur connection a la bd : tokens-routes');
                 console.error(err); 
-                res.status(200).json({ err: true, msg: 'Database connection error.', data: null });
-                return;
+                return res.status(200).json({ err: true, msg: 'Database connection error.', data: null });
             }
             client.query('INSERT INTO tokens(phone, amount, apikey, socketid, adress_ip, phone_operator_id, country_id, email) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) returning token, phone, amount, apikey, socketid, adress_ip, phone_operator_id, country_id, email', [params.phone, params.amount, params.apikey, params.socketid, params.adress_ip, params.phone_operator_id, params.country_id, params.email], function(err, result) {
                 done();
                 if(err){ 
                     console.error('Erreur requete : tokens-routes'); 
                     console.log(err);
-                    res.status(200).json({ err: true, msg: 'Token constraints error.', data: null});
-                    return;
+                    return res.status(200).json({ err: true, msg: 'Token constraints error.', data: null});
                 }
-                
-                // console.log(result.rows);
-                
                 if(result.rows.length === 1){
                     let data = {
                         token: result.rows[0].token,
@@ -68,10 +53,10 @@ router.post('/tokens', (req, res) => {
                         apikey: result.rows[0].apikey
                     }
                     console.log('Token save : tokens-routes');
-                    res.status(200).json({ err: false, msg: 'Token create.', data: data });
+                    return res.status(200).json({ err: false, msg: 'Token create.', data: data });
                 }else{
                     console.log('Resultats multiples : tokens-routes');
-                    res.status(200).json({ err: false, msg: 'Multiple results not expected.', data: result.rows});
+                    return res.status(200).json({ err: false, msg: 'Multiple results not expected.', data: result.rows});
                 }
 
             });
@@ -79,8 +64,11 @@ router.post('/tokens', (req, res) => {
     }
 })
 
+
+
+
+
 router.post('/init-paiement', (req, res) => {
-    // Check if the modem is enable
     let params = {
         amount: req.body.amount,
         phone: req.body.phone,
@@ -88,43 +76,38 @@ router.post('/init-paiement', (req, res) => {
         publickey: req.body.publickey,
         privatekey: req.body.privatekey
     }
-    if(req.modemSocket == null){
-        return res.status(200).json({ err: true, msg: "Service temporary down. Contact API managers", data: null })
-        // res.send({ err: true, msg: 'Service temporary down. Contact API managers.', data: null });
+    if(params.amount == null || params.token == null || params.privatekey == null || params.publickey  == null || params.phone == null){
+        return res.status(400).json({ err: true, msg: 'Missing request body parameters.', data: null });
     }else{
-        //
-        if(params.amount == null || params.token == null || params.privatekey == null || params.publickey  == null || params.phone == null){
-            return res.send({ err: true, msg: 'Missing request body parameters.', data: null });
-        }else{
-            // res.send({ err: true, msg: 'Controle ok', data: null });
+        if(req.bdurl){
             pg.connect(req.dburl, function(err, client, done) {
                 if(err){
                     console.log('Erreur connection a la bd');
                     console.error(err); 
-                    return res.status(200).json({ err: true, msg: 'Database connection error.', data: null });
+                    return res.status(200).json({ err: true, msg: 'Database connection error.'});
                 }
                 client.query('SELECT * FROM users WHERE privatekey = $1 AND apikey = $2 ', [params.privatekey, params.publickey], function(err, result) {
                     done();
                     if(err){ 
                         console.error('Erreur requete sur la table users'); 
                         console.log(err);
-                        return res.status(200).json({ err: true, msg: 'Fetching user error.', data: null });
+                        return res.status(500).json({ err: true, msg: 'Fetching user error.'});
                     }
-                    // console.log(result.rows.length);
                     if(result.rows.length === 0){
-                        return res.status(200).json({ err: true, msg: 'Wrong private or public key.', data: null });
+                        return res.status(400).json({ err: true, msg: 'Wrong private or public key.'});
                     }
                     
                     if(result.rows.length > 1){
-                        return res.status(200).json({err: true, msg: 'Multiple request responses unexpected.', data: null})
+                        return res.status(500).json({err: true, msg: 'Multiple request responses unexpected.'})
                     }
 
                     if(result.rows.length === 1){
+                        let user = result.rows[0];
                         pg.connect(req.dburl, function(err, client, done){
                             if(err){
                                 console.log('Erreur connection a la bd');
                                 console.error(err); 
-                                return res.status(200).json({ err: true, msg: 'Database connection error.', data: null });
+                                return res.status(200).json({ err: true, msg: 'Database connection error.'});
                             }
                             console.log(params.token);
                             console.log(params.amount);
@@ -134,83 +117,71 @@ router.post('/init-paiement', (req, res) => {
                                 if(err){ 
                                     console.error('Erreur requete sur la table token'); 
                                     console.log(err);
-                                    return res.status(200).json({ err: true, msg: 'Fetching token error.', data: null });
+                                    return res.status(500).json({ err: true, msg: 'Fetching token error.'});
                                 }
-                                // console.log(result.rows.length);
                                 if(result.rows.length === 0){
                                     console.log(result.rows);
-                                    return res.status(200).json({ err: true, msg: 'Wrong token, or amount or apikey.', data: null });
+                                    return res.status(400).json({ err: true, msg: 'Wrong token, or amount or apikey.'});
                                 }
                                 
                                 if(result.rows.length > 1){
-                                    return res.status(200).json({err: true, msg: 'Multiple request responses unexpected.', data: null})
+                                    return res.status(500).json({err: true, msg: 'Multiple request responses unexpected.'})
                                 }
 
                                 if(result.rows.length === 1){
                                     let token = result.rows[0];
-                                    // console.log(`I can pass check if the socketid exist. size = ${req.listSocket.size}`);
+                                    // Creer un enregistrement dans la base de données pour signifier qu'une demande de paiement a été initiée
+                                    // En cas d'erreur il faut faire un message email au BDA pour lui dire qu'il y a des paiements qui pourront causer des problèmes car ils n'ont pas été enregistré
+                                    pg.connect(req.dburl, function(err, client, done){
+                                        if(err){
+                                            console.log('Pas de paiement enregistre. Erreur connection a la bd.');
+                                        }
+                                        client.query('INSERT INTO payments(token_id, user_id) VALUES ($1, $2)', [token.token, user.id], function(err, result) {
+                                            done();
+                                            if(err){ 
+                                                console.log('Pas de paiement enregistre. Erreur requete sur la table payments.');
+                                            }
+                                            if(result.rows.length === 1){
+                                                console.log('Paiement enregistre avec success');
+                                            }else{
+                                                console.log('Pas de paiement enregistre. Violation de contrainte.');
+                                            }  
+                                        });
+                                    });
+                                    // Trouver la socket du client web pour lui repondre
                                     let socketiter = req.listSocket.values();
                                     let socket = socketiter.next().value;
                                     while(socket){
                                         if(socket.id == token.socketid){
-                                            let message = {
-                                                phone: token.phone,
-                                                socket: token.socketid,
-                                                apikey: token.apikey,
-                                                secretkey: req.secretKey,
-                                                amount: token.amount,
+                                            // let message = {
+                                            //     phone: token.phone,
+                                            //     socket: token.socketid,
+                                            //     apikey: token.apikey,
+                                            //     secretkey: req.secretKey,
+                                            //     amount: token.amount,
+                                            // }
+                                            // req.modemSocket.emit('paiement', message);
+                                            let result = {
+                                                data:{amount: token.amount, token: token.token},
+                                                error: true,
+                                                code: WAITING_CODE,
+                                                message: "Message pour le code qu'il doit saisir #150*...#"
                                             }
-                                            req.modemSocket.emit('paiement', message);
-                                            return res.send({ err: false, msg: 'Paiement sucessfully initiate.', data: null });
+                                            socket.emit('wearetechapi_server_response', message);
+                                            return res.status(200).json({ err: false, msg: 'Paiement sucessfully initiate.' });
                                         }
                                         socket = socketiter.next().value;
                                     }
-                                    return res.status(200).json({err: true, msg: 'The user refresh the page and close the socket.', data: null})
-                                    // res.send({ err: true, msg: 'The user refresh the page and close the socket.', data: null });
+                                    return res.status(200).json({err: true, msg: 'The user refresh the page and close the socket.'})
                                 }
                                 
                             });
                         })
-                    }
-                    
+                    } 
                 });
             });
-
-            // User.findOne({ apikey: params.publickey, privatekey: params.privatekey }, (err, user) => {
-            //     if (err != null || user == null) {
-            //         console.log(`Wrong private or public key: ${err}`);
-            //         res.send({ err: true, msg: 'Wrong private or public key.', data: null });
-            //     } else {
-            //         // console.log("I can pass check if the token exist.");
-            //         Token.findOne({ apikey: params.publickey, amount: params.amount, phone: params.phone, token: params.token }, (err, token) => {
-            //             if (err != null || token == null) {
-            //                 console.log(`Token verification error : ${err}`);
-            //                 res.send({ err: true, msg: 'This token does not match this amount and this public key for this phone number', data: null });
-            //             } else {
-            //                 console.log(`I can pass check if the socketid exist. size = ${req.listSocket.size}`);
-            //                 let socketiter = req.listSocket.values();
-            //                 let socket = socketiter.next().value;
-            //                 while(socket){
-            //                     if(socket.id == token.socketid){
-            //                         let message = {
-            //                             phone: token.phone,
-            //                             socket: token.socketid,
-            //                             apikey: token.apikey,
-            //                             secretkey: req.secretKey,
-            //                             amount: token.amount,
-            //                         }
-            //                         req.modemSocket.emit('paiement', message);
-            //                         res.send({ err: false, msg: 'Paiement sucessfully initiate.', data: null });
-            //                         return;
-            //                     }
-            //                     socket = socketiter.next().value;
-            //                 }
-            //                 res.send({ err: true, msg: 'The user refresh the page and close the socket.', data: null });
-                          
-            //             }
-            //         });
-            //     }
-            // });
+        }else{
+            return res.status(500).json({ err: true, msg: "Internal server error. wrong database url." })
         }
     }
 })
