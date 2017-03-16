@@ -396,13 +396,24 @@ WRTechAPI.prototype.waitingAction = function () {
     }
 }
 
-// WRTechAPI.prototype.removeAll = function(){
-//     if(this.emailInputText){
+WRTechAPI.prototype.removeAll = function(){
+    let blockOne = document.getElementById('wearetech_block_one');
+    let blockTwo = document.getElementById('wearetech_block_two');
+    let blockThree = document.getElementById('wearetech_block_three');
+    if(blockOne){
+        document.body.removeChild(blockOne);
+    }
+    if(blockTwo){
+        document.body.removeChild(blockTwo);
+    }
+    if(blockThree){
+        document.body.removeChild(blockThree);
+    }
 
-//     }
-// }
+}
 
 WRTechAPI.prototype.handleResponse = function(result) {
+    this.removeAll();
     if(result.error == true){
         if(result.code != CODE_WAITING){
             // Tâche inachevée le token doit 

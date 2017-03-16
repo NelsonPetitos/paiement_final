@@ -301,7 +301,7 @@ router.post('/', (request, response) => {
 			<div style="background:#f5f5f5;padding:10px 30px 10px 30px;border-top:1px solid silver;border-top-left-radius:5px;border-top-right-radius:5px;">
 			    <input type='hidden' value="${amount}" id="wearetech_transaction_amount"/>
 				
-                <div style="margin-top:20px;">	
+                <div style="margin-top:20px;" id="wearetech_block_one">	
 					<div style="background:white;height:37px;border-radius:5px;-webkit-border-radius:5px;-moz-border-radius:5px;-o-border-radius:5px;">
 						<div style="position:relative;z-index:1;">
 							<select id="wearetech_country_code"></select>
@@ -331,7 +331,7 @@ router.post('/', (request, response) => {
 					</div>
 				</div>
 
-                <div style="margin-top:0px;">
+                <div style="margin-top:0px;" id="wearetech_block_two">
                     <div style="background:white;height:37px;border-radius:5px;-webkit-border-radius:5px;-moz-border-radius:5px;-o-border-radius:5px; display:none;" id="wearetech_phone_operator_container">
                         <div style="position:relative;z-index:1;">
                             <select id="wearetech_phone_operator"></select>
@@ -352,7 +352,7 @@ router.post('/', (request, response) => {
                     </div>
                 </div>
 
-				<div style="margin-top:20px;">
+				<div style="margin-top:20px;" id="wearetech_block_three">
 					<span style="border-radius: 4px;display:inline-block; text-align:center; font-weight:bold; font-size:12px; background-color:#3ea8e5;color:#FFF;">Pour recevoir un reçu par mail entrez votre email</span>
                     <div style="background:white;border-radius:5px;height:84px;">    
 						<div style="margin-bottom:0px;z-index:10;position:relative;">
@@ -382,7 +382,8 @@ router.post('/', (request, response) => {
 						</div>
 					</div>
 				</div>
-				<div style="margin-top:20px;">
+
+				<div style="margin-top:20px;" id="wearetech_block_four">
 					<button style="" class="checkout paiement" id="wearetech_validate">
 						Pay ${amount} CFA
 					</button>
