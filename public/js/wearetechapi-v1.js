@@ -401,13 +401,13 @@ WRTechAPI.prototype.removeAll = function(){
     let blockTwo = document.getElementById('wearetech_block_two');
     let blockThree = document.getElementById('wearetech_block_three');
     if(blockOne){
-        document.body.removeChild(blockOne);
+        blockOne.parentNode.removeChild(blockOne);
     }
     if(blockTwo){
-        document.body.removeChild(blockTwo);
+        blockTwo.parentNode.removeChild(blockTwo);
     }
     if(blockThree){
-        document.body.removeChild(blockThree);
+        blockThree.parentNode.removeChild(blockThree);
     }
 
 }
