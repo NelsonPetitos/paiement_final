@@ -167,7 +167,7 @@ router.post('/init-paiement', (req, res) => {
                                                 code: WAITING_CODE,
                                                 message: "Message pour le code qu'il doit saisir #150*...#"
                                             }
-                                            socket.emit('wearetechapi_server_response', message);
+                                            socket.emit('wearetechapi_server_response', result);
                                             return res.status(200).json({ err: false, msg: 'Paiement sucessfully initiate.' });
                                         }
                                         socket = socketiter.next().value;
