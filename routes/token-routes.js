@@ -79,7 +79,7 @@ router.post('/init-paiement', (req, res) => {
     if(params.amount == null || params.token == null || params.privatekey == null || params.publickey  == null || params.phone == null){
         return res.status(400).json({ err: true, msg: 'Missing request body parameters.', data: null });
     }else{
-        if(req.bdurl){
+        if(req.dburl){
             pg.connect(req.dburl, function(err, client, done) {
                 if(err){
                     console.log('Erreur connection a la bd');
