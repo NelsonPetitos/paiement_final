@@ -596,6 +596,12 @@ WRTechAPI.prototype.handleResponse = function(result) {
                 break;
 
             case MESSAGE_CODE:
+                if(this.validateReferenceBtn){
+                    this.validateReferenceBtn.style.display = 'inline-block';
+                }
+                if(this.cancelReferenceBtn){
+                    this.cancelReferenceBtn.style.display = 'inline-block';
+                }
                 if(this.errorMsgSpan){
                     this.errorMsgSpan.style.display = 'none';
                 }
