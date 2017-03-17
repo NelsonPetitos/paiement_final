@@ -303,7 +303,7 @@ function checkPaymentWithModem(reference, token, socket){
     let options = {
             hostname: server.address().address,
             port: server.address().port,
-            path: `/api/tokens/${JSON.stringify(token)}`,
+            path: `/api/tokens/${token}`,
             method: 'GET'
     };
     let req = http.request(options, function(res) {
