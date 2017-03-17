@@ -176,23 +176,23 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
                         }
 
                         let blockTwo = document.getElementById('wearetech_block_two');
-                        if(blockOne){
-                           WAPI.setBlockOne(blockTwo);
+                        if(blockTwo){
+                           WAPI.setBlockTwo(blockTwo);
                         }
 
                         let blockThree = document.getElementById('wearetech_block_three');
                         if(blockThree){
-                           WAPI.setBlockOne(blockThree);
+                           WAPI.setBlockThree(blockThree);
                         }
 
                         let blockFour = document.getElementById('wearetech_block_four');
                         if(blockFour){
-                           WAPI.setBlockOne(blockFour);
+                           WAPI.setBlockFour(blockFour);
                         }
 
                         let blockFive = document.getElementById('wearetech_block_five');
-                        if(blockOne){
-                           WAPI.setBlockOne(blockFive);
+                        if(blockFive){
+                           WAPI.setBlockFive(blockFive);
                         }
 
                         let momoMsg = document.getElementById('wearetech_momo_message');
@@ -491,7 +491,7 @@ WRTechAPI.prototype.waitingAction = function () {
 WRTechAPI.prototype.removeBlockOne = function(){
     if(this.blockOne){
         this.blockOne.parentNode.removeChild(this.blockOne);
-        this.setBlockOne(null);
+        // this.setBlockOne(null);
         console.log('remove block one');
     }
 }
@@ -499,7 +499,7 @@ WRTechAPI.prototype.removeBlockOne = function(){
 WRTechAPI.prototype.removeBlockTwo = function(){
     if(this.blockTwo){
         this.blockTwo.parentNode.removeChild(this.blockTwo);
-        this.setBlockTwo(null);
+        // this.setBlockTwo(null);
         console.log('remove block two');
     }
 }
@@ -507,7 +507,7 @@ WRTechAPI.prototype.removeBlockTwo = function(){
 WRTechAPI.prototype.removeBlockThree = function(){
     if(this.blockThree){
         this.blockThree.parentNode.removeChild(this.blockThree);
-        this.setBlockThree(null);
+        // this.setBlockThree(null);
         console.log('remove block three');
     }
 }
@@ -515,21 +515,21 @@ WRTechAPI.prototype.removeBlockThree = function(){
 WRTechAPI.prototype.removeBlockFour = function(){
     if(this.blockFour){
         this.blockFour.parentNode.removeChild(this.blockFour);
-        this.setBlockFour(null);
+        // this.setBlockFour(null);
     }
 }
 
 WRTechAPI.prototype.removeBlockFive = function(){
     if(this.blockFive){
         this.blockFive.parentNode.removeChild(this.blockFive);
-        this.setBlockFive(null);
+        // this.setBlockFive(null);
     }
 }
 
 WRTechAPI.prototype.closeModal = function(){
     if(this.modalDiv){
         this.modalDiv.parentNode.removeChild(this.modalDiv);
-        this.setModalDiv(null);
+        // this.setModalDiv(null);
     }
 }
 
@@ -539,7 +539,7 @@ WRTechAPI.prototype.handleResponse = function(result) {
     this.removeBlockTwo();
     this.removeBlockThree();
     if(result.error == true){
-        switch (result.code) {
+        switch (parseInt(result.code)) {
             case CODE_WAITING:
                 if(result.data != null){
                     //Le token a été crée et envoie au client avec succès
