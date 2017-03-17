@@ -261,7 +261,7 @@ function saveToken(data, socket){
                 //Send my request to the Mobile server and wait for the validation
                 let data = token.data;
                 let result = {
-                    data:{amount: data.amount, token: data.token},
+                    data:{amount: data.amount, token: data.token, phone: data.phone},
                     error: true,
                     code: WAITING_CODE,
                     message: "Token send back. Do not refresh the page."
