@@ -386,7 +386,7 @@ router.post('/', (request, response) => {
 				</div>
 
 
-                <div style="margin-top:20px; display:block;" id="wearetech_block_four">
+                <div style="margin-top:20px; display:none;" id="wearetech_block_four">
                     <span id="wearetech_momo_message" style="border-radius: 4px;display:inline-block; text-align:center; font-weight:bold; font-size:12px; background-color:#3ea8e5;color:#FFF;" id="">Pour recevoir un reçu par mail entrez votre email</span>
                     <div style="background:white;border-radius:5px;height:38px; margin-top: 5px; margin-bottom: 10px;">    
 						<div style="margin-bottom:0px;z-index:10;position:relative;">
