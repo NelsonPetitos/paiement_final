@@ -113,7 +113,7 @@ router.post('/init-paiement', (req, res) => {
                             console.log(params.token);
                             console.log(params.amount);
                             console.log(params.publickey);
-                            client.query('SELECT * FROM tokens WHERE token = $1 AND amount = $2 AND apikey = $3', [params.token, params.amount, params.publickey], function(err, result) {
+                            client.query('SELECT tokens.token, tokens.amount, phone_operators.shortcode FROM tokens inner join phone_operators on tokens.phone_operator_id = phone_operators.id WHERE token = $1 AND amount = $2 AND apikey = $3', [params.token, params.amount, params.publickey], function(err, result) {
                                 done();
                                 if(err){ 
                                     console.error('Erreur requete sur la table token'); 
@@ -175,12 +175,13 @@ router.post('/init-paiement', (req, res) => {
                                             // console.log(result.rows);
                                             // console.log('Paiement enregistré avec success');
                                             if(result.rows.length === 1){
+                                                // Il faut recuperer le bon massage
                                                 console.log('Paiement enregistre avec success');
                                                 let result_client = {
                                                     data: {amount: token.amount, token: token.token},
                                                     error: true,
                                                     code: MESSAGE_CODE,
-                                                    message: "Message pour le code qu'il doit saisir #150*...#"
+                                                    message: token.shortcode
                                                 }
                                                 clientSocket.emit('wearetechapi_server_response', result_client);
                                                 return res.status(200).json({ err: false, msg: 'Paiement sucessfully initiate.' });
@@ -196,31 +197,6 @@ router.post('/init-paiement', (req, res) => {
                                             }  
                                         });
                                     });
-                                    // Trouver la socket du client web pour lui repondre
-                                    // let socketiter = req.listSocket.values();
-                                    // let socket = socketiter.next().value;
-                                    // while(socket){
-                                    //     if(socket.id == token.socketid){
-                                    //         // let message = {
-                                    //         //     phone: token.phone,
-                                    //         //     socket: token.socketid,
-                                    //         //     apikey: token.apikey,
-                                    //         //     secretkey: req.secretKey,
-                                    //         //     amount: token.amount,
-                                    //         // }
-                                    //         // req.modemSocket.emit('paiement', message);
-                                    //         let result = {
-                                    //             data:{amount: token.amount, token: token.token},
-                                    //             error: true,
-                                    //             code: MESSAGE_CODE,
-                                    //             message: "Message pour le code qu'il doit saisir #150*...#"
-                                    //         }
-                                    //         socket.emit('wearetechapi_server_response', result);
-                                    //         return res.status(200).json({ err: false, msg: 'Paiement sucessfully initiate.' });
-                                    //     }
-                                    //     socket = socketiter.next().value;
-                                    // }
-                                    // return res.status(200).json({err: true, msg: 'The user refresh the page and close the socket.'})
                                 }
                                 
                             });
