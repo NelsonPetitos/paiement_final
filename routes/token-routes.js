@@ -140,6 +140,7 @@ router.post('/init-paiement', (req, res) => {
                                             done();
                                             if(err){ 
                                                 console.log('Pas de paiement enregistre. Erreur requete sur la table payments.');
+                                                console.log(err);
                                             }
                                             if(result.rows.length === 1){
                                                 console.log('Paiement enregistre avec success');
