@@ -213,4 +213,42 @@ router.post('/init-paiement', (req, res) => {
     }
 })
 
+
+router.get('/tokens/:token', (req, res) => {
+    let params = {
+        token: req.body.token,
+    }
+    if(params.token !== ""){
+        if(req.dburl){
+            pg.connect(req.dburl, function(err, client, done) {
+                if(err){
+                    console.log('Erreur connection a la bd : tokens-routes/modem');
+                    console.error(err); 
+                    return res.status(500).json({ err: true, msg: 'Database connection error.'});
+                }
+                client.query('SELECT * FROM tokens WHERE token = $1', [params.token], function(err, result) {
+                    done();
+                    if(err){ 
+                        console.error('Erreur requete : tokens-routes/modem'); 
+                        console.log(err);
+                        return res.status(500).json({ err: true, msg: 'Query error.'});
+                    }
+                    if(result.rows.length === 1){
+                        console.log('Token find : tokens-routes/modem');
+                        return res.status(200).json({ err: false, msg: 'Token find.', data: result.rows[0] });
+                    }else{
+                        console.log('Resultats multiples : tokens-routes/modem');
+                        return res.status(400).json({ err: false, msg: 'Multiple results not expected.', data: result.rows});
+                    }
+
+                });
+            });
+        }else{
+            return res.status(500).json({ err: true, msg: 'Url not set.'});
+        }
+    }else{
+        return res.status(400).json({ err: true, msg: 'No parameter.'});
+    }
+})
+
 module.exports = router
