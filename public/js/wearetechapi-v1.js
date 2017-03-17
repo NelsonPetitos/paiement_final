@@ -602,6 +602,9 @@ WRTechAPI.prototype.handleResponse = function(result) {
                 if(this.cancelReferenceBtn){
                     this.cancelReferenceBtn.style.display = 'inline-block';
                 }
+                if(this.referenceInputText){
+                    this.referenceInputText.disabled = false;
+                }
                 if(this.errorMsgSpan){
                     this.errorMsgSpan.style.display = 'none';
                 }
