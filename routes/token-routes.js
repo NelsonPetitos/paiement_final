@@ -113,7 +113,7 @@ router.post('/init-paiement', (req, res) => {
                             console.log(params.token);
                             console.log(params.amount);
                             console.log(params.publickey);
-                            client.query('SELECT tokens.token, tokens.amount, phone_operators.shortcode FROM tokens inner join phone_operators on tokens.phone_operator_id = phone_operators.id WHERE token = $1 AND amount = $2 AND apikey = $3', [params.token, params.amount, params.publickey], function(err, result) {
+                            client.query('SELECT tokens.token, tokens.socketid, tokens.phone, tokens.apikey, tokens.amount, phone_operators.shortcode FROM tokens inner join phone_operators on tokens.phone_operator_id = phone_operators.id WHERE token = $1 AND amount = $2 AND apikey = $3', [params.token, params.amount, params.publickey], function(err, result) {
                                 done();
                                 if(err){ 
                                     console.error('Erreur requete sur la table token'); 
