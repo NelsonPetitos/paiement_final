@@ -145,82 +145,71 @@ io.on('connection', (socket) => {
     });
 
     socket.on('paiement', (data) => {
-        console.log('le modem vient de me dire : ');
-        console.log(data)
-        // if (data.secretKey == secretKey) {
-        //     listSocket.forEach((socket) => {
-        //         if (socket.id == data.socket) {
-        //             console.log("Sender socket find. The response send back to the browser")
-        //             let result = {
-        //                 // result: data.airtime,
-        //                 error: !data.status,
-        //                 message: "",
-        //                 code: data.errorCode,
-        //                 data: null
-        //             }
-        //             if(!data.status){
-        //                 switch(data.errorCode){
-        //                     //impossible d'établir la connexion avec le port du modem
-        //                     case 100: 
-        //                         // console.log("100");
-        //                         result.message = "Flitpay api error";
-        //                         break;
-        //                     //argument from web server is in wrong format
-        //                     case 101:
-        //                         // console.log("101");
-        //                         result.message = "Wrong data.";
-        //                         break;
-        //                     //erreur survenue lors de l'initiation du paiement
-        //                     case 102:
-        //                         // console.log("102");
-        //                         result.message = "Mobile network error. Close and try again.";
-        //                         break;
-        //                     //delai dépassé lors de l'attente de la réponse du client
-        //                     case 103:
-        //                         // console.log("103");
-        //                         result.message = "Session timeout. Action not complete.";
-        //                         break;
-        //                     //fond insuffisant pour initier la commande
-        //                     case 104:
-        //                         // console.log("104");
-        //                         result.message = "Insufficient funds.";
-        //                         break;
-        //                     //En attente de confirmation de l'opération sur le téléphone
-        //                     case 105:
-        //                         console.log('Attente de la réponse');
-        //                         result.message = "Complete paiement by dialing *126*1#";
-        //                         break;
-        //                     default:
-        //                         console.log(data.errorCode);
-        //                         result.message = 'Unknown error.';
-        //                 }
-        //             }else{
-        //                 result.message = "Check the phone"
-        //             }
-        //             socket.emit('wearetechapi_server_response', result)
-        //             if(data.errorCode != 105){
-        //                 socket.disconnect();
-        //             }
-        //         }
-        //     })
-        // }
+        // console.log('le modem vient de me dire : ');
+        // console.log(data);
+        if (data.secretKey == secretKey) {
+            listSocket.forEach((socket) => {
+                if (socket.id == data.socket) {
+                    console.log("Sender socket find. The response send back to the browser")
+                    let result = {
+                        // result: data.airtime,
+                        error: !data.status,
+                        message: "",
+                        code: data.errorCode,
+                        data: null
+                    }
+                    if(!data.status){
+                        switch(data.errorCode){
+                            //impossible d'établir la connexion avec le port du modem
+                            case 100: 
+                                // console.log("100");
+                                result.message = "Flitpay api error";
+                                break;
+                            //argument from web server is in wrong format
+                            case 101:
+                                // console.log("101");
+                                result.message = "Wrong data.";
+                                break;
+                            //erreur survenue lors de l'initiation du paiement
+                            case 102:
+                                // console.log("102");
+                                result.message = "Mobile network error. Close and try again.";
+                                break;
+                            //delai dépassé lors de l'attente de la réponse du client
+                            case 103:
+                                // console.log("103");
+                                result.message = "Session timeout. Action not complete.";
+                                break;
+                            //fond insuffisant pour initier la commande
+                            case 104:
+                                // console.log("104");
+                                result.message = "Insufficient funds.";
+                                break;
+                            //En attente de confirmation de l'opération sur le téléphone
+                            case 105:
+                                console.log('Attente de la réponse');
+                                result.message = "Complete paiement by dialing *126*1#";
+                                break;
+                            default:
+                                console.log(data.errorCode);
+                                result.message = 'Unknown error.';
+                        }
+                    }else{
+                        result.message = "Check the phone"
+                    }
+                    socket.emit('wearetechapi_server_response', result)
+                    if(data.errorCode != 105){
+                        socket.disconnect();
+                    }
+                }
+            })
+        }
     });
 
     socket.on('modemSocket', (data) => {
         if (data.secretKey == secretKey) {
             modemSocket = socket;
-            console.log(`The modem just connect and it\'s identified ${socket.id}`)
-            // let i;
-            // for(i = 1; i <= 50; i++){
-            //     let message = {
-            //         phone: "674180157",
-            //         socket: "oxuk8mJw0C1-qxWmAAAA",
-            //         apikey: "9b7150c692d2bc05c341028f2743d4781172cd5c",
-            //         secretkey: secretKey,
-            //         amount: "10500",
-            //     }
-            //     modemSocket.emit('paiement', message);
-            // }
+            console.log(`The modem just connect and it\'s identified ${socket.id}`);
         }
     });
 
@@ -356,7 +345,6 @@ function checkPaymentWithModem(reference, token, socket){
     });
     
     // write data to request body
-    // req.write(token);
     req.end();
 }
 
