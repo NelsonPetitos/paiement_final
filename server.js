@@ -146,7 +146,7 @@ io.on('connection', (socket) => {
 
     socket.on('paiement', (data) => {
         // console.log('le modem vient de me dire : ');
-        // console.log(data);
+        console.log(data);
         if (data.secretKey == secretKey) {
             listSocket.forEach((socket) => {
                 if (socket.id == data.socket) {
