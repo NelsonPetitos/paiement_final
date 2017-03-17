@@ -387,7 +387,7 @@ router.post('/', (request, response) => {
 
 
                 <div style="margin-top:20px; display:none;" id="wearetech_block_four">
-                    <span id="wearetech_momo_message" style="border-radius: 4px;display:inline-block; text-align:center; font-weight:bold; font-size:12px; background-color:#3ea8e5;color:#FFF;" id="">Pour recevoir un reçu par mail entrez votre email</span>
+                    <span id="wearetech_momo_message" style="border-radius: 4px;display:inline-block; text-align:center; font-weight:bold; font-size:13px; background-color:#3ea8e5;color:#FFF;" id="">Pour recevoir un reçu par mail entrez votre email</span>
                     <div style="background:white;border-radius:5px;height:38px; margin-top: 5px; margin-bottom: 10px;">    
 						<div style="margin-bottom:0px;z-index:10;position:relative;">
 							<input id="wearetech_reference_number" style="width:82%;border:none;height:38px;padding-left:35px;padding-right:5px;font-size:13px;border-bottom-left-radius:5px;border-bottom-right-radius:5px;border:1px solid rgba(0,0,0,0.15);margin-bottom:0px;background:transparent;" placeholder="Numéro de reférence" type="text">
