@@ -215,6 +215,7 @@ router.post('/init-paiement', (req, res) => {
 
 
 router.get('/tokens/:token', (req, res) => {
+    console.log(req.params.token);
     if(req.dburl){
         pg.connect(req.dburl, function(err, client, done) {
             if(err){
