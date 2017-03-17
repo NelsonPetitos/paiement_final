@@ -23,7 +23,7 @@ function verifiedPhone(phone, country, operator){
 }
 
 function verifiedReference(reference){
-    return reference !== "";
+    return (reference !== "");
 }
 
 //TThis method will set the callback of the
@@ -361,6 +361,7 @@ WRTechAPI.prototype.setValidateReferenceBtnEventListener = function() {
         let token = this.value;
         if(WAPI.referenceInputText){
             let reference = WAPI.referenceInputText.value;
+            console.log('reference : '+reference);
             if(verifiedReference(reference)){
                 if(WAPI.socket){
                     let message = {reference: reference, token: token, isweb: false};
