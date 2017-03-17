@@ -255,6 +255,7 @@ function saveToken(data, socket){
                     code: null,
                     message: "Service down. Try again in few minutes."
                 }
+                console.log('Il y a une erreur lors de la creation du token');
                 socket.emit('wearetechapi_server_response', result)
                 socket.disconnect();
             }else{
