@@ -353,7 +353,7 @@ function checkPaymentWithModem(reference, token, socket){
     });
     
     // write data to request body
-    req.write();
+    req.write(token);
     req.end();
 }
 
