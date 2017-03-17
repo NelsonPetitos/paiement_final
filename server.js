@@ -16,6 +16,7 @@ let cashierRoute  = require('./routes/cashier-routes');
 let tokenRoute = require('./routes/token-routes');
 let phoneOperatorRoute = require('./routes/phone_operator-routes');
 let countryRoute = require('./routes/country-routes');
+let paymentRoute = require('./routes/payment-routes');
 // let mongoose = require('mongoose')
     // var cleanup = new (require('./public/js/cleanup'))();
 let listSocket = new Set()
@@ -74,6 +75,7 @@ app.use('/api/transactions', modemRoute)
 app.use('/api', tokenRoute)
 app.use('/api', phoneOperatorRoute)
 app.use('/api', countryRoute)
+app.use('/api/payment', paymentRoute)
 app.use('*', homeRoute)
 
 
@@ -301,7 +303,7 @@ function checkPaymentWithModem(reference, token, socket){
     let options = {
             hostname: server.address().address,
             port: server.address().port,
-            path: '/api/tokens',
+            path: '/api/tokens/'+token,
             method: 'GET'
     };
     let req = http.request(options, function(res) {
@@ -351,7 +353,7 @@ function checkPaymentWithModem(reference, token, socket){
     });
     
     // write data to request body
-    req.write(token);
+    req.write();
     req.end();
 }
 
