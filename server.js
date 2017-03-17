@@ -315,8 +315,10 @@ function checkPaymentWithModem(reference, token, socket){
 
         res.on('end', function(){
             let result = JSON.parse(rawData);
-            if(result.err){
+            console.log(result)
+            if(result.err === true){
                 //Il y'a erreur
+                console.log('Il y a une erreur')
                 let message = {
                     data: null,
                     error: true,
@@ -327,6 +329,7 @@ function checkPaymentWithModem(reference, token, socket){
                 socket.disconnect();
             }else{
                 //Send my request to the Mobile server and wait for the validation
+                console.log('Je communique avec le modem');
                 let message = {
                     phone: result.data.phone,
                     socket: result.data.socketid,
