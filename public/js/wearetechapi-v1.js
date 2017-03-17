@@ -364,6 +364,7 @@ WRTechAPI.prototype.setValidateReferenceBtnEventListener = function() {
             console.log('reference : '+reference);
             if(verifiedReference(reference)){
                 if(WAPI.socket){
+                    WAPI.waitingAction();
                     let message = {reference: reference, token: token, isweb: false};
                     WAPI.socket.emit('wearetechapi_client_emit', message);
                 }else{
@@ -500,8 +501,15 @@ WRTechAPI.prototype.waitingAction = function () {
     if(this.waitingBtn){
         this.waitingBtn.style.display = 'inline-block';
         this.waitingBtn.disabled = true;
-        this.validateBtn.style.display = 'none';
-
+        if(this.validateBtn){
+            this.validateBtn.style.display = 'none';
+        }
+        if(this.validateReferenceBtn){
+            this.validateReferenceBtn.style.display = 'none';
+        }
+        if(this.cancelReferenceBtn){
+            this.cancelReferenceBtn.style.display = 'none';
+        }
         if(this.emailInputText){
             this.emailInputText.disabled = true;
         }
@@ -515,6 +523,9 @@ WRTechAPI.prototype.waitingAction = function () {
         }
         if(this.phoneOperatorsSelectList){
             this.phoneOperatorsSelectList.disabled = true;
+        }
+        if(this.referenceInputText){
+            this.referenceInputText.disabled = true;
         }
     }
 }
