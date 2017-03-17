@@ -156,6 +156,7 @@ router.post('/init-paiement', (req, res) => {
                                                 message: "Service temporary down. Try later."
                                             }
                                             clientSocket.emit('wearetechapi_server_response', result_client);
+                                            clientSocket.disconnect();
                                             return res.status(500).json({ err: true, msg: 'Service temporary down. Try later.' });
                                         }
                                         client.query('INSERT INTO payments(token_id, user_id) VALUES ($1, $2) returning id', [token.token, user.id], function(err, result) {
@@ -170,6 +171,7 @@ router.post('/init-paiement', (req, res) => {
                                                     message: "Service temporary down. Try later."
                                                 }
                                                 clientSocket.emit('wearetechapi_server_response', result_client);
+                                                clientSocket.disconnect();
                                                 return res.status(500).json({ err: true, msg: 'Service temporary down. Try later.' });
                                             }
                                             // console.log(result.rows);
@@ -193,6 +195,7 @@ router.post('/init-paiement', (req, res) => {
                                                     message: "Service temporary down. Try later."
                                                 }
                                                 clientSocket.emit('wearetechapi_server_response', result_client);
+                                                clientSocket.disconnect();
                                                 return res.status(500).json({ err: true, msg: 'Service temporary down. Try later.' });
                                             }  
                                         });

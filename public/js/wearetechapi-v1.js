@@ -1,8 +1,9 @@
 'use strict'
 
 function WRTechAPI(){
+    this.socket = null
     this.xhttp = null; 
-    this.apiKey = "0000000000000000000000";
+    this.apiKey = null;
     this.apiCallback = function(){
         alert("Set the callback method to handle the result.");
     };
@@ -19,6 +20,17 @@ function getButton(anid){
 
 function verifiedPhone(phone, country, operator){
     return !(typeof phone == 'undefined' || phone == null || typeof country == 'undefined' || country == 0 || typeof operator == 'undefined' || operator == 0 || /^[1-9][0-9]{8,}/.test(phone) == false)
+}
+
+function verifiedReference(reference){
+    return reference !== "";
+}
+
+//TThis method will set the callback of the
+WRTechAPI.prototype.setApiCallback = function(resolve){
+    if(typeof resolve === 'function'){
+        this.apiCallback = resolve;
+    }
 }
 
 WRTechAPI.prototype.setApiKey = function(newKey){
@@ -285,13 +297,6 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
     // console.log(btnStack);
 }
 
-//TThis method will set the callback of the
-WRTechAPI.prototype.setApiCallback = function(resolve){
-    if(typeof resolve === 'function'){
-        this.apiCallback = resolve;
-    }
-}
-
 WRTechAPI.prototype.setValidateButtonEventListemer = function(){
     this.validateBtn.addEventListener("click", function (even) {
         if(typeof io !== 'undefined'){
@@ -322,8 +327,9 @@ WRTechAPI.prototype.setValidateButtonEventListemer = function(){
                 // let socket = io.connect('http://192.168.15.117:5000');
 
                 if(typeof socket !== 'undefined'){
+                    WAPI.socket = socket;
                     // console.log('Connection par socket avec le serveur reussie.'+socket.id);
-                    let message = {phone: phone, country: country, operator: operator, apikey: WAPI.apiKey, amount: amount, email: email};
+                    let message = {phone: phone, country: country, operator: operator, apikey: WAPI.apiKey, amount: amount, email: email, isweb: true};
                     socket.emit('wearetechapi_client_emit', message);
 
                     //dismiss modal view after the connect has been send
@@ -352,6 +358,30 @@ WRTechAPI.prototype.setValidateReferenceBtnEventListener = function() {
     this.validateReferenceBtn.addEventListener("click", function() {
         console.log('Valider la reference')
         console.log(this.value);
+        let token = this.value;
+        if(WAPI.referenceInputText){
+            let reference = WAPI.referenceInputText.value;
+            if(verifiedReference(reference)){
+                if(WAPI.socket){
+                    let message = {reference: reference, token: token, isweb: false};
+                    WAPI.socket.emit('wearetechapi_client_emit', message);
+                }else{
+                    console.log('La socket est fermée');
+                    alert('Socket close.');
+                }
+            }else{
+                if(WAPI.errorMsgSpan){
+                    WAPI.errorMsgSpan.innerHTML = "Required reference";
+                    WAPI.errorMsgSpan.style.display = 'block';
+                    WAPI.errorMsgSpan.style.backgroundColor = '#EF4836';
+                    WAPI.errorMsgSpan.style.color = '#FFF';
+                }else{
+                    alert('Required reference. You edit the source page.');
+                }
+            }
+        }else{
+            alert('You edit the page source.');
+        }
     });
 }
 
@@ -559,12 +589,12 @@ WRTechAPI.prototype.handleResponse = function(result) {
                 }
                 if(this.blockFour){
                     this.blockFour.style.display = 'block';
-                    if(this.momoMsgSpan){
-                        this.momoMsgSpan.innerHTML = result.message;
-                    }
-                    if(result.data != null && this.validateReferenceBtn){
-                        this.validateReferenceBtn.value = result.data.token;
-                    }
+                }
+                if(this.momoMsgSpan){
+                    this.momoMsgSpan.innerHTML = result.message;
+                }
+                if(result.data != null && this.validateReferenceBtn){
+                    this.validateReferenceBtn.value = result.data.token;
                 }
                 break;
 

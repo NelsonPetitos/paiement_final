@@ -90,76 +90,59 @@ io.on('connection', (socket) => {
 
     //All to do if socket it's not the server
     socket.on('wearetechapi_client_emit', (data) => {
-        console.log("Donnes recues du navigateur")
-        //Verifier le numéro de téléphone et la clé publique
-        // let randNum = (Math.random()*1e32).toString(36);
-        let phone = data.phone;
-        let country = data.country;
-        let operator = data.operator;
+        // console.log("Donnes recues du navigateur")
+        if(data.isweb === true){
+            // Les données st pour le serveur web
+            let phone = data.phone;
+            let country = data.country;
+            let operator = data.operator;
 
-        
-        if(!verifiedPhone(phone, country, operator)){
-            let result = {
-                error: true,
-                message: "Incorrect parameters.",
-                code: null
-            }
-            console.log('Invalid phone number.');
-            socket.emit('wearetechapi_server_response', result);
-        }else{
-            if (typeof modemSocket == 'undefined') {
-                //Le modem n'est pas connecte
-                console.log('Le modem n\'est pas connecte ');
-                let result = {
-                    data: null,
-                    error: true,
-                    code: null,
-                    message: "Service down. Try again later."
-                }
-                socket.emit('wearetechapi_server_response', result)
-                socket.disconnect();
-            }else{
-                console.log('Valid phone number i call save token method');
-                let token = {
-                    amount: data.amount,
-                    apikey: data.apikey,
-                    country: country,
-                    operator: operator,
-                    phone:  data.phone,
-                    adress_ip: clientIp,
-                    email: data.email,
-                    socketid: socket.id
-                }
-                saveToken(token, socket);
-            }
             
+            if(!verifiedPhone(phone, country, operator)){
+                let result = {
+                    error: true,
+                    message: "Incorrect parameters.",
+                    code: null
+                }
+                console.log('Invalid phone number.');
+                socket.emit('wearetechapi_server_response', result);
+            }else{
+                if (typeof modemSocket == 'undefined') {
+                    //Le modem n'est pas connecte
+                    console.log('Le modem n\'est pas connecte ');
+                    let result = {
+                        error: true,
+                        code: null,
+                        message: "Service down. Try again later."
+                    }
+                    socket.emit('wearetechapi_server_response', result)
+                    socket.disconnect();
+                }else{
+                    console.log('Valid phone number i call save token method');
+                    let token = {
+                        amount: data.amount,
+                        apikey: data.apikey,
+                        country: country,
+                        operator: operator,
+                        phone:  data.phone,
+                        adress_ip: clientIp,
+                        email: data.email,
+                        socketid: socket.id
+                    }
+                    saveToken(token, socket);
+                }
+                
+            }
+        }else{
+            // Les données st pour le serveur mobile
+            console.log('Données du  serveur mobile');
+            console.log(data)
         }
-        
-        // if (typeof modemSocket == 'undefined') {
-        //     //Le modem n'est pas connecte
-        //     console.log('Le modem n\'est pas connecte ');
-        //     let result = {
-        //         result: null,
-        //         error: true,
-        //         message: "modem unavailable"
-        //     }
-        //     socket.emit('wearetechapi_server_response', result)
-        //     socket.disconnect();
-        // } else {
-        //     //Send my request to the Mobile server and wait for the validation
-            // let message = {
-            //     phone: data.phone,
-            //     socket: socket.id,
-            //     apikey: data.apiKey,
-            //     secretkey: secretKey,
-            //     amount: data.amount,
-            // }
-            // modemSocket.emit('paiement', message);
-        // }
+            
     });
 
     socket.on('paiement', (data) => {
-        console.log(data)
+        // console.log(data)
         if (data.secretKey == secretKey) {
             listSocket.forEach((socket) => {
                 if (socket.id == data.socket) {
