@@ -4,6 +4,7 @@ let Token = require('../models/token');
 let User = require('../models/user')
 let pg = require('pg')
 const MESSAGE_CODE = 106;
+const DATABASE_ERROR = 0;
 let testParamater = function (argument) {
     let phoneSchema = /^[1-9][0-9]{8,}/;
     return( argument.socketid == null || argument.socketid == ''  ||
@@ -130,50 +131,96 @@ router.post('/init-paiement', (req, res) => {
 
                                 if(result.rows.length === 1){
                                     let token = result.rows[0];
+                                    let socketiter = req.listSocket.values();
+                                    let socket = socketiter.next().value;
+                                    let clientSocket;
+                                    while(socket){
+                                        if(socket.id == token.socketid){
+                                            clientSocket = socket;
+                                            break;
+                                        }
+                                        socket = socketiter.next().value;
+                                    }
+                                    if(!clientSocket){
+                                        return res.status(200).json({err: true, msg: 'The user refresh the page and close the socket.'})
+                                    }
                                     // Creer un enregistrement dans la base de données pour signifier qu'une demande de paiement a été initiée
                                     // En cas d'erreur il faut faire un message email au BDA pour lui dire qu'il y a des paiements qui pourront causer des problèmes car ils n'ont pas été enregistré
                                     pg.connect(req.dburl, function(err, client, done){
                                         if(err){
                                             console.log('Pas de paiement enregistre. Erreur connection a la bd.');
+                                            let result_client = {
+                                                data: null,
+                                                error: true,
+                                                code: DATABASE_ERROR,
+                                                message: "Service temporary down. Try later."
+                                            }
+                                            clientSocket.emit('wearetechapi_server_response', result_client);
+                                            return res.status(500).json({ err: true, msg: 'Service temporary down. Try later.' });
                                         }
-                                        client.query('INSERT INTO payments(token_id, user_id) VALUES ($1, $2)', [token.token, user.id], function(err, result) {
+                                        client.query('INSERT INTO payments(token_id, user_id) VALUES ($1, $2) returning id', [token.token, user.id], function(err, result) {
                                             done();
                                             if(err){ 
                                                 console.log('Pas de paiement enregistre. Erreur requete sur la table payments.');
                                                 console.log(err);
+                                                let result_client = {
+                                                    data: null,
+                                                    error: true,
+                                                    code: DATABASE_ERROR,
+                                                    message: "Service temporary down. Try later."
+                                                }
+                                                clientSocket.emit('wearetechapi_server_response', result_client);
+                                                return res.status(500).json({ err: true, msg: 'Service temporary down. Try later.' });
                                             }
+                                            // console.log(result.rows);
+                                            // console.log('Paiement enregistré avec success');
                                             if(result.rows.length === 1){
                                                 console.log('Paiement enregistre avec success');
+                                                let result_client = {
+                                                    data: {amount: token.amount, token: token.token},
+                                                    error: true,
+                                                    code: MESSAGE_CODE,
+                                                    message: "Message pour le code qu'il doit saisir #150*...#"
+                                                }
+                                                clientSocket.emit('wearetechapi_server_response', result_client);
+                                                return res.status(200).json({ err: false, msg: 'Paiement sucessfully initiate.' });
                                             }else{
                                                 console.log('Pas de paiement enregistre. Violation de contrainte.');
+                                                let result_client = {
+                                                    error: true,
+                                                    code: DATABASE_ERROR,
+                                                    message: "Service temporary down. Try later."
+                                                }
+                                                clientSocket.emit('wearetechapi_server_response', result_client);
+                                                return res.status(500).json({ err: true, msg: 'Service temporary down. Try later.' });
                                             }  
                                         });
                                     });
                                     // Trouver la socket du client web pour lui repondre
-                                    let socketiter = req.listSocket.values();
-                                    let socket = socketiter.next().value;
-                                    while(socket){
-                                        if(socket.id == token.socketid){
-                                            // let message = {
-                                            //     phone: token.phone,
-                                            //     socket: token.socketid,
-                                            //     apikey: token.apikey,
-                                            //     secretkey: req.secretKey,
-                                            //     amount: token.amount,
-                                            // }
-                                            // req.modemSocket.emit('paiement', message);
-                                            let result = {
-                                                data:{amount: token.amount, token: token.token},
-                                                error: true,
-                                                code: MESSAGE_CODE,
-                                                message: "Message pour le code qu'il doit saisir #150*...#"
-                                            }
-                                            socket.emit('wearetechapi_server_response', result);
-                                            return res.status(200).json({ err: false, msg: 'Paiement sucessfully initiate.' });
-                                        }
-                                        socket = socketiter.next().value;
-                                    }
-                                    return res.status(200).json({err: true, msg: 'The user refresh the page and close the socket.'})
+                                    // let socketiter = req.listSocket.values();
+                                    // let socket = socketiter.next().value;
+                                    // while(socket){
+                                    //     if(socket.id == token.socketid){
+                                    //         // let message = {
+                                    //         //     phone: token.phone,
+                                    //         //     socket: token.socketid,
+                                    //         //     apikey: token.apikey,
+                                    //         //     secretkey: req.secretKey,
+                                    //         //     amount: token.amount,
+                                    //         // }
+                                    //         // req.modemSocket.emit('paiement', message);
+                                    //         let result = {
+                                    //             data:{amount: token.amount, token: token.token},
+                                    //             error: true,
+                                    //             code: MESSAGE_CODE,
+                                    //             message: "Message pour le code qu'il doit saisir #150*...#"
+                                    //         }
+                                    //         socket.emit('wearetechapi_server_response', result);
+                                    //         return res.status(200).json({ err: false, msg: 'Paiement sucessfully initiate.' });
+                                    //     }
+                                    //     socket = socketiter.next().value;
+                                    // }
+                                    // return res.status(200).json({err: true, msg: 'The user refresh the page and close the socket.'})
                                 }
                                 
                             });
