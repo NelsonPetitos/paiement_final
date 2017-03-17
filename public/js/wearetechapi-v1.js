@@ -489,30 +489,32 @@ WRTechAPI.prototype.waitingAction = function () {
 }
 
 WRTechAPI.prototype.removeBlocOne = function(){
-    
-}
-
-WRTechAPI.prototype.removeBlocTwo = function(){
     if(this.blockOne){
         this.blockOne.parentNode.removeChild(this.blockOne);
     }
 }
 
-WRTechAPI.prototype.removeBlocThree = function(){
+WRTechAPI.prototype.removeBlocTwo = function(){
     if(this.blockTwo){
-        bthis.lockTwo.parentNode.removeChild(this.blockTwo);
+        this.blockTwo.parentNode.removeChild(this.blockTwo);
+    }
+}
+
+WRTechAPI.prototype.removeBlocThree = function(){
+    if(this.blockThree){
+        bthis.blockThree.parentNode.removeChild(this.blockThree);
     }
 }
 
 WRTechAPI.prototype.removeBlocFour = function(){
-    if(this.blockThree){
-        this.blockThree.parentNode.removeChild(this.blockThree);
+    if(this.blockFour){
+        this.blockFour.parentNode.removeChild(this.blockFour);
     }
 }
 
-WRTechAPI.prototype.removeBlockFour = function(){
-    if(this.blockFour){
-        this.blockThree.parentNode.removeChild(this.blockThree);
+WRTechAPI.prototype.removeBlockFive = function(){
+    if(this.blockFive){
+        this.blockFive.parentNode.removeChild(this.blockFive);
     }
 }
 
@@ -583,7 +585,7 @@ WRTechAPI.prototype.handleResponse = function(result) {
             this.successBtn.style.display = 'block';
         }
     }
-    // On cache le spinner dans le cas où on attends plus
+    // On cache le spinner dans le cas où on n'attends plus
     if(this.waitingBtn && result.code != CODE_WAITING){
         this.waitingBtn.style.display = 'none';
     }
