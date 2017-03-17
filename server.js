@@ -138,7 +138,7 @@ io.on('connection', (socket) => {
         }else{
             // Les données st pour le serveur mobile
             console.log('Le navigateur veut verifier son paiement avec le modem');
-            console.log(data);
+            // console.log(data);
             checkPaymentWithModem(data.reference, data.token, socket);
         }
             
@@ -356,7 +356,7 @@ function checkPaymentWithModem(reference, token, socket){
     });
     
     // write data to request body
-    req.write(token);
+    // req.write(token);
     req.end();
 }
 
