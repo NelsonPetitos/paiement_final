@@ -488,47 +488,53 @@ WRTechAPI.prototype.waitingAction = function () {
     }
 }
 
-WRTechAPI.prototype.removeBlocOne = function(){
+WRTechAPI.prototype.removeBlockOne = function(){
     if(this.blockOne){
         this.blockOne.parentNode.removeChild(this.blockOne);
+        this.setBlockOne(null);
     }
 }
 
-WRTechAPI.prototype.removeBlocTwo = function(){
+WRTechAPI.prototype.removeBlockTwo = function(){
     if(this.blockTwo){
         this.blockTwo.parentNode.removeChild(this.blockTwo);
+        this.setBlockTwo(null);
     }
 }
 
-WRTechAPI.prototype.removeBlocThree = function(){
+WRTechAPI.prototype.removeBlockThree = function(){
     if(this.blockThree){
-        bthis.blockThree.parentNode.removeChild(this.blockThree);
+        this.blockThree.parentNode.removeChild(this.blockThree);
+        this.setBlockThree(null);
     }
 }
 
-WRTechAPI.prototype.removeBlocFour = function(){
+WRTechAPI.prototype.removeBlockFour = function(){
     if(this.blockFour){
         this.blockFour.parentNode.removeChild(this.blockFour);
+        this.setBlockFour(null);
     }
 }
 
 WRTechAPI.prototype.removeBlockFive = function(){
     if(this.blockFive){
         this.blockFive.parentNode.removeChild(this.blockFive);
+        this.setBlockFive(null);
     }
 }
 
 WRTechAPI.prototype.closeModal = function(){
     if(this.modalDiv){
         this.modalDiv.parentNode.removeChild(this.modalDiv);
+        this.setModalDiv(null);
     }
 }
 
 
 WRTechAPI.prototype.handleResponse = function(result) {
-    this.removeBlocOne();
-    this.removeBlocTwo();
-    this.removeBlocThree();
+    this.removeBlockOne();
+    this.removeBlockTwo();
+    this.removeBlockThree();
     if(result.error == true){
         switch (result.code) {
             case CODE_WAITING:
