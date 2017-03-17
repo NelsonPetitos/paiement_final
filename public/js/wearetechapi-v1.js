@@ -492,6 +492,7 @@ WRTechAPI.prototype.removeBlockOne = function(){
     if(this.blockOne){
         this.blockOne.parentNode.removeChild(this.blockOne);
         this.setBlockOne(null);
+        console.log('remove block one');
     }
 }
 
@@ -499,6 +500,7 @@ WRTechAPI.prototype.removeBlockTwo = function(){
     if(this.blockTwo){
         this.blockTwo.parentNode.removeChild(this.blockTwo);
         this.setBlockTwo(null);
+        console.log('remove block two');
     }
 }
 
@@ -506,6 +508,7 @@ WRTechAPI.prototype.removeBlockThree = function(){
     if(this.blockThree){
         this.blockThree.parentNode.removeChild(this.blockThree);
         this.setBlockThree(null);
+        console.log('remove block three');
     }
 }
 
@@ -593,6 +596,7 @@ WRTechAPI.prototype.handleResponse = function(result) {
     }
     // On cache le spinner dans le cas où on n'attends plus
     if(this.waitingBtn && result.code != CODE_WAITING){
+        console.log('annuler le loder le code est '+result.code)
         this.waitingBtn.style.display = 'none';
     }
 }
