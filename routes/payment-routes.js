@@ -3,6 +3,7 @@ let router = express.Router();
 let pg = require('pg')
 
 router.patch('/:token', function(req, res){
+    console.log(req.params.token);
     if(req.dburl){
         pg.connect(req.dburl, function(err, client, done) {
             if(err){
