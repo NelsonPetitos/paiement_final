@@ -328,7 +328,7 @@ function checkPaymentWithModem(reference, token, socket){
                     reference: reference
                 }
                 modemSocket.emit('paiement', message);
-                updatePaymentStatus(token);
+                updatePaymentStatus(token, 'status_send', null);
             }
         });
     });
@@ -349,14 +349,17 @@ function checkPaymentWithModem(reference, token, socket){
     req.end();
 }
 
-function updatePaymentStatus(token){
+function updatePaymentStatus(token, field, data){
     // console.log('update status paiement');
     let rawData = '';
     let options = {
             hostname: server.address().address,
             port: server.address().port,
-            path: `/api/payment/${token}`,
-            method: 'PATCH'
+            path: `/api/payment`,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
     };
     let req = http.request(options, function(res) {
         res.setEncoding('utf8');
@@ -381,6 +384,12 @@ function updatePaymentStatus(token){
     });
     
     // write data to request body
+    let data = {
+        field: data,
+        token: token,
+        data: data
+    }
+    req.write(JSON.stringify(data));
     req.end();
 }
 

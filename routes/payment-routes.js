@@ -2,8 +2,29 @@ let express = require('express');
 let router = express.Router();
 let pg = require('pg')
 
-router.patch('/:token', function(req, res){
-    console.log(req.params.token);
+router.post('', function(req, res){
+    // console.log(req.params.token);
+    let status_payment, code, message;
+    let field = req.body.field;
+    let token = req.body.token;
+    let sqlString = '';
+    let data = req.body.data;
+    if(data){
+        status_payment = data.status_payment;
+        message = data.message;
+        code = data.code;
+    }
+    switch (field) {
+        case 'status_receive':
+            sqlString = 'update payments set  status_receive = true, date_receive = now() where token_id = $1';
+            break;
+        case 'status_send':
+            sqlString = 'update payments set  status_send = true, date_send = now() where token_id = $1';
+            break;
+        default:
+            sqlString = '';
+            break;
+    }
     if(req.dburl){
         pg.connect(req.dburl, function(err, client, done) {
             if(err){
@@ -11,7 +32,7 @@ router.patch('/:token', function(req, res){
                 console.error(err); 
                 return res.status(500).json({ err: true, msg: 'Database connection error.'});
             }
-            client.query('update payments set  status_send = true, date_send = now() where token_id = $1', [req.params.token], function(err, result) {
+            client.query(sqlString, [token, status_payment, code, message], function(err, result) {
                 done();
                 if(err){ 
                     console.error('Erreur requete : payment-routes'); 
