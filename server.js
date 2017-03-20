@@ -385,7 +385,7 @@ function updatePaymentStatus(token, field, status_payment, code, message){
     
     // write data to request body
     let data = {
-        field: data,
+        field: field,
         token: token,
         code: code,
         message: message,
