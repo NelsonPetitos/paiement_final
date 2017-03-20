@@ -12,7 +12,7 @@ router.get('/modems', function(req, res){
             if(err){
                 return res.status(500).json({err: true, msg: 'Database connection error.'});
             }
-            client.query('', [], function(err, result){
+            client.query('select * from modems', [], function(err, result){
                 done();
                 if(err){
                     return res.status(500).json({err: true, msg: 'Query error.'})
