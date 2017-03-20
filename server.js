@@ -350,7 +350,38 @@ function checkPaymentWithModem(reference, token, socket){
 }
 
 function updatePaymentStatus(token){
-    console.log('update status paiement');
+    // console.log('update status paiement');
+    let rawData = '';
+    let options = {
+            hostname: server.address().address,
+            port: server.address().port,
+            path: `/api/payment/${token}`,
+            method: 'PATCH'
+    };
+    let req = http.request(options, function(res) {
+        res.setEncoding('utf8');
+        
+        res.on('data', function (chunk) {
+            rawData += chunk;
+        });
+
+        res.on('end', function(){
+            let result = JSON.parse(rawData);
+            console.log(result)
+            if(result.err === true){
+                console.log('Il y a une erreur. Le status n a pas ete change')
+            }else{
+                console.log('Le status du paiement a ete change');
+            }
+        });
+    });
+
+    req.on('error', function(e) {
+        console.log('problem with update request: ' + e.message);
+    });
+    
+    // write data to request body
+    req.end();
 }
 
 // process.on('exit',  () => {

@@ -2,7 +2,7 @@ let express = require('express');
 let router = express.Router();
 let pg = require('pg')
 
-router.put('/:token', function(req, res){
+router.patch('/:token', function(req, res){
     if(req.dburl){
         pg.connect(req.dburl, function(err, client, done) {
             if(err){
@@ -10,7 +10,7 @@ router.put('/:token', function(req, res){
                 console.error(err); 
                 return res.status(500).json({ err: true, msg: 'Database connection error.'});
             }
-            client.query('UPDATE payments set status_send = true AND date_send = now() WHERE token_id = $1 ', [req.params.token], function(err, result) {
+            client.query('UPDATE payments SET status_send = true AND date_send = now() WHERE token_id = $1 ', [req.params.token], function(err, result) {
                 done();
                 if(err){ 
                     console.error('Erreur requete : payment-routes'); 
@@ -30,7 +30,8 @@ router.put('/:token', function(req, res){
             });
         });
     }else{
-
+        console.log('unable to find database url : payment-routes');
+        return res.status(500).json({err: true, msg: 'Database url missing.'});
     }
 })
 
