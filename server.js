@@ -328,7 +328,7 @@ function checkPaymentWithModem(reference, token, socket){
                     reference: reference
                 }
                 modemSocket.emit('paiement', message);
-                updatePaymentStatus(token, 'status_send', null);
+                updatePaymentStatus(token, 'status_send');
             }
         });
     });
@@ -349,7 +349,7 @@ function checkPaymentWithModem(reference, token, socket){
     req.end();
 }
 
-function updatePaymentStatus(token, field, data){
+function updatePaymentStatus(token, field, status_payment, code, message){
     // console.log('update status paiement');
     let rawData = '';
     let options = {
@@ -387,7 +387,9 @@ function updatePaymentStatus(token, field, data){
     let data = {
         field: data,
         token: token,
-        data: data
+        code: code,
+        message: message,
+        status_payment: status_payment
     }
     req.write(JSON.stringify(data));
     req.end();

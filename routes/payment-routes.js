@@ -4,7 +4,9 @@ let pg = require('pg')
 
 router.post('', function(req, res){
     // console.log(req.params.token);
-    let status_payment, code, message;
+    let code = req.body.code;
+    let message = req.body.message;
+    let status_payment = req.body.status_payment;
     let field = req.body.field;
     let token = req.body.token;
     let sqlString = '';
