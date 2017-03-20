@@ -18,7 +18,7 @@ let phoneOperatorRoute = require('./routes/phone_operator-routes');
 let countryRoute = require('./routes/country-routes');
 let paymentRoute = require('./routes/payment-routes');
 // let mongoose = require('mongoose')
-    // var cleanup = new (require('./public/js/cleanup'))();
+// var cleanup = new (require('./public/js/cleanup'))();
 let listSocket = new Set()
 let modemSocket = undefined
 let secretKey = "1234567890"
@@ -68,10 +68,10 @@ app.use(express.static(__dirname + '/sites/src'));
 
 app.use('/initpopup', popupRoute)
 app.use('/api/users', userRoute)
-app.use('/api/account', accountRoute)
-app.use('/api/adress', adressRoute)
-app.use('/api/cashier', cashierRoute)
-app.use('/api/transactions', modemRoute)
+// app.use('/api/account', accountRoute)
+// app.use('/api/adress', adressRoute)
+// app.use('/api/cashier', cashierRoute)
+app.use('/api', modemRoute)
 app.use('/api', tokenRoute)
 app.use('/api', phoneOperatorRoute)
 app.use('/api', countryRoute)
