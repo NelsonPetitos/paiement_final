@@ -1,40 +1,63 @@
 let express = require('express');
 let router = express.Router()
-let Requetemodem = require('../models/requete-modem');
+let pg = require('pg');
+let testParams = function(params){
+    return (params.emei !== '' && parseInt(params.emei) !== NaN && params.name !== '' && params.phone !== '' && params.phone_operator_id !== '' && parseInt(params.phone_operator_id) !== NaN);
+}
 
-router.post('/', (req, res) =>{
-    if(req.body.apikey == null || req.body.apikey.trim() == '' || req.body.status.trim() == '' || req.body.status == null){
-        res.send({err: true, msg: 'Parameters are empty.', data: null});
-    }else{
-        Requetemodem.find({"serverRequest.apikey": req.body.apikey } , (err, requetes)=>{
+
+router.get('/modems', function(req, res){
+    if(req.dburl){
+        pg.connect(req.dburl,function(err, client, done){
             if(err){
-                res.send({err: true, msg: 'Error occur on the server.', data: null})
-            }else{
-                if(requetes){
-                    res.send({err: false, msg: 'Request ok.', data: requetes})
-                }else{
-                    res.send({err: true, msg: 'No transactions related to this user.', data: null})
-                }
+                return res.status(500).json({err: true, msg: 'Database connection error.'});
             }
+            client.query('', [], function(err, result){
+                done();
+                if(err){
+                    return res.status(500).json({err: true, msg: 'Query error.'})
+                }
+                return res.status(200).json({err: false, msg: 'Sucess.', data: result.rows})
+            })
         })
+    }else{
+        return res.status(500).json({err: true, msg: 'No database url.'});
     }
 })
 
-router.post('/clients', (req, res) =>{
-    if(req.body.apikey == null || req.body.apikey.trim() == '' || req.body.status.trim() == '' || req.body.status == null){
-        res.send({err: true, msg: 'Parameters are empty.', data: null});
+
+router.post('/modems', function(req, res){
+    let params = {
+        emei: req.body.emei,
+        name: req.bady.name,
+        phone: req.body.phone,
+        phone_operator_id: req.operator
+    };
+    if(!testParams(params)){
+        console.log('bad request parameters.')
+        return res.status(404).json({err: true, msg: 'Bad request parameters'});
     }else{
-        Requetemodem.distinct("phone_number", {"serverRequest.apikey": req.body.apikey } , (err, requetes)=>{
-            if(err){
-                res.send({err: true, msg: 'Error occur on the server.', data: null})
-            }else{
-                if(requetes){
-                    res.send({err: false, msg: 'Request ok.', data: requetes})
-                }else{
-                    res.send({err: true, msg: 'No clients related to this user.', data: null})
+        if(req.dburl){
+            pg.connect(req.dburl, function(err, client, done){
+                if(err){
+                    return res.status(500).json({err: true, msg: 'Database connection error.'});
                 }
-            }
-        })
+                client.query('insert into modems(emei, phone, name, phone_operator_id) values($1, $2, $3, $4) returning emei', [params.emei, params.phone, params.name, params.phone_operator_id], function(err, result){
+                    done();
+                    if(err){
+                        return res.status(500).json({err: true, msg: 'Query error.'});
+                    }
+                    if(result.rows.length === 1){
+                        return res.status(200).json({err: false, msg: 'Sucess', data: result.rows[0]})
+                    }else{
+                        return res.status(500).json({err: true, msg: 'Multiple result unexpected.'});
+                    }
+
+                })
+            })
+        }else{
+            return res.status(500).json({err: true, msg: 'No Databane url.'});
+        }
     }
 })
 
