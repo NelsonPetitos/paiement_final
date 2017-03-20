@@ -10,12 +10,7 @@ router.post('', function(req, res){
     let field = req.body.field;
     let token = req.body.token;
     let sqlString = '';
-    let data = req.body.data;
-    if(data){
-        status_payment = data.status_payment;
-        message = data.message;
-        code = data.code;
-    }
+    
     if(field && token){
         switch (field) {
             case 'status_receive':
