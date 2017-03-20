@@ -29,9 +29,9 @@ router.get('/modems', function(req, res){
 router.post('/modems', function(req, res){
     let params = {
         emei: req.body.emei,
-        name: req.bady.name,
+        name: req.body.name,
         phone: req.body.phone,
-        phone_operator_id: req.operator
+        phone_operator_id: req.body.operator
     };
     if(!testParams(params)){
         console.log('bad request parameters.')
