@@ -11,7 +11,7 @@ router.patch('/:token', function(req, res){
                 console.error(err); 
                 return res.status(500).json({ err: true, msg: 'Database connection error.'});
             }
-            client.query('UPDATE payments SET status_send = TRUE AND date_send = now() WHERE token_id = $1 ', [req.params.token], function(err, result) {
+            client.query('update payments set  status_send = true, date_send = now() where token_id = $1', [req.params.token], function(err, result) {
                 done();
                 if(err){ 
                     console.error('Erreur requete : payment-routes'); 
@@ -20,14 +20,6 @@ router.patch('/:token', function(req, res){
                 }
                 console.log(result.rows[0]);
                 return res.status(200).json({ err: false, msg: 'Payment update.', data: result.rows[0] });
-                // if(result.rows.length === 1){
-                //     console.log('Token find : tokens-routes/modem');
-                //     return res.status(200).json({ err: false, msg: 'Token find.', data: result.rows[0] });
-                // }else{
-                //     console.log('Resultats multiples : tokens-routes/modem');
-                //     return res.status(400).json({ err: false, msg: 'Multiple results not expected.', data: result.rows});
-                // }
-
             });
         });
     }else{
