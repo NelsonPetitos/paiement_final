@@ -11,7 +11,7 @@ router.patch('/:token', function(req, res){
                 console.error(err); 
                 return res.status(500).json({ err: true, msg: 'Database connection error.'});
             }
-            client.query('UPDATE payments SET status_send = true AND date_send = now() WHERE token_id = $1 ', [req.params.token], function(err, result) {
+            client.query('UPDATE payments SET status_send = TRUE AND date_send = now() WHERE token_id = $1 ', [req.params.token], function(err, result) {
                 done();
                 if(err){ 
                     console.error('Erreur requete : payment-routes'); 
