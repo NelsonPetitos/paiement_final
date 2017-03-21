@@ -1,10 +1,11 @@
 let express = require('express');
 let router = express.Router();
-let Token = require('../models/token');
-let User = require('../models/user')
+// let Token = require('../models/token');
+// let User = require('../models/user')
 let pg = require('pg')
 const MESSAGE_CODE = 106;
 const DATABASE_ERROR = 0;
+
 let testParamater = function (argument) {
     let phoneSchema = /^[1-9][0-9]{8,}/;
     return( argument.socketid == null || argument.socketid == ''  ||
