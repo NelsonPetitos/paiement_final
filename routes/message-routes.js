@@ -2,7 +2,7 @@ let express = require('express');
 let router = express.Router();
 let pg = require('pg');
 let testParams = function(params){
-    return (params.content != '' && params.phone != '' && parseInt(params.modem_emei))
+    return (params.content != null && params.content != '' && params.phone != null && params.phone != '' && parseInt(params.modem_emei))
 }
 
 router.post('/message', function(req, res){
@@ -15,26 +15,30 @@ router.post('/message', function(req, res){
     }
     
     if(!req.dburl){
+        console.log('No database url.');
         return res.sytatus(500).json({err: true, msg: 'No datatbase url.'});
     }
 
     if(!testParams(params)){
+        console.log('Wrong parameter');
         return res.status(404).json({err: true, msg:'Wrong parameters.'});
     } 
 
     pg.connect(req.dburl, function(err, client, done){
         if(err){
+            console.log(err);
             return res.status(500).json({err: true, msg: 'Database connection error'});
         }
         client.query('insert into massages(reference, amount, content, phone, modem_emei) values($1, $2, $3, $4, $5) returning id', [params.reference, params.amount, params.content, params.phone, params.modem_emei], function(err, result){
             done();
             if(err){
+                console.log(err);
                 return res.status(500).json({err: true, msg: 'Query error.'});
             }
             if(result.rows.length !== 1){
-                return res.status(500).json({err: true, msg: 'Unexpected multiple response'});
-                
+                return res.status(500).json({err: true, msg: 'Unexpected multiple response'});   
             }
+            console.log('Message save.');
             return res.status(200).json({err: false, msg: 'Success'});
         })
     })

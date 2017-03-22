@@ -56,6 +56,7 @@ router.post('/modem', function(req, res){
                 console.log(result.rows);
                 return res.status(500).json({err: true, msg: 'Multiple result unexpected.'});   
             }
+            console.log("Modem create")
             return res.status(200).json({err: false, msg: 'Sucess', data: result.rows[0]});
         })
     })
@@ -87,6 +88,7 @@ router.get('/modem', function(req, res){
             if(result.rows.length === 0){
                 return res.status(200).json({err: false, msg: 'No modem found', data: null});
             }
+            console.log('Modem found');
             return res.status(200).json({err: false, msg: 'Modem found', data: result.rows[0]});
         })
     })

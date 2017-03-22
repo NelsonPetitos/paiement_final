@@ -145,13 +145,14 @@ io.on('connection', (socket) => {
     socket.on('paiement', (data) => {
         console.log('le modem vient de me dire : ');
         console.log(data);
+        // Mettre à jour le paiement dans la base de données
         if (data.secretkey == secretkey) {
             listSocket.forEach((socket) => {
                 if (socket.id == data.socket) {
                     console.log("Sender socket find. The response send back to the browser")
                     let result = {
                         error: data.err,
-                        message: "",
+                        message: "Payment succeed.",
                         code: data.code,
                         data: null
                     }

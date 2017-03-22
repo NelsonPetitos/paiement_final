@@ -496,37 +496,50 @@ WRTechAPI.prototype.handlePhoneError = function () {
 }
 
 
+WRTechAPI.prototype.displayErrorMessage = function(message, err){
+    if(this.errorMsgSpan){
+        this.errorMsgSpan.innerHTML = message;
+        this.errorMsgSpan.style.display = 'block';
+        this.errorMsgSpan.style.color = 'white';
+
+        if(err){
+            this.errorMsgSpan.style.backgroundColor = '#EF4836';
+        }else{
+            this.errorMsgSpan.style.backgroundColor = '#3FC380';
+        }
+    }
+}
+
+
 WRTechAPI.prototype.waitingAction = function () {
     // let waiting = document.getElementById('wearetech_waiting');
     if(this.waitingBtn){
         this.waitingBtn.style.display = 'inline-block';
-        this.waitingBtn.disabled = true;
-        if(this.validateBtn){
-            this.validateBtn.style.display = 'none';
-        }
-        if(this.validateReferenceBtn){
-            this.validateReferenceBtn.style.display = 'none';
-        }
-        if(this.cancelReferenceBtn){
-            this.cancelReferenceBtn.style.display = 'none';
-        }
-        if(this.emailInputText){
-            this.emailInputText.disabled = true;
-        }
-        if(this.phoneInputText){
-            this.phoneInputText.disabled = true;
-        }
-        // document.getElementById('wearetech_client_email').disabled = true;
-        // document.getElementById('wearetech_phone_number').disabled = true;
-        if(this.countriesSelectList){
-            this.countriesSelectList.disabled = true;
-        }
-        if(this.phoneOperatorsSelectList){
-            this.phoneOperatorsSelectList.disabled = true;
-        }
-        if(this.referenceInputText){
-            this.referenceInputText.disabled = true;
-        }
+        // this.waitingBtn.disabled = true;
+    }
+    if(this.validateBtn){
+        this.validateBtn.style.display = 'none';
+    }
+    if(this.validateReferenceBtn){
+        this.validateReferenceBtn.style.display = 'none';
+    }
+    if(this.cancelReferenceBtn){
+        this.cancelReferenceBtn.style.display = 'none';
+    }
+    if(this.emailInputText){
+        this.emailInputText.disabled = true;
+    }
+    if(this.phoneInputText){
+        this.phoneInputText.disabled = true;
+    }
+    if(this.countriesSelectList){
+        this.countriesSelectList.disabled = true;
+    }
+    if(this.phoneOperatorsSelectList){
+        this.phoneOperatorsSelectList.disabled = true;
+    }
+    if(this.referenceInputText){
+        this.referenceInputText.disabled = true;
     }
 }
 
@@ -576,7 +589,8 @@ WRTechAPI.prototype.closeModal = function(){
 }
 
 
-WRTechAPI.prototype.handleResponse = function(result) {
+
+WRTechAPI.prototype.handleResponse = function(result){
     this.removeBlockOne();
     this.removeBlockTwo();
     this.removeBlockThree();
@@ -587,11 +601,36 @@ WRTechAPI.prototype.handleResponse = function(result) {
                     //Le token a été crée et envoie au client avec succès
                     this.apiCallback(result.data);
                 }
-                if(this.errorMsgSpan){
-                    this.errorMsgSpan.innerHTML = result.message;
-                    this.errorMsgSpan.style.display = 'block';
-                    this.errorMsgSpan.style.backgroundColor = '#3FC380';
-                    this.errorMsgSpan.style.color = 'white';
+                this.displayErrorMessage(result.message, false);
+                break;
+
+            case 401:
+                this.displayErrorMessage(result.message, true);
+                if(this.waitingBtn){
+                    this.waitingBtn.style.display = 'none';
+                }
+                if(this.referenceInputText){
+                    this.referenceInputText.disabled = false;
+                }
+                if(this.validateReferenceBtn){
+                    this.validateReferenceBtn.style.display = 'inline-block';
+                }
+                if(this.cancelReferenceBtn){
+                    this.cancelReferenceBtn.style.display = 'inline-block';
+                }
+                break;
+
+            case 402: 
+                this.displayErrorMessage(result.message, true);
+                if(this.waitingBtn){
+                    this.waitingBtn.style.display = 'none';
+                }
+                if(this.referenceInputText){
+                    this.referenceInputText.disabled = false;
+                }
+                if(this.errorBtn){
+                    this.errorBtn.innerHTML = "Fermer";
+                    this.errorBtn.style.display = 'block';
                 }
                 break;
 
@@ -621,12 +660,7 @@ WRTechAPI.prototype.handleResponse = function(result) {
 
             default:
                 // une erreur c'est produite on affice le message et le bouton de fermeture
-                if(this.errorMsgSpan){
-                    this.errorMsgSpan.innerHTML = result.message;
-                    this.errorMsgSpan.style.display = 'block';
-                    this.errorMsgSpan.style.color = 'white';
-                    this.errorMsgSpan.style.backgroundColor = '#EF4836';
-                }
+                this.displayErrorMessage(result.message, true);
                 if(this.errorBtn){
                     this.errorBtn.innerHTML = "Fermer";
                     this.errorBtn.style.display = 'block';
@@ -635,11 +669,7 @@ WRTechAPI.prototype.handleResponse = function(result) {
         }
     }else{
         // IL n'y a pas d'erreur appeler le callback pour lui deleguer la suite
-        if(this.errorMsgSpan){
-            this.errorMsgSpan.innerHTML = result.message;
-            this.errorMsgSpan.style.display = 'block';
-            this.errorMsgSpan.style.backgroundColor = 'lightgreen';
-        }
+        this.displayErrorMessage(result.message, false);
         if(this.successBtn){
             this.successBtn.innerHTML = "Sucess";
             this.successBtn.style.display = 'block';
@@ -647,7 +677,7 @@ WRTechAPI.prototype.handleResponse = function(result) {
     }
     // On cache le spinner dans le cas où on n'attends plus
     if(this.waitingBtn && result.code != CODE_WAITING){
-        console.log('annuler le loader le code est '+result.code)
+        // console.log('annuler le loader le code est '+result.code)
         this.waitingBtn.style.display = 'none';
     }
 }
