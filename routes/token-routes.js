@@ -4,7 +4,7 @@ let router = express.Router();
 // let User = require('../models/user')
 let pg = require('pg')
 const MESSAGE_CODE = 106;
-const DATABASE_ERROR = 0;
+// const DATABASE_ERROR = 0;
 
 let testParamater = function (argument) {
     let phoneSchema = /^[1-9][0-9]{8,}/;
@@ -20,7 +20,7 @@ let testParamater = function (argument) {
 
 
 
-router.post('/tokens', (req, res) => {
+router.post('/token', (req, res) => {
     let params = {
         phone: req.body.phone,
         amount: req.body.amount,
@@ -151,9 +151,7 @@ router.post('/init-paiement', (req, res) => {
                                         if(err){
                                             console.log('Pas de paiement enregistre. Erreur connection a la bd.');
                                             let result_client = {
-                                                data: null,
                                                 error: true,
-                                                code: DATABASE_ERROR,
                                                 message: "Service temporary down. Try later."
                                             }
                                             clientSocket.emit('wearetechapi_server_response', result_client);
@@ -166,9 +164,7 @@ router.post('/init-paiement', (req, res) => {
                                                 console.log('Pas de paiement enregistre. Erreur requete sur la table payments.');
                                                 console.log(err);
                                                 let result_client = {
-                                                    data: null,
                                                     error: true,
-                                                    code: DATABASE_ERROR,
                                                     message: "Service temporary down. Try later."
                                                 }
                                                 clientSocket.emit('wearetechapi_server_response', result_client);
@@ -192,7 +188,6 @@ router.post('/init-paiement', (req, res) => {
                                                 console.log('Pas de paiement enregistre. Violation de contrainte.');
                                                 let result_client = {
                                                     error: true,
-                                                    code: DATABASE_ERROR,
                                                     message: "Service temporary down. Try later."
                                                 }
                                                 clientSocket.emit('wearetechapi_server_response', result_client);
@@ -215,7 +210,7 @@ router.post('/init-paiement', (req, res) => {
 })
 
 
-router.get('/tokens/:token', (req, res) => {
+router.get('/token/:token', (req, res) => {
     console.log(req.params.token);
     if(req.dburl){
         pg.connect(req.dburl, function(err, client, done) {

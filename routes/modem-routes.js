@@ -3,7 +3,7 @@ let router = express.Router()
 let pg = require('pg');
 
 let testParams = function(params){
-    return (params.emei !== '' && parseInt(params.emei) !== NaN && params.name !== '' && params.phone !== '' && params.phone_operator_id !== '' && parseInt(params.phone_operator_id) !== NaN);
+    return (params.emei !== '' && parseInt(params.emei) !== NaN && params.emei != null && params.name != null && params.name !== '' && params.phone != null && params.phone !== '' && params.phone_operator_id != null && params.phone_operator_id !== '' && parseInt(params.phone_operator_id) !== NaN);
 }
 
 
@@ -35,7 +35,7 @@ router.post('/modem', function(req, res){
         phone_operator_id: req.body.operator
     };
     if(!testParams(params)){
-        console.log('bad request parameters.')
+        console.log('bad request parameters.');
         return res.status(404).json({err: true, msg: 'Bad request parameters'});
     }
     if(!req.dburl){
@@ -43,14 +43,17 @@ router.post('/modem', function(req, res){
     }
     pg.connect(req.dburl, function(err, client, done){
         if(err){
+            console.log(err);
             return res.status(500).json({err: true, msg: 'Database connection error.'});
         }
         client.query('insert into modems(emei, phone, name, phone_operator_id) values($1, $2, $3, $4) returning emei', [params.emei, params.phone, params.name, params.phone_operator_id], function(err, result){
             done();
             if(err){
+                console.log(err);
                 return res.status(500).json({err: true, msg: 'Query error.'});
             }
             if(result.rows.length !== 1){
+                console.log(result.rows);
                 return res.status(500).json({err: true, msg: 'Multiple result unexpected.'});   
             }
             return res.status(200).json({err: false, msg: 'Sucess', data: result.rows[0]});
@@ -69,11 +72,13 @@ router.get('/modem', function(req, res){
     }
     pg.connect(req.dburl, function(err, client, done){
         if(err){
+            console.log(err);
             return res.status.json({err: true, msg: 'Database connection error'});
         }
         client.query('select * from modems where emei = $1', [emei], function(err, result){
             done();
             if(err){
+                console.log(err);
                 return res.status(500).json({err: true, msg: 'Query error'});
             }
             if(result.rows.length > 1){

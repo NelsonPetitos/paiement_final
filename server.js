@@ -103,18 +103,17 @@ io.on('connection', (socket) => {
             if(!verifiedPhone(phone, country, operator)){
                 let result = {
                     error: true,
-                    message: "Incorrect parameters.",
-                    code: null
+                    message: "Incorrect parameters."
                 }
                 console.log('Invalid phone number.');
                 socket.emit('wearetechapi_server_response', result);
+                socket.disconnect();
             }else{
-                if (typeof modemSocket == 'undefined') {
+                if (typeof modemSocket === 'undefined') {
                     //Le modem n'est pas connecte
                     console.log('Le modem n\'est pas connecte ');
                     let result = {
                         error: true,
-                        code: null,
                         message: "Service down. Try again later."
                     }
                     socket.emit('wearetechapi_server_response', result)
@@ -137,8 +136,7 @@ io.on('connection', (socket) => {
             }
         }else{
             // Les données st pour le serveur mobile
-            console.log('Le navigateur veut verifier son paiement avec le modem');
-            // console.log(data);
+            // console.log('Le navigateur veut verifier son paiement avec le modem');
             checkPaymentWithModem(data.reference, data.token, socket);
         }
             
@@ -147,58 +145,41 @@ io.on('connection', (socket) => {
     socket.on('paiement', (data) => {
         console.log('le modem vient de me dire : ');
         console.log(data);
-        if (data.secretKey == secretKey) {
+        if (data.secretkey == secretkey) {
             listSocket.forEach((socket) => {
                 if (socket.id == data.socket) {
                     console.log("Sender socket find. The response send back to the browser")
                     let result = {
-                        // result: data.airtime,
-                        error: !data.status,
+                        error: data.err,
                         message: "",
-                        code: data.errorCode,
+                        code: data.code,
                         data: null
                     }
-                    if(!data.status){
-                        switch(data.errorCode){
-                            //impossible d'établir la connexion avec le port du modem
-                            case 100: 
-                                // console.log("100");
-                                result.message = "Flitpay api error";
-                                break;
-                            //argument from web server is in wrong format
-                            case 101:
-                                // console.log("101");
-                                result.message = "Wrong data.";
-                                break;
-                            //erreur survenue lors de l'initiation du paiement
-                            case 102:
-                                // console.log("102");
-                                result.message = "Mobile network error. Close and try again.";
-                                break;
-                            //delai dépassé lors de l'attente de la réponse du client
-                            case 103:
-                                // console.log("103");
-                                result.message = "Session timeout. Action not complete.";
-                                break;
-                            //fond insuffisant pour initier la commande
-                            case 104:
-                                // console.log("104");
-                                result.message = "Insufficient funds.";
-                                break;
-                            //En attente de confirmation de l'opération sur le téléphone
-                            case 105:
-                                console.log('Attente de la réponse');
-                                result.message = "Complete paiement by dialing *126*1#";
-                                break;
-                            default:
-                                console.log(data.errorCode);
-                                result.message = 'Unknown error.';
-                        }
-                    }else{
-                        result.message = "Check the phone"
+                    switch(data.code){
+                        //impossible d'établir la connexion avec le port du modem
+                        case 401: 
+                            // console.log("100");
+                            result.message = "Message not found. If you did the payment wait few minutes and try again; or check that you send the good reference number.";
+                            break;
+
+                        //argument from web server is in wrong format
+                        case 402:
+                            // console.log("101");
+                            result.message = "The amount you sent is not corresponding to the one expected.";
+                            break;
+
+                        //erreur survenue lors de l'initiation du paiement
+                        case 200:
+                            // console.log("102");
+                            result.message = "Payment succeed";
+                            break;
+
+                        default:
+                            console.log(data.errorCode);
+                            result.message = 'Unknown error.';
                     }
                     socket.emit('wearetechapi_server_response', result)
-                    if(data.errorCode != 105){
+                    if(data.code != 401){
                         socket.disconnect();
                     }
                 }
@@ -232,7 +213,7 @@ function saveToken(data, socket){
     let options = {
             hostname: server.address().address,
             port: server.address().port,
-            path: '/api/tokens',
+            path: '/api/token',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -250,9 +231,7 @@ function saveToken(data, socket){
             if(token.err){
                 //Il y'a erreur
                 let result = {
-                    data: null,
                     error: true,
-                    code: null,
                     message: "Service down. Try again in few minutes."
                 }
                 console.log('Il y a une erreur lors de la creation du token');
@@ -275,9 +254,7 @@ function saveToken(data, socket){
     req.on('error', function(e) {
         console.log('problem with request: ' + e.message);
         let result = {
-            data: null,
             error: true,
-            code: null,
             message: "Service down. Try again in few minutes."
         }
         socket.emit('wearetechapi_server_response', result)
@@ -293,7 +270,7 @@ function checkPaymentWithModem(reference, token, socket){
     let options = {
             hostname: server.address().address,
             port: server.address().port,
-            path: `/api/tokens/${token}`,
+            path: `/api/token/${token}`,
             method: 'GET'
     };
     let req = http.request(options, function(res) {
@@ -325,7 +302,8 @@ function checkPaymentWithModem(reference, token, socket){
                     socket: result.data.socketid,
                     secretkey: secretKey,
                     amount: result.data.amount,
-                    reference: reference
+                    reference: reference,
+                    token: result.token
                 }
                 modemSocket.emit('paiement', message);
                 updatePaymentStatus(token, 'status_send');

@@ -647,7 +647,7 @@ WRTechAPI.prototype.handleResponse = function(result) {
     }
     // On cache le spinner dans le cas où on n'attends plus
     if(this.waitingBtn && result.code != CODE_WAITING){
-        console.log('annuler le loder le code est '+result.code)
+        console.log('annuler le loader le code est '+result.code)
         this.waitingBtn.style.display = 'none';
     }
 }
