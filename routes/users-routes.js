@@ -1,8 +1,8 @@
 let express = require('express');
 let router = express.Router();
-let User = require('../models/user');
-let crypto = require('crypto');
-let mongoose = require('mongoose');
+// let User = require('../models/user');
+// let crypto = require('crypto');
+// let mongoose = require('mongoose');
 let pg = require('pg');
 
 let bcrypt = require('bcrypt')

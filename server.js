@@ -9,14 +9,15 @@ let io = require('socket.io')(server)
 let popupRoute = require('./routes/popup-routes')
 let homeRoute = require('./routes/home-routes')
 let userRoute = require('./routes/users-routes')
-let accountRoute = require('./routes/account-routes')
-let adressRoute = require('./routes/adress-routes');
+// let accountRoute = require('./routes/account-routes')
+// let adressRoute = require('./routes/adress-routes');
 let modemRoute = require('./routes/modem-routes');
-let cashierRoute  = require('./routes/cashier-routes');
+// let cashierRoute  = require('./routes/cashier-routes');
 let tokenRoute = require('./routes/token-routes');
 let phoneOperatorRoute = require('./routes/phone_operator-routes');
 let countryRoute = require('./routes/country-routes');
 let paymentRoute = require('./routes/payment-routes');
+let messageRoutes = require('./routes/message-routes');
 // let mongoose = require('mongoose')
 // var cleanup = new (require('./public/js/cleanup'))();
 let listSocket = new Set()
@@ -71,6 +72,7 @@ app.use('/api/users', userRoute)
 // app.use('/api/account', accountRoute)
 // app.use('/api/adress', adressRoute)
 // app.use('/api/cashier', cashierRoute)
+app.use('/api', messageRoutes)
 app.use('/api', modemRoute)
 app.use('/api', tokenRoute)
 app.use('/api', phoneOperatorRoute)
