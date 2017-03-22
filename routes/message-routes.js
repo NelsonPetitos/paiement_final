@@ -2,7 +2,7 @@ let express = require('express');
 let router = express.Router();
 let pg = require('pg');
 let testParams = function(params){
-    return (params.content !== '' && params.phone !== '' && parseInt(params.modem_emei) !== NaN)
+    return (params.content != '' && params.phone != '' && parseInt(params.modem_emei))
 }
 
 router.post('/message', function(req, res){
@@ -44,10 +44,10 @@ router.post('/message', function(req, res){
 
 router.get('/modem-messages', function(req, res){
     let emei = parseInt(req.query.emei);
-    let offset = (parseInt(req.query.page) === NaN)? 0 : parseInt(req.query.page);
-    let limit = (parseInt(req.query.limit) === NaN)? 10 : parseInt(req.query.limit);
+    let offset = (!parseInt(req.query.page))? 0 : parseInt(req.query.page);
+    let limit = (!parseInt(req.query.limit))? 10 : parseInt(req.query.limit);
 
-    if(emei === NaN){
+    if(!emei){
         return res.status(404).json({err: true, msg: 'Wrong modem emei.'});
     }
     if(!(req.dburl)){
@@ -65,7 +65,7 @@ router.get('/modem-messages', function(req, res){
             return res.status(202).json({err: false, msg: 'Success', data: result.rows})
         } )
     })
-
+})
 
 router.get('/message', function(req, res){
     let reference = req.query.reference;

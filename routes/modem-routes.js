@@ -3,7 +3,7 @@ let router = express.Router()
 let pg = require('pg');
 
 let testParams = function(params){
-    return (params.emei !== '' && parseInt(params.emei) !== NaN && params.emei != null && params.name != null && params.name !== '' && params.phone != null && params.phone !== '' && params.phone_operator_id != null && params.phone_operator_id !== '' && parseInt(params.phone_operator_id) !== NaN);
+    return (params.emei != '' && parseInt(params.emei) && params.emei != null && params.name != null && params.name != '' && params.phone != null && params.phone != '' && params.phone_operator_id != null && params.phone_operator_id !== '' && parseInt(params.phone_operator_id));
 }
 
 
