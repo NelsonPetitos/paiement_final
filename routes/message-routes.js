@@ -29,7 +29,7 @@ router.post('/message', function(req, res){
             console.log(err);
             return res.status(500).json({err: true, msg: 'Database connection error'});
         }
-        client.query('insert into massages(reference, amount, content, phone, modem_emei) values($1, $2, $3, $4, $5) returning id', [params.reference, params.amount, params.content, params.phone, params.modem_emei], function(err, result){
+        client.query('insert into messages(reference, amount, content, phone, modem_emei) values($1, $2, $3, $4, $5) returning id', [params.reference, params.amount, params.content, params.phone, params.modem_emei], function(err, result){
             done();
             if(err){
                 console.log(err);
