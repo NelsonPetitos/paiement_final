@@ -25,6 +25,8 @@ let modemSocket = undefined
 let secretKey = "1234567890"
 let bodyParser = require('body-parser')
 const WAITING_CODE = 105;
+const STATUS_SEND_FIELD = 'status_send';
+const STATUS_RECEIVE_FIELD = 'status_receive';
 //Connect to database
 // mongoose.connect('mongodb://ndenelson:Picsou_88modulus@jello.modulusmongo.net:27017/iG8apaze', (err) => {
 // // mongoose.connect('mongodb://localhost:27017/paiement_api_db', (err) =>{
@@ -149,6 +151,9 @@ io.on('connection', (socket) => {
         console.log(data);
         // Mettre à jour le paiement dans la base de données
         if (data.secretkey == secretkey) {
+            if(data.token && data.err && data.code){
+                updatePaymentStatus(data.token, STATUS_RECEIVE_FIELD, data.err, data.code, data.messageid)
+            }
             listSocket.forEach((socket) => {
                 if (socket.id == data.socket) {
                     console.log("Sender socket find. The response send back to the browser")
@@ -290,9 +295,7 @@ function checkPaymentWithModem(reference, token, socket){
                 //Il y'a erreur
                 console.log('Il y a une erreur')
                 let message = {
-                    data: null,
                     error: true,
-                    code: null,
                     message: "Service down. Try again in few minutes."
                 }
                 socket.emit('wearetechapi_server_response', message)
@@ -309,7 +312,7 @@ function checkPaymentWithModem(reference, token, socket){
                     token: result.token
                 }
                 modemSocket.emit('paiement', message);
-                updatePaymentStatus(token, 'status_send');
+                updatePaymentStatus(token, STATUS_SEND_FIELD);
             }
         });
     });
@@ -317,9 +320,7 @@ function checkPaymentWithModem(reference, token, socket){
     req.on('error', function(e) {
         console.log('problem with request: ' + e.message);
         let result = {
-            data: null,
             error: true,
-            code: null,
             message: "Service down. Try again in few minutes."
         }
         socket.emit('wearetechapi_server_response', result)

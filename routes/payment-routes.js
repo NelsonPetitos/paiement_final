@@ -21,16 +21,29 @@ router.post('', function(req, res){
                 }
                 switch (field) {
                     case 'status_receive':
-                        client.query('update payments set  status_receive = true, date_receive = now() where token_id = $1', [token], function(err, result) {
-                            done();
-                            if(err){ 
-                                console.error('Erreur requete : payment-routes'); 
-                                console.log(err);
-                                return res.status(500).json({ err: true, msg: 'Query error.'});
-                            }
-                            console.log(result.rows[0]);
-                            return res.status(200).json({ err: false, msg: 'Payment update.', data: result.rows[0] });
-                        });
+                        if(message){
+                            client.query('update payments set  status_receive = true, date_receive = now(), status_payment = $1, message = $2, code = $3 where token_id = $4', [status_payment, message, code, token], function(err, result) {
+                                done();
+                                if(err){ 
+                                    console.error('Erreur requete : payment-routes'); 
+                                    console.log(err);
+                                    return res.status(500).json({ err: true, msg: 'Query error.'});
+                                }
+                                console.log(result.rows[0]);
+                                return res.status(200).json({ err: false, msg: 'Payment update.', data: result.rows[0] });
+                            });
+                        }else{
+                            client.query('update payments set  status_receive = true, date_receive = now(), status_payment = $1, code = $2 where token_id = $3', [status_payment, code, token], function(err, result) {
+                                done();
+                                if(err){ 
+                                    console.error('Erreur requete : payment-routes'); 
+                                    console.log(err);
+                                    return res.status(500).json({ err: true, msg: 'Query error.'});
+                                }
+                                console.log(result.rows[0]);
+                                return res.status(200).json({ err: false, msg: 'Payment update.', data: result.rows[0] });
+                            });
+                        }
                         break;
 
                     case 'status_send':
