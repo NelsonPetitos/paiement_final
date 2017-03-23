@@ -372,7 +372,7 @@ router.post('/', (request, response) => {
 							</span>
 						</div>
 						<div style="margin-top:0px;position:relative;z-index:1;">
-							<input id='wearetech_phone_number' type="tel" onfocus="WAPI.handlePhoneError()" style="width:82%;border:none;padding-left:35px;padding-right:5px;height:38px;font-size:13px;border-bottom-left-radius:5px;border-bottom-right-radius:5px;border:1px solid rgba(0,0,0,0.15);margin-top:0px;background:transparent;" placeholder="Téléphone" autofocus required>
+							<input id='wearetech_phone_number' type="tel" onfocus="WAPI.handlePhoneError()" style="width:82%;border:none;padding-left:35px;padding-right:5px;height:38px;font-size:13px;border-bottom-left-radius:5px;border-bottom-right-radius:5px;border:1px solid rgba(0,0,0,0.15);margin-top:0px;background:transparent;" placeholder="Phone number" autofocus required>
 						</div>
 						<div style="position:relative;top:-28px;margin-bottom:-60px;z-index:0;height:35px;">
 							<span>
@@ -390,7 +390,7 @@ router.post('/', (request, response) => {
                     <span id="wearetech_momo_message" style="border-radius: 4px;display:inline-block; text-align:center; font-weight:bold; font-size:14px; background-color:#3ea8e5;color:#FFF;" id="">Pour recevoir un reçu par mail entrez votre email</span>
                     <div style="background:white;border-radius:5px;height:38px; margin-top: 5px; margin-bottom: 10px;">    
 						<div style="margin-bottom:0px;z-index:10;position:relative;">
-							<input id="wearetech_reference_number" style="width:82%;border:none;height:38px;padding-left:35px;padding-right:5px;font-size:13px;border-bottom-left-radius:5px;border-bottom-right-radius:5px;border:1px solid rgba(0,0,0,0.15);margin-bottom:0px;background:transparent;" placeholder="Numéro de reférence" type="text">
+							<input id="wearetech_reference_number" style="width:82%;border:none;height:38px;padding-left:35px;padding-right:5px;font-size:13px;border-bottom-left-radius:5px;border-bottom-right-radius:5px;border:1px solid rgba(0,0,0,0.15);margin-bottom:0px;background:transparent;" placeholder="Transaction ID" type="text">
 						</div>
 						<div style="position:relative;top:-28px;margin-bottom:-35px;z-index:0;height:35px;">
 							<span>

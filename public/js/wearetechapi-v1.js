@@ -178,7 +178,7 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
 
                 WAPI.xhttp.onload = function(){
                     if(this.readyState == 4 && this.status == 200){
-                        //Il faut faire un controle avant d'inserer de nouveau le code suivant.
+                        //Check and set box elements.
                         let result = JSON.parse(this.responseText);
                         document.body.insertAdjacentHTML('beforeend', result.box);
 
@@ -314,7 +314,7 @@ WRTechAPI.prototype.setValidateButtonEventListemer = function(){
             if(!verifiedPhone(phone, country, operator)){
                 // console.log('il ya eu une erreur de validation des champs');
                 if(WAPI.errorMsgSpan){
-                    WAPI.errorMsgSpan.innerHTML = "Required field missing";
+                    WAPI.errorMsgSpan.innerHTML = "Phone operator or number missing";
                     WAPI.errorMsgSpan.style.display = 'block';
                     WAPI.errorMsgSpan.style.backgroundColor = '#EF4836';
                     WAPI.errorMsgSpan.style.color = '#FFF';
@@ -368,7 +368,6 @@ WRTechAPI.prototype.setValidateReferenceBtnEventListener = function() {
                     let message = {reference: reference, token: token, isweb: false};
                     WAPI.socket.emit('wearetechapi_client_emit', message);
                 }else{
-                    console.log('La socket est fermée');
                     alert('Socket close.');
                 }
             }else{
@@ -629,7 +628,7 @@ WRTechAPI.prototype.handleResponse = function(result){
                     this.referenceInputText.disabled = false;
                 }
                 if(this.errorBtn){
-                    this.errorBtn.innerHTML = "Fermer";
+                    this.errorBtn.innerHTML = "Close";
                     this.errorBtn.style.display = 'block';
                 }
                 break;
