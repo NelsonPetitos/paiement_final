@@ -180,7 +180,7 @@ router.post('/init-paiement', (req, res) => {
                                                     data: {amount: token.amount, token: token.token},
                                                     error: true,
                                                     code: MESSAGE_CODE,
-                                                    message: token.shortcode
+                                                    message: token.shortcode.replace('amount', token.amount)
                                                 }
                                                 clientSocket.emit('wearetechapi_server_response', result_client);
                                                 return res.status(200).json({ err: false, msg: 'Paiement sucessfully initiate.' });
