@@ -585,6 +585,11 @@ WRTechAPI.prototype.closeModal = function(){
         this.modalDiv.parentNode.removeChild(this.modalDiv);
         this.setModalDiv(null);
     }
+    if(this.socket){
+        this.socket.disconnect();
+        this.socket = null;
+        console.log('Close the socket');
+    }
 }
 
 
