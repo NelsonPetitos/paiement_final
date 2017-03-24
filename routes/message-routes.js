@@ -52,21 +52,29 @@ router.get('/modem-messages', function(req, res){
     let limit = (!parseInt(req.query.limit))? 10 : parseInt(req.query.limit);
 
     if(!emei){
+        console.log('Wrong modem emei');
         return res.status(404).json({err: true, msg: 'Wrong modem emei.'});
     }
     if(!(req.dburl)){
+        console.log('No database url')
         return res.status(500).json({err: true, msg: 'No database url.'});
     }
     pg.connect(req.dburl, function(err, client, done){
         if(err){
+            console.log(err);
             return res.status(500).json({err: true, msg:'Error connecting to database.'});
         }
         client.query('select * from messages where modem_emei = $1 order by created asc limit $2 offset $3',[emei, limit, offset], function(err, result){
             done();
             if(err){
+                console.log(err);
                 return res.status(500).json({err: true, msg: 'Query execution error.'});
             }
-            return res.status(202).json({err: false, msg: 'Success', data: result.rows})
+            console.log('Modem messages found');
+            if(result.rows.length === 0){
+                return res.status(200).json({err: false, msg: 'Message not found for this modem.', data: result.rows})    
+            }
+            return res.status(200).json({err: false, msg: 'Messages found.', data: result.rows})
         } )
     })
 })
