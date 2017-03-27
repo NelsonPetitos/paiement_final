@@ -150,7 +150,7 @@ io.on('connection', (socket) => {
         console.log('le modem vient de me dire : ');
         console.log(data);
         // Mettre à jour le paiement dans la base de données
-        if (data.secretkey == secretkey) {
+        if (data.secretkey == secretKey) {
             if(data.token && data.err && data.code){
                 updatePaymentStatus(data.token, STATUS_RECEIVE_FIELD, data.err, data.code, data.messageid)
             }
@@ -196,7 +196,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('modemSocket', (data) => {
-        if (data.secretKey == secretKey) {
+        if (data.secretkey == secretKey) {
             modemSocket = socket;
             console.log(`The modem just connect and it\'s identified ${socket.id}`);
         }
