@@ -309,7 +309,7 @@ function checkPaymentWithModem(reference, token, socket){
                     secretkey: secretKey,
                     amount: result.data.amount,
                     reference: reference,
-                    token: result.token
+                    token: result.data.token
                 }
                 console.log(`J'envoie au serveur le message  : `);
                 console.log(message);
