@@ -22,7 +22,7 @@ router.post('', function(req, res){
                 switch (field) {
                     case 'status_receive':
                         if(message){
-                            client.query('update payments set  status_receive = true, date_receive = now(), status_payment = $1, message = $2, code = $3 where token_id = $4', [status_payment, message, code, token], function(err, result) {
+                            client.query('update payments set  status_receive = true, date_receive = now(), status_payment = $1, message = $2, code_id = $3 where token_id = $4', [status_payment, message, code, token], function(err, result) {
                                 done();
                                 if(err){ 
                                     console.error('Erreur requete : payment-routes'); 
@@ -33,7 +33,7 @@ router.post('', function(req, res){
                                 return res.status(200).json({ err: false, msg: 'Payment update.', data: result.rows[0] });
                             });
                         }else{
-                            client.query('update payments set  status_receive = true, date_receive = now(), status_payment = $1, code = $2 where token_id = $3', [status_payment, code, token], function(err, result) {
+                            client.query('update payments set  status_receive = true, date_receive = now(), status_payment = $1, code_id = $2 where token_id = $3', [status_payment, code, token], function(err, result) {
                                 done();
                                 if(err){ 
                                     console.error('Erreur requete : payment-routes'); 
