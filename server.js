@@ -311,6 +311,7 @@ function checkPaymentWithModem(reference, token, socket){
                     reference: reference,
                     token: result.token
                 }
+                console.log(`J'envoie au serveur le message ${message}`);
                 modemSocket.emit('paiement', message);
                 updatePaymentStatus(token, STATUS_SEND_FIELD);
             }
