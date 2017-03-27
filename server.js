@@ -103,7 +103,7 @@ io.on('connection', (socket) => {
             let country = data.country;
             let operator = data.operator;
 
-            
+            console.log(data.country+data.phone);
             if(!verifiedPhone(phone, country, operator)){
                 let result = {
                     error: true,
@@ -129,7 +129,7 @@ io.on('connection', (socket) => {
                         apikey: data.apikey,
                         country: country,
                         operator: operator,
-                        phone:  data.phone,
+                        phone:  ''+data.country+data.phone,
                         adress_ip: clientIp,
                         email: data.email,
                         socketid: socket.id

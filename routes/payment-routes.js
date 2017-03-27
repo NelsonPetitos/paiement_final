@@ -29,7 +29,7 @@ router.post('', function(req, res){
                                     console.log(err);
                                     return res.status(500).json({ err: true, msg: 'Query error.'});
                                 }
-                                console.log(result.rows[0]);
+                                console.log('Le status est a jour');
                                 return res.status(200).json({ err: false, msg: 'Payment update.', data: result.rows[0] });
                             });
                         }else{
