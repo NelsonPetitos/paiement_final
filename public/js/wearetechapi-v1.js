@@ -280,7 +280,7 @@ WRTechAPI.prototype.setApiButtonEventListener = function(){
                         // Set the 
                         let options = "<option value='0'>Choose your country</option>";
                         for(let i = 0; i < result.countries.length; i++){
-                            options += '<option value="'+result.countries[i].id+'">'+result.countries[i].name+' - ( +'+result.countries[i].code+' )'+'</option>' ;
+                            options += '<option value="'+result.countries[i].id+'-'+result.countries[i].code+'">'+result.countries[i].name+' - ( +'+result.countries[i].code+' )'+'</option>' ;
                         }
                         let selectCountries = document.getElementById('wearetech_country_code');
                         if(selectCountries){
@@ -308,7 +308,9 @@ WRTechAPI.prototype.setValidateButtonEventListemer = function(){
                 phone = WAPI.phoneInputText.value;
             }
             let amount = document.getElementById('wearetech_transaction_amount').value;
-            let country = WAPI.countriesSelectList.value;
+            let ctryselect = WAPI.countriesSelectList.value.split("-");
+            let country = ctryselect[0];
+            let code = ctryselect[1];
             let operator = WAPI.phoneOperatorsSelectList.value;
             // let msgSpan = document.getElementById('wearetech_message');
             if(!verifiedPhone(phone, country, operator)){
@@ -329,7 +331,7 @@ WRTechAPI.prototype.setValidateButtonEventListemer = function(){
                 if(typeof socket !== 'undefined'){
                     WAPI.socket = socket;
                     // console.log('Connection par socket avec le serveur reussie.'+socket.id);
-                    let message = {phone: phone, country: country, operator: operator, apikey: WAPI.apiKey, amount: amount, email: email, isweb: true};
+                    let message = {phone: phone, country: country, code: code,operator: operator, apikey: WAPI.apiKey, amount: amount, email: email, isweb: true};
                     socket.emit('wearetechapi_client_emit', message);
 
                     //dismiss modal view after the connect has been send
@@ -408,6 +410,7 @@ WRTechAPI.prototype.setCountriesChangeEventListener = function(){
     this.countriesSelectList.addEventListener("change", function(){
         let val = parseInt(WAPI.countriesSelectList.value);
         if(val !== 0){
+            val = val.split("-")[0]
             WAPI.showCountriesSpinner();
             // je cherche les operateurs de ce pays
             if(WAPI.xhttp !== null){

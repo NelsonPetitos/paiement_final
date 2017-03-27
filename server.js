@@ -129,7 +129,7 @@ io.on('connection', (socket) => {
                         apikey: data.apikey,
                         country: country,
                         operator: operator,
-                        phone:  ''+data.country+data.phone,
+                        phone:  ''+data.code+data.phone,
                         adress_ip: clientIp,
                         email: data.email,
                         socketid: socket.id
