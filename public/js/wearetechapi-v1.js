@@ -408,9 +408,9 @@ WRTechAPI.prototype.setSuccessButtonEventListener = function() {
 
 WRTechAPI.prototype.setCountriesChangeEventListener = function(){
     this.countriesSelectList.addEventListener("change", function(){
-        let val = parseInt(WAPI.countriesSelectList.value);
+        let val = parseInt(WAPI.countriesSelectList.value.split("-")[0]);
         if(val !== 0){
-            val = val.split("-")[0]
+            // val = val.split("-")[0]
             WAPI.showCountriesSpinner();
             // je cherche les operateurs de ce pays
             if(WAPI.xhttp !== null){
