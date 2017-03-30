@@ -404,8 +404,8 @@ router.post('/', (request, response) => {
 							</span>
 						</div>
 					</div>
-                    <button class="checkout paiement" id="wearetech_validate_reference">Valider</button>
-                    <button style="margin-top: 5px;" class="checkout error" id="wearetech_cancelled_reference">Annuler</button>
+                    <button class="checkout paiement" id="wearetech_validate_reference">Send</button>
+                    <button style="margin-top: 5px;" class="checkout error" id="wearetech_cancelled_reference">Cancel</button>
                 </div>
 
 
@@ -419,11 +419,11 @@ router.post('/', (request, response) => {
 					</div>
 
 					<button style="display:none" class="checkout error" id="wearetech_error">
-						Une erreur est survenue
+						Error occur
 					</button>
 					
 					<button style="display:none" class="checkout success" id="wearetech_success">
-						Paiement réussi
+						Payment succeed
 					</button>
 				</div>
 

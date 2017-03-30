@@ -344,6 +344,11 @@ WRTechAPI.prototype.setValidateButtonEventListemer = function(){
                         WAPI.handleResponse(result);
                         // WAPI.apiCallback(result);
                     });
+
+                    socket.on('disconnect', function(){
+                        WAPI.socket = null;
+                        console.log('socket deconnectee');
+                    })
                 }else{
                     console.log("Socket connection with wearetech server failed.");
                     return;
