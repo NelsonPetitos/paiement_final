@@ -356,9 +356,9 @@ function updatePaymentStatus(token, field, status_payment, code, message){
             let result = JSON.parse(rawData);
             console.log(result)
             if(result.err === true){
-                console.log('Il y a une erreur. Le status n a pas ete change')
+                console.log('Il y a une erreur. Le status n a pas ete change sur le champ '+field)
             }else{
-                console.log('Le status du paiement a ete change');
+                console.log('Le status du paiement a ete change sur le champ '+field);
             }
         });
     });
