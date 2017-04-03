@@ -17,7 +17,8 @@
             <h3 >Register</h3>
             <p>
                 First you should <a href="#">register </a> to receive your api keys : one private and public key. Your public key will be use for script settings
-                and for client transactions identification and security; while your private key will help to initiate payment.
+                and for client transactions identification and security; while your private key will help to initiate payment. After registration you can eighter
+                follow the quickstart part to test the API or follow the production steps.
             </p>
         </div>
 
@@ -45,20 +46,20 @@
             &#125;else&#123;
                 alert("Error loading api");
             &#125;
-            WAPI.setApiCallback(function(data)&#125;
+            WAPI.setApiCallback(function(data)&#123;
                 var xhttp;
 
                 if(window.XDomainRequest)&#123;
                     xhttp = new XDomainRequest();
-                &#125;else if(window.XMLHttpRequest)&#125;
+                &#125;else if(window.XMLHttpRequest)&#123;
                     xhttp = new XMLHttpRequest();
-                &#125;else&#125;
+                &#125;else&#123;
                     alert("Error: xhttp unhable");
                     return;
                 &#125;
 
                 let url = "https://paiementback.herokuapp.com/api/init-paiement";
-                let params = &#125;
+                let params = &#123;
                     phone: data.phone,
                     amount: data.amount,
                     publickey: '&lt; Your private key &gt;',
@@ -69,15 +70,15 @@
                 xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 xhttp.send("phone="+params.phone+"&amount="+params.amount+"&privatekey="+params.privatekey+"&publickey="+params.publickey+"&token="+params.token);
 
-                xhttp.onerror = function(err)&#125;
+                xhttp.onerror = function(err)&#123;
                     alert("An error occur during the XmlHttpRequest communication");
                     console.log(err);
                 &#125;
 
-                xhttp.onload = function()&#125;
-                    if(this.readyState == 4 && this.status == 200)&#125;
+                xhttp.onload = function()&#123;
+                    if(this.readyState == 4 && this.status == 200)&#123;
                         console.log('Success');
-                    &#125;else&#125;
+                    &#125;else&#123;
                         console.log('Error')
                     &#125;
                 &#125;
@@ -141,12 +142,36 @@
             </div>
 
             <div>
-                <h3 >Define the call back method</h3>
+                <h3>Define the call back method</h3>
                 <span>
-                    The next step is to define the call back method <a href="#">
-                    <code>WAPI.setApiCallback(function(data))</code></a>. This method will help
-                    you to handle responses from your clients operation. The parameter <code>&lt; data &gt;</code> is an objet with describe the status of an
-                    initiated operation. For more details on this, <a href="#">see the documentation.</a>.
+                    When the user click on a Flitpay handle button a token is then generate, associate with the user's phone, the amount and the script public key.
+                    The resulting objet is passed as parameter to the callback method your have to define by calling <a href="#">
+                    <code>WAPI.setApiCallback(your_callback_function(data))</code></a>. The parameter <code>&lt; data &gt;</code> describe the status of the
+                    initiated payment operation. Here is its structure (For more details, <a href="#">see the documentation ).</a>
+                    <pre><code>
+data = &#123;
+        phone: 'User phone number',
+        amount: 'Operation amoount',
+        token: 'Token generated'
+    &#125;
+                    </code></pre>
+                </span>
+            </div>
+
+            <div>
+                <h3>Initiate the payment from the back</h3>
+                <span>
+                    Now you should make a post from the back of your application on the url <a href="#"><code>https://paiementback.herokuapp.com/api/init-paiement</code></a>.
+                    Here is the structure of the parameters you should send
+                    <pre><code>
+&#123;
+    phone: 'client phone (Check data of api callback).',
+    amount: 'Operation amount (Check data of api callback).',
+    publickey: '&lt; Your private key &gt;',
+    privatekey: '&lt; Your public key &gt;',
+    token: 'The token you receive in your callback'
+&#125;
+                        </code></pre>
                 </span>
             </div>
         </div>
