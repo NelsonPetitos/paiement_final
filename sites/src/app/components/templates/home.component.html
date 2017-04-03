@@ -10,76 +10,150 @@
 <div class="container">
     <div class="row">
         <!-- Docs Section -->
-        <section id="docs" class="section">
-            <div class="bt-docs-box">
-                <h2 class="page-header">Get started</h2>
-                <div class="box-secondary" id="docs-shortcodes-one">
-                    <h3 class="page-header">Register to get your api key</h3>
-                    <p>
-                        To get started with the Flitpay; there are just few steps that one should follow. First of all you should <a href="#">register </a> to receive your api keys : one private key and one public key. Your public key will be couple with your api script in
-                        order to identified and secure all your client transactions. Your private key will be use to initiate payment.
-                    </p>
-                </div>
 
-                <div class="box-secondary" id="docs-shortcodes-two">
-                    <h3 class="page-header">Download the script</h3>
-                    <span>
-                        <ul>
-                            <li>Via the CDN
-                                <pre class="line-numbers language-html"><code>&lt;script src="cdn://.../wearetechapi-v1.js" &gt;&lt;/script &gt;</code></pre>
-                            </li>
-                            <li>On Github
-                                <pre class="line-numbers language-html"><code>&lt;script src="github://.../wearetechapi-v1.js" &gt;&lt;/script &gt;</code></pre>
-                            </li>
-                            <li>Or take it from our server.
-                                <pre class="line-numbers language-html"><code>&lt;script src="https://paiementback.herokuapp.com/assets/js/wearetechapi-v1.js" &gt;&lt;/script &gt;</code></pre>
-                            </li>
-                        </ul>
+        <h2>Get started</h2>
+        <p>To get started with the Flitpayn API, they are just few steps that one should follow</p>
+        <div>
+            <h3 >Register</h3>
+            <p>
+                First you should <a href="#">register </a> to receive your api keys : one private and public key. Your public key will be use for script settings
+                and for client transactions identification and security; while your private key will help to initiate payment.
+            </p>
+        </div>
 
-                    </span>
-                </div>
+        <div>
+            <h3>Quick start code</h3>
+            <p>Here is a simple code that's include a server side implementation in javascript to start quickly with Flitpay. Just copy, change  &lt; Your private key &gt; and &lt; Your public key &gt; with the right values and your are good to go</p>
+            <pre>
+                <code>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;meta charset="utf-8" /&gt;
+        &lt;title&gt;Flitpay quickstart&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;h1>Simple implementation &lt;/h1&gt;
+        &lt;div&gt;
+            &lt;button data-amount="200" data-wearetechbtn="true" >Buy 200 CFA item&lt;/button&gt;
+        &lt;/div&gt;
 
-                <div class="box-secondary" id="docs-shortcodes-three">
-                    <h3 class="page-header">Set your script API Key</h3>
-                    <p>
-                        After your registration on the plateforme you receive two api keys. Use the public key to configure the script by calling the method
-                        <a href="#">
-                            <code>WAPI.setApiKey(&lt; Your api public key &gt;)</code>
-                        </a>
-                    </p>
-                </div>
+        &lt;script type="text/javascript" src="https://paiementback.herokuapp.com/assets/js/wearetechapi-v1.js"&gt;$lt;/script&gt;
+        &lt;script type="text/javascript" &gt;
+            if(typeof WAPI !== 'undefined')&#123;
+                WAPI.setApiKey(&lt; Your public key &gt;);
+            &#125;else&#123;
+                alert("Error loading api");
+            &#125;
+            WAPI.setApiCallback(function(data)&#125;
+                var xhttp;
 
-                <div class="box-secondary" id="docs-shortcodes-four">
-                    <h3 class="page-header">Define the call back method</h3>
-                    <span>
-                        The next step is to define the call back method <a href="#">
-                        <code>WAPI.setApiCallback(function(data))</code></a>. This method will help
-                        you to handle responses from your clients operation. The parameter <code>&lt; data &gt;</code> is an objet with describe the status of an
-                        initiated operation. For more details on this, <a href="#">see the documentation.</a>.
-                    </span>
-                </div>
+                if(window.XDomainRequest)&#123;
+                    xhttp = new XDomainRequest();
+                &#125;else if(window.XMLHttpRequest)&#125;
+                    xhttp = new XMLHttpRequest();
+                &#125;else&#125;
+                    alert("Error: xhttp unhable");
+                    return;
+                &#125;
 
-                <div class="box-secondary" id="docs-shortcodes-five">
-                    <h3 class="page-header">Create your buttons</h3>
-                    <span>
-                        Now to take on a payment, you just have to create a specific
-                        button in your page. This code below show the the template of a generic flitpay button where :
-                        <ul>
-                            <li>
-                                <code>amount</code>: is total amount the client whil have to pay.
-                            </li>
-                            <li>
-                                <code>Should-Script-Handle</code>: is a value which describe whether or not our API should handle the button.
-                                <ul>
-                                    <li>If this value is "0" the script will not handle click event on this button</li>
-                                    <li>If it's every value different from 0, the click even on this button will be handle by our API</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </span>
-                    <pre class="line-numbers language-html"><code> &lt;button data-amount="&lt;amount&gt;" data-wearetechbtn="&lt;Should-Script-Handle&gt;" &gt;Acheter cahier&lt;/button&gt; </code></pre>
-                </div>
+                let url = "https://paiementback.herokuapp.com/api/init-paiement";
+                let params = &#125;
+                    phone: data.phone,
+                    amount: data.amount,
+                    publickey: '&lt; Your private key &gt;',
+                    privatekey: '&lt; Your public key &gt;',
+                    token: data.token
+                &#125;
+                xhttp.open("POST", url, true);
+                xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhttp.send("phone="+params.phone+"&amount="+params.amount+"&privatekey="+params.privatekey+"&publickey="+params.publickey+"&token="+params.token);
+
+                xhttp.onerror = function(err)&#125;
+                    alert("An error occur during the XmlHttpRequest communication");
+                    console.log(err);
+                &#125;
+
+                xhttp.onload = function()&#125;
+                    if(this.readyState == 4 && this.status == 200)&#125;
+                        console.log('Success');
+                    &#125;else&#125;
+                        console.log('Error')
+                    &#125;
+                &#125;
+            &#125;)
+        &lt;/script &gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+                </code>
+            </pre>
+        </div>
+
+        <div>
+            <h3>Production implementation</h3>
+            <p>Follow this steps to implement Flitpay solution in production application</p>
+            <div>
+                <h3 >Download the Flitpay script</h3>
+                <span>
+                    <ul>
+                        <li>Via the CDN
+                            <pre ><code>&lt;script src="cdn://.../wearetechapi-v1.js" &gt;&lt;/script &gt;</code></pre>
+                        </li>
+                        <li>On Github
+                            <pre ><code>&lt;script src="github://.../wearetechapi-v1.js" &gt;&lt;/script &gt;</code></pre>
+                        </li>
+                        <li>From our server.
+                            <pre ><code>&lt;script src="https://paiementback.herokuapp.com/assets/js/wearetechapi-v1.js" &gt;&lt;/script &gt;</code></pre>
+                        </li>
+                    </ul>
+                </span>
             </div>
-        </section>
+
+            <div  >
+                <h3 >Set the script Key</h3>
+                <p>
+                    After your registration on the plateforme you receive two keys. Use the public key to configure the script by calling the method
+                    <a href="#">
+                        <code>WAPI.setApiKey(&lt; Your api public key &gt;)</code>
+                    </a>
+                </p>
+            </div>
+
+            <div>
+                <h3 >Create Flitpay buttons</h3>
+                <span>
+                    Now to take on a payment, you just have to create a specific type of
+                    button in your site page. The code bellow shows you the template of a generic flitpay button where :
+                    <ul>
+                        <li>
+                            <code>amount</code>: is total amount the client will have to pay.
+                        </li>
+                        <li>
+                            <code>Should-Script-Handle</code>: is a value which describe whether or not our API should handle the button.
+                            <ul>
+                                <li>If this value is "0" the script will not be handle when click event occur on this button</li>
+                                <li>If it's every value different from 0, the click even on this button will be handle by our API</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </span>
+                <pre ><code> &lt;button data-amount="&lt;amount&gt;" data-wearetechbtn="&lt;Should-Script-Handle&gt;" &gt;Acheter cahier&lt;/button&gt; </code></pre>
+            </div>
+
+            <div>
+                <h3 >Define the call back method</h3>
+                <span>
+                    The next step is to define the call back method <a href="#">
+                    <code>WAPI.setApiCallback(function(data))</code></a>. This method will help
+                    you to handle responses from your clients operation. The parameter <code>&lt; data &gt;</code> is an objet with describe the status of an
+                    initiated operation. For more details on this, <a href="#">see the documentation.</a>.
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12" style="text-align: center; height: 320px;">
+        
     </div>
 </div>
