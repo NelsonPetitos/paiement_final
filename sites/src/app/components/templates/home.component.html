@@ -16,35 +16,35 @@
                 <div class="box-secondary" id="docs-shortcodes-one">
                     <h3 class="page-header">Register to get your api key</h3>
                     <p>
-                        To get started with the Flitpay; there are just few steps that one should follow. First of all you should <a href="#">register </a> to receive an api key. This api key will be later couple with your api script in
-                        order to identified and secure all your client transactions.
+                        To get started with the Flitpay; there are just few steps that one should follow. First of all you should <a href="#">register </a> to receive your api keys : one private key and one public key. Your public key will be couple with your api script in
+                        order to identified and secure all your client transactions. Your private key will be use to initiate payment.
                     </p>
                 </div>
 
                 <div class="box-secondary" id="docs-shortcodes-two">
                     <h3 class="page-header">Download the script</h3>
                     <span>
-                    <ul>
-                        <li>Via the CDN
-                            <pre class="line-numbers language-html"><code>&lt;script src="cdn://.../wearetechapi-v1.js" &gt;&lt;/script &gt;</code></pre>
-                        </li>
-                        <li>On Github
-                            <pre class="line-numbers language-html"><code>&lt;script src="github://.../wearetechapi-v1.js" &gt;&lt;/script &gt;</code></pre>
-                        </li>
-                        <li>Or take it from our server.
-                            <pre class="line-numbers language-html"><code>&lt;script src="https://paiementback.herokuapp.com/assets/js/wearetechapi-v1.js" &gt;&lt;/script &gt;</code></pre>
-                        </li>
-                    </ul>
+                        <ul>
+                            <li>Via the CDN
+                                <pre class="line-numbers language-html"><code>&lt;script src="cdn://.../wearetechapi-v1.js" &gt;&lt;/script &gt;</code></pre>
+                            </li>
+                            <li>On Github
+                                <pre class="line-numbers language-html"><code>&lt;script src="github://.../wearetechapi-v1.js" &gt;&lt;/script &gt;</code></pre>
+                            </li>
+                            <li>Or take it from our server.
+                                <pre class="line-numbers language-html"><code>&lt;script src="https://paiementback.herokuapp.com/assets/js/wearetechapi-v1.js" &gt;&lt;/script &gt;</code></pre>
+                            </li>
+                        </ul>
 
-                </span>
+                    </span>
                 </div>
 
                 <div class="box-secondary" id="docs-shortcodes-three">
                     <h3 class="page-header">Set your script API Key</h3>
                     <p>
-                        After your registration on our plateforme you receive an api key. Use our api method
+                        After your registration on the plateforme you receive two api keys. Use the public key to configure the script by calling the method
                         <a href="#">
-                            <code>WAPI.setApiKey(&lt; fill your api key &gt;)</code>
+                            <code>WAPI.setApiKey(&lt; Your api public key &gt;)</code>
                         </a>
                     </p>
                 </div>
@@ -52,31 +52,31 @@
                 <div class="box-secondary" id="docs-shortcodes-four">
                     <h3 class="page-header">Define the call back method</h3>
                     <span>
-                    The next step is to define the call back method <a href="#">
-                    <code>WAPI.setApiCallback(function(data))</code></a>. This method will help
-                    you to handle responses from your clients operation. The parameter <code>&lt; data &gt;</code> is an objet with describe the status of an
-                    initiated operation. For more details on this, <a href="#">see the documentation.</a>.
-                </span>
+                        The next step is to define the call back method <a href="#">
+                        <code>WAPI.setApiCallback(function(data))</code></a>. This method will help
+                        you to handle responses from your clients operation. The parameter <code>&lt; data &gt;</code> is an objet with describe the status of an
+                        initiated operation. For more details on this, <a href="#">see the documentation.</a>.
+                    </span>
                 </div>
 
                 <div class="box-secondary" id="docs-shortcodes-five">
                     <h3 class="page-header">Create your buttons</h3>
                     <span>
-                    Now to take on a payment, you just have to create a specific
-                    button in your page. This code below show the the template of a generic flitpay button where :
-                    <ul>
-                        <li>
-                            <code>amount</code>: is total amount the client whil have to pay.
-                        </li>
-                        <li>
-                            <code>Should-Script-Handle</code>: is a value which describe whether or not our API should handle the button.
-                            <ul>
-                                <li>If this value is "0" the script will not handle click event on this button</li>
-                                <li>If it's every value different from 0, the click even on this button will be handle by our API</li>
-                            </ul>
-                        </li>
-                    </ul>
-                </span>
+                        Now to take on a payment, you just have to create a specific
+                        button in your page. This code below show the the template of a generic flitpay button where :
+                        <ul>
+                            <li>
+                                <code>amount</code>: is total amount the client whil have to pay.
+                            </li>
+                            <li>
+                                <code>Should-Script-Handle</code>: is a value which describe whether or not our API should handle the button.
+                                <ul>
+                                    <li>If this value is "0" the script will not handle click event on this button</li>
+                                    <li>If it's every value different from 0, the click even on this button will be handle by our API</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </span>
                     <pre class="line-numbers language-html"><code> &lt;button data-amount="&lt;amount&gt;" data-wearetechbtn="&lt;Should-Script-Handle&gt;" &gt;Acheter cahier&lt;/button&gt; </code></pre>
                 </div>
             </div>
