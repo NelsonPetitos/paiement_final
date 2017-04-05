@@ -161,7 +161,8 @@ io.on('connection', (socket) => {
                         error: data.err,
                         message: "Payment succeed.",
                         code: data.code,
-                        data: null
+                        data: null,
+                        token: data.token
                     }
                     switch(data.code){
                         //impossible d'établir la connexion avec le port du modem
