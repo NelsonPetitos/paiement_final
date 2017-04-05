@@ -640,6 +640,8 @@ WRTechAPI.prototype.handleResponse = function(result){
                 if(this.cancelReferenceBtn){
                     this.cancelReferenceBtn.style.display = 'inline-block';
                 }
+                // Inform the backend
+                this.paymentCallback(result);
                 break;
 
             case 402: 
@@ -654,6 +656,8 @@ WRTechAPI.prototype.handleResponse = function(result){
                     this.errorBtn.innerHTML = "Close";
                     this.errorBtn.style.display = 'block';
                 }
+                // Inform the backend
+                this.paymentCallback(result);
                 break;
 
             case MESSAGE_CODE:
@@ -691,10 +695,8 @@ WRTechAPI.prototype.handleResponse = function(result){
         }
     }else{
         // IL n'y a pas d'erreur appeler le callback pour lui deleguer la suite
-        this.paymentCallback({
-            statut: result.code,
-            msg: 'Payment succeed'
-        })
+        this.paymentCallback(result); // Inform the backend
+
         this.displayErrorMessage(result.message, false);
         if(this.successBtn){
             this.successBtn.innerHTML = "Sucess";
