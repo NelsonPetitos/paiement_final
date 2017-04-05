@@ -20,7 +20,8 @@
 .flippay_login_body{
     display: inline-block; 
     /*border: 2px solid white; */
-    background: rgba(0, 0, 0, 0.3);
+    /*color: #FEFEFE;*/
+    background: rgba(225, 225, 225, 1);
     padding: 0 30px 50px 30px !important;
     position: relative;
     top: 25%;

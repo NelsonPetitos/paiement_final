@@ -7,6 +7,9 @@ function WRTechAPI(){
     this.apiCallback = function(){
         alert("Set the callback method to handle the result.");
     };
+    this.paymentCallback = function(){
+        alert("Set the payment callback method to handle the result.");
+    };
 }
 
 function getButton(anid){
@@ -26,10 +29,17 @@ function verifiedReference(reference){
     return (reference !== "");
 }
 
-//TThis method will set the callback of the
+//This method will set the callback of the
 WRTechAPI.prototype.setApiCallback = function(resolve){
     if(typeof resolve === 'function'){
         this.apiCallback = resolve;
+    }
+}
+
+//This method will set the callback of the
+WRTechAPI.prototype.setPaymentCallback = function(resolve){
+    if(typeof resolve === 'function'){
+        this.paymentCallback = resolve;
     }
 }
 
@@ -681,6 +691,10 @@ WRTechAPI.prototype.handleResponse = function(result){
         }
     }else{
         // IL n'y a pas d'erreur appeler le callback pour lui deleguer la suite
+        this.paymentCallback({
+            statut: result.code,
+            msg: 'Payment succeed'
+        })
         this.displayErrorMessage(result.message, false);
         if(this.successBtn){
             this.successBtn.innerHTML = "Sucess";

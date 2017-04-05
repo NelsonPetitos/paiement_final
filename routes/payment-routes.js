@@ -73,4 +73,37 @@ router.post('', function(req, res){
     }
 })
 
+
+router.get('', function(req, res){
+    let token = req.query.token;
+    
+    if(token === ''){
+        return res.status(404).json({err: true, msg: 'Bad request parameters'});
+    }
+
+    if(!(req.dburl)){
+        return res.status(500).json({err: true, msg: 'No database url'});
+    }
+
+    pg.connect(req.dburl, function(err, client, done){
+        if(err){
+            return res.status(500).json({err: true, msg: 'Database connection error.'});
+        }
+        client.query('select P.token_id, T.amount, T.phone, P.date_init as date from payments P, tokens T where P.token_id = T.token and P.token_id = $1', [token], function(err, result){
+            done()
+            if(err){
+                return res.status(500).json({ err: true, msg: 'Query error.'});
+            }
+            if(result.rows.length > 1){
+                return res.status(500).json({err: true, msg: 'Unexpected multiple response'});
+            }
+            if(result.rows.length === 0){
+                return res.status(200).json({err: false, msg: 'No payment found', data: null});
+            }
+            return res.status(200).json({err: false, msg: 'Payment found', data: result.rows[0]});
+        })
+    })
+})
+
+
 module.exports = router;
