@@ -48,8 +48,8 @@ router.post('/message', function(req, res){
 
 router.get('/modem-messages', function(req, res){
     let emei = parseInt(req.query.emei);
-    let offset = (!parseInt(req.query.page))? 0 : parseInt(req.query.page);
     let limit = (!parseInt(req.query.limit))? 10 : parseInt(req.query.limit);
+    let offset = (!parseInt(req.query.page))? 0 : parseInt(req.query.page) * limit;
 
     if(!emei){
         console.log('Wrong modem emei');
