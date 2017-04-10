@@ -31,6 +31,6 @@ export class ClientsComponent implements OnInit{
 
     ngOnInit(){
         this.profile = JSON.parse(localStorage.getItem('profile'));
-        // console.log(this.profile);
+        console.log(this.profile);
     }
 }

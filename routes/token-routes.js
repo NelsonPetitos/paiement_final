@@ -242,9 +242,14 @@ router.get('/token/:token', (req, res) => {
 })
 
 
-router.get('/get-client/:apikey', (req, res) => {
-    console.log(req.params.privatekey);
-    if(req.params.privatekey == null || req.params.privatekey == ''){
+router.get('/get-client', (req, res) => {
+    // console.log(req.query.apikey);
+    let apikey = req.query.apikey;
+    
+    let limit = (!parseInt(req.query.limit))? 10 : parseInt(req.query.limit);
+    let offset = (!parseInt(req.query.page))? 0 : parseInt(req.query.page) * limit;
+
+    if(!apikey || apikey == ''){
         return res.status(400).json({err: true, msg: 'Bad request parameter.'});
     }
     if(req.dburl){
@@ -254,7 +259,7 @@ router.get('/get-client/:apikey', (req, res) => {
                 console.error(err); 
                 return res.status(500).json({ err: true, msg: 'Database connection error.'});
             }
-            client.query('select distinct tokens.phone from tokens, payments where tokens.token = payments.token_id and tokens.privatekey = $1', [req.params.privatekey], function(err, result) {
+            client.query('select distinct(tokens.phone) from tokens, payments where tokens.token = payments.token_id and tokens.apikey = $1 limit $2 offset $3', [apikey, limit, offset], function(err, result) {
                 done();
                 if(err){ 
                     console.error('Erreur requete : get-users'); 

@@ -17,7 +17,7 @@ var ClientsComponent = (function () {
     }
     ClientsComponent.prototype.ngOnInit = function () {
         this.profile = JSON.parse(localStorage.getItem('profile'));
-        // console.log(this.profile);
+        console.log(this.profile);
     };
     ClientsComponent = __decorate([
         core_1.Component({
