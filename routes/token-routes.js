@@ -247,7 +247,7 @@ router.get('/get-client', (req, res) => {
     let apikey = req.query.apikey;
     
     let limit = (!parseInt(req.query.limit))? 10 : parseInt(req.query.limit);
-    let offset = (!parseInt(req.query.page))? 0 : parseInt(req.query.page) * limit;
+    let offset = (!parseInt(req.query.page) || parseInt(req.query.page) < 0)? 0 : (parseInt(req.query.page) - 1) * limit;
 
     if(!apikey || apikey == ''){
         return res.status(400).json({err: true, msg: 'Bad request parameter.'});
