@@ -3,7 +3,7 @@ import { UsersService } from '../../../services/users.service';
 
 @Component({
     template: `
-    <h1>Clients list</h1>
+    <h1>List of clients</h1>
     
     <div style="margin-top: 34px;"><circle-loader *ngIf="showLoader" role="alert"></circle-loader></div>
 
@@ -12,10 +12,14 @@ import { UsersService } from '../../../services/users.service';
             <tr>
                 <td>Num</td>
                 <td>Number</td>
+                <td>Depense (XFCFA)</td>
+                <td>Abord (XFCFA)</td>
             <tr>
             <tr *ngFor="let client of clients; let cptr = index">
-                <td>{{cptr}}</td>
+                <td>{{cptr+1}}</td>
                 <td>{{client.phone}}</td>
+                <td>{{client.depense}}</td>
+                <td>{{client.abord}}</td>
             </tr>
             <tr *ngIf="clients.length == 0">
                 <td colspan="3"><h2 style="text-align: center;">No clients.</h2></td>

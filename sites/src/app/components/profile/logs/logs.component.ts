@@ -3,7 +3,7 @@ import { UsersService } from '../../../services/users.service';
 
 @Component({
     template: `
-        <h1>Transactions logs</h1>
+        <h1>Transactions log</h1>
         
         <div style="margin-top: 34px;"><circle-loader *ngIf="showLoader" role="alert"></circle-loader></div>
 

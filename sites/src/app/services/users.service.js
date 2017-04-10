@@ -15,7 +15,7 @@ var UsersService = (function () {
     function UsersService(http) {
         this.http = http;
         this.clientUrl = "api/get-client";
-        this.logsUrl = "api/get-client";
+        this.logsUrl = "api/get-logs";
     }
     UsersService.prototype.getClients = function (apikey, limit, page) {
         if (limit === void 0) { limit = 10; }
