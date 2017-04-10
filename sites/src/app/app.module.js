@@ -11,18 +11,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var platform_browser_1 = require('@angular/platform-browser');
+var http_1 = require('@angular/http');
 // import { AUTH_PROVIDERS } from 'angular2-jwt';
 // import { DocumentationModule } from './documentation/documentation.module';
 // import { ProfileModule } from './profile/profile.module';
 // import { Auth } from './services/auth.service';
 var my_auth_service_1 = require('./services/my-auth.service');
 var guard_service_1 = require('./services/guard.service');
+var users_service_1 = require('./services/users.service');
 var app_component_1 = require('./app.component');
+var circle_loader_component_1 = require('./loaders/circle-loader.component');
 var home_component_1 = require('./components/home/home.component');
 var pagenotfound_component_1 = require('./components/error/pagenotfound.component');
 var profile_component_1 = require('./components/profile/profile.component');
 var details_component_1 = require('./components/profile/details/details.component');
 var apireference_component_1 = require('./components/apireference/apireference.component');
+var logs_component_1 = require('./components/profile/logs/logs.component');
+var payments_component_1 = require('./components/profile/payments/payments.component');
+var clients_component_1 = require('./components/profile/clients/clients.component');
 // Define the routes
 var defaultRoutes = [
     {
@@ -33,6 +39,34 @@ var defaultRoutes = [
             {
                 path: '',
                 component: details_component_1.DetailsComponent,
+            },
+            {
+                path: 'logs',
+                component: logs_component_1.LogsComponent
+            },
+            // {
+            //     path: 'change-pwd',
+            //     component: ChangePwdComponent
+            // },
+            // {
+            //     path: 'manage-cashiers',
+            //     component: ManageCashiersComponent
+            // },
+            // {
+            //     path: 'manage-adress',
+            //     component: ManageAdressComponent
+            // },
+            // {
+            //     path: 'manage-account',
+            //     component: ManageAccountComponent
+            // },
+            {
+                path: 'payments',
+                component: payments_component_1.PaymentsComponent
+            },
+            {
+                path: 'clients',
+                component: clients_component_1.ClientsComponent
             }
         ]
     },
@@ -60,12 +94,12 @@ var AppModule = (function () {
     }
     AppModule = __decorate([
         core_1.NgModule({
-            imports: [platform_browser_1.BrowserModule, router_1.RouterModule.forRoot(defaultRoutes)],
-            declarations: [app_component_1.AppComponent, home_component_1.HomeComponent, pagenotfound_component_1.PageNotFoundComponent, profile_component_1.ProfileComponent, details_component_1.DetailsComponent,
-                apireference_component_1.ApiReferenceComponent
+            imports: [http_1.HttpModule, platform_browser_1.BrowserModule, router_1.RouterModule.forRoot(defaultRoutes)],
+            declarations: [app_component_1.AppComponent, home_component_1.HomeComponent, pagenotfound_component_1.PageNotFoundComponent, profile_component_1.ProfileComponent, details_component_1.DetailsComponent, circle_loader_component_1.CircleLoaderComponent,
+                apireference_component_1.ApiReferenceComponent, logs_component_1.LogsComponent, clients_component_1.ClientsComponent, payments_component_1.PaymentsComponent
             ],
             bootstrap: [app_component_1.AppComponent],
-            providers: [my_auth_service_1.AuthWRT, guard_service_1.AuthGuard]
+            providers: [my_auth_service_1.AuthWRT, guard_service_1.AuthGuard, users_service_1.UsersService]
         }), 
         __metadata('design:paramtypes', [])
     ], AppModule);

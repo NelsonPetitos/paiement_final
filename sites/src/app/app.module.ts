@@ -1,6 +1,7 @@
 import { NgModule }      from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpModule } from '@angular/http';
 
 // import { AUTH_PROVIDERS } from 'angular2-jwt';
 
@@ -10,13 +11,18 @@ import { BrowserModule } from '@angular/platform-browser';
 // import { Auth } from './services/auth.service';
 import { AuthWRT } from './services/my-auth.service';
 import { AuthGuard } from './services/guard.service';
+import { UsersService } from './services/users.service'
 
 import { AppComponent }  from './app.component';
+import { CircleLoaderComponent } from './loaders/circle-loader.component';
 import { HomeComponent } from './components/home/home.component';
 import { PageNotFoundComponent } from './components/error/pagenotfound.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { DetailsComponent } from './components/profile/details/details.component';
 import { ApiReferenceComponent } from './components/apireference/apireference.component';
+import { LogsComponent } from './components/profile/logs/logs.component';
+import { PaymentsComponent } from './components/profile/payments/payments.component';
+import { ClientsComponent } from './components/profile/clients/clients.component';
 
 // Define the routes
 const defaultRoutes: Routes = [
@@ -28,6 +34,34 @@ const defaultRoutes: Routes = [
             {
                 path: '',
                 component : DetailsComponent,
+            },
+            {
+                path: 'logs',
+                component: LogsComponent
+            },
+            // {
+            //     path: 'change-pwd',
+            //     component: ChangePwdComponent
+            // },
+            // {
+            //     path: 'manage-cashiers',
+            //     component: ManageCashiersComponent
+            // },
+            // {
+            //     path: 'manage-adress',
+            //     component: ManageAdressComponent
+            // },
+            // {
+            //     path: 'manage-account',
+            //     component: ManageAccountComponent
+            // },
+            {
+                path: 'payments',
+                component: PaymentsComponent
+            },
+            {
+                path: 'clients',
+                component: ClientsComponent
             }
         ]
     },
@@ -52,11 +86,11 @@ const defaultRoutes: Routes = [
 
 // Module and component related to this application
 @NgModule({
-  imports: [ BrowserModule, RouterModule.forRoot(defaultRoutes)],
-  declarations: [ AppComponent, HomeComponent, PageNotFoundComponent, ProfileComponent, DetailsComponent,
-                  ApiReferenceComponent
+  imports: [ HttpModule, BrowserModule, RouterModule.forRoot(defaultRoutes)],
+  declarations: [ AppComponent, HomeComponent, PageNotFoundComponent, ProfileComponent, DetailsComponent, CircleLoaderComponent,
+                  ApiReferenceComponent, LogsComponent, ClientsComponent, PaymentsComponent
                 ],
   bootstrap:    [ AppComponent ],
-  providers: [ AuthWRT, AuthGuard ]
+  providers: [ AuthWRT, AuthGuard, UsersService ]
 })
 export class AppModule {}

@@ -241,4 +241,33 @@ router.get('/token/:token', (req, res) => {
     }
 })
 
+
+router.get('/get-client/:apikey', (req, res) => {
+    console.log(req.params.privatekey);
+    if(req.params.privatekey == null || req.params.privatekey == ''){
+        return res.status(400).json({err: true, msg: 'Bad request parameter.'});
+    }
+    if(req.dburl){
+        pg.connect(req.dburl, function(err, client, done) {
+            if(err){
+                console.log('Erreur connection a la bd : get-users');
+                console.error(err); 
+                return res.status(500).json({ err: true, msg: 'Database connection error.'});
+            }
+            client.query('select distinct tokens.phone from tokens, payments where tokens.token = payments.token_id and tokens.privatekey = $1', [req.params.privatekey], function(err, result) {
+                done();
+                if(err){ 
+                    console.error('Erreur requete : get-users'); 
+                    console.log(err);
+                    return res.status(500).json({ err: true, msg: 'Query error.'});
+                }
+                
+                return res.status(200).json({ err: false, msg: 'Client find.', data: result.rows });
+            });
+        });
+    }else{
+        return res.status(500).json({ err: true, msg: 'Url not set.'});
+    }
+})
+
 module.exports = router
