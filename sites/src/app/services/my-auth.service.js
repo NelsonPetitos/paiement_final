@@ -23,12 +23,11 @@ var AuthWRT = (function () {
                 localStorage.setItem('profile', JSON.stringify(profile));
                 _this.router.navigate([_this.redirectUrl]);
                 _this.redirectUrl = _this.logoutRediredtURl;
-                console.log("profile define in the and redirenction done to " + _this.redirectUrl);
             }
         };
     }
     AuthWRT.prototype.login = function () {
-        console.log('Je dois afficher le login');
+        // console.log('Je dois afficher le login');
         this.lock.show();
     };
     AuthWRT.prototype.authenticated = function () {

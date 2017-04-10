@@ -10,19 +10,21 @@ import { UsersService } from '../../../services/users.service';
         <div *ngIf="!showLoader" class="table-responsive">
             <table class="table table-hover">
                 <tr>
-                    <td>Num</td>
+                    <td>Transaction token</td>
                     <td>Send on</td>
                     <td>Number</td>
                     <td>Amount</td>
+                    <td>Status finished</td>
                 <tr>
                 <tr *ngFor="let transaction of transactions">
-                    <td>#</td>
-                    <td>{{transaction.serverRequest.reception_time}}</td>
-                    <td>{{transaction.phone_number}}</td>
-                    <td>{{transaction.serverRequest.amount}}</td>
+                    <td>{{transaction.token_id}}</td>
+                    <td>{{transaction.date_init}}</td>
+                    <td>{{transaction.phone}}</td>
+                    <td>{{transaction.amount}}</td>
+                    <td>{{transaction.status_payment}}</td>
                 </tr>
                 <tr *ngIf="transactions.length == 0">
-                    <td colspan="4"><h2 style="text-align: center;">No Logs.</h2></td>
+                    <td colspan="5"><h2 style="text-align: center;">No trasactions initiated.</h2></td>
                 </tr>
             </table>
         </div>
@@ -41,11 +43,15 @@ export class LogsComponent implements OnInit{
         if(this.profile.apikey){
             this.usersService.getLogs(this.profile.apikey).then(
                 (data) => {
+                    console.log('Get transactions log');
+                    console.log(data);
                     this.showLoader = false;
                     this.transactions = data.data;
                 },
                 (err) => {
                     this.showLoader = false;
+                    console.log(err);
+                    console.log('Error while getting logs');
                 }
             );
         }

@@ -22,17 +22,20 @@ var ClientsComponent = (function () {
         // console.log(this.profile);
         if (this.profile.apikey) {
             this.usersService.getClients(this.profile.apikey).then(function (data) {
+                console.log('Get clients');
+                console.log(data);
                 _this.showLoader = false;
                 _this.clients = data.data;
             }, function (err) {
                 _this.showLoader = false;
                 console.log('Error when getting clients');
+                console.log(err);
             });
         }
     };
     ClientsComponent = __decorate([
         core_1.Component({
-            template: "\n    <h1>Clients list</h1>\n    \n    <div style=\"margin-top: 34px;\"><circle-loader *ngIf=\"showLoader\" role=\"alert\"></circle-loader></div>\n\n    <div *ngIf=\"!showLoader\" class=\"table-responsive\">\n        <table class=\"table table-hover\">\n            <tr>\n                <td>Num</td>\n                <td>Number</td>\n            <tr>\n            <tr *ngFor=\"let client of clients\">\n                <td>#</td>\n                <td>{{client.phone}}</td>\n            </tr>\n            <tr *ngIf=\"clients.length == 0\">\n                <td colspan=\"3\"><h2 style=\"text-align: center;\">No clients.</h2></td>\n            </tr>\n        </table>\n    </div>\n    "
+            template: "\n    <h1>Clients list</h1>\n    \n    <div style=\"margin-top: 34px;\"><circle-loader *ngIf=\"showLoader\" role=\"alert\"></circle-loader></div>\n\n    <div *ngIf=\"!showLoader\" class=\"table-responsive\">\n        <table class=\"table table-hover\">\n            <tr>\n                <td>Num</td>\n                <td>Number</td>\n            <tr>\n            <tr *ngFor=\"let client of clients; let cptr = index\">\n                <td>{{cptr}}</td>\n                <td>{{client.phone}}</td>\n            </tr>\n            <tr *ngIf=\"clients.length == 0\">\n                <td colspan=\"3\"><h2 style=\"text-align: center;\">No clients.</h2></td>\n            </tr>\n        </table>\n    </div>\n    "
         }), 
         __metadata('design:paramtypes', [users_service_1.UsersService])
     ], ClientsComponent);

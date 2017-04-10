@@ -13,8 +13,8 @@ import { UsersService } from '../../../services/users.service';
                 <td>Num</td>
                 <td>Number</td>
             <tr>
-            <tr *ngFor="let client of clients">
-                <td>#</td>
+            <tr *ngFor="let client of clients; let cptr = index">
+                <td>{{cptr}}</td>
                 <td>{{client.phone}}</td>
             </tr>
             <tr *ngIf="clients.length == 0">
@@ -37,12 +37,15 @@ export class ClientsComponent implements OnInit{
         if(this.profile.apikey){
             this.usersService.getClients(this.profile.apikey).then(
                 (data) => {
+                    console.log('Get clients');
+                    console.log(data);
                     this.showLoader = false;
                     this.clients = data.data;
                 },
                 (err) => {
                     this.showLoader = false;
                     console.log('Error when getting clients');
+                    console.log(err);
                 }
             );
         }

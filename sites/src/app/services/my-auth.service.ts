@@ -19,13 +19,13 @@ export class AuthWRT {
                 localStorage.setItem('profile', JSON.stringify(profile));
                 this.router.navigate([this.redirectUrl]);
                 this.redirectUrl = this.logoutRediredtURl;
-                console.log(`profile define in the and redirenction done to ${this.redirectUrl}`);
+                // console.log(`profile define in the and redirenction done to ${this.redirectUrl}`);
             }
         }
     }
 
     public login(){
-        console.log('Je dois afficher le login');
+        // console.log('Je dois afficher le login');
         this.lock.show();
     }
 
