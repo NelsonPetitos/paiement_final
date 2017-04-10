@@ -10,14 +10,12 @@ import { UsersService } from '../../../services/users.service';
         <div *ngIf="!showLoader" class="table-responsive">
             <table class="table table-hover">
                 <tr>
-                    <td>Transaction token</td>
                     <td>Send on</td>
                     <td>Number</td>
                     <td>Amount</td>
-                    <td>Status finished</td>
+                    <td>Payment achieved</td>
                 <tr>
                 <tr *ngFor="let transaction of transactions">
-                    <td>{{transaction.token_id}}</td>
                     <td>{{transaction.date_init}}</td>
                     <td>{{transaction.phone}}</td>
                     <td>{{transaction.amount}}</td>

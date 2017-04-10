@@ -293,7 +293,7 @@ router.get('/get-logs', (req, res) => {
                 console.error(err); 
                 return res.status(500).json({ err: true, msg: 'Database connection error.'});
             }
-            client.query('select tokens.phone, tokens.amount, payments.token_id, payments.date_init, payments.status_payment from tokens, payments where tokens.token = payments.token_id and tokens.apikey = $1 limit $2 offset $3', [apikey, limit, offset], function(err, result) {
+            client.query('select tokens.phone, tokens.amount, payments.token_id, payments.date_init, payments.status_payment from tokens, payments where tokens.token = payments.token_id and tokens.apikey = $1 order by payments.date_init desc limit $2 offset $3', [apikey, limit, offset], function(err, result) {
                 done();
                 if(err){ 
                     console.error('Erreur requete : get-logs'); 
