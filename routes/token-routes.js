@@ -259,7 +259,7 @@ router.get('/get-client', (req, res) => {
                 console.error(err); 
                 return res.status(500).json({ err: true, msg: 'Database connection error.'});
             }
-            client.query('select distinct(tokens.phone), sum(case when payments.status_payment = false then tokens.amount else 0 end) as abord, sum(case when payments.status_payment = true then tokens.amount else 0 end) as depense from tokens, payments where tokens.token = payments.token_id and tokens.apikey = $1 limit $2 offset $3 group by tokens.phone', [apikey, limit, offset], function(err, result) {
+            client.query('select distinct(tokens.phone), sum(case when payments.status_payment = false then tokens.amount else 0 end) as abord, sum(case when payments.status_payment = true then tokens.amount else 0 end) as depense from tokens, payments where tokens.token = payments.token_id and tokens.apikey = $1 group by tokens.phone limit $2 offset $3 ', [apikey, limit, offset], function(err, result) {
                 done();
                 if(err){ 
                     console.error('Erreur requete : get-users'); 
