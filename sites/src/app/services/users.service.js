@@ -15,9 +15,19 @@ var UsersService = (function () {
     function UsersService(http) {
         this.http = http;
         this.clientUrl = "api/get-client";
+        this.logsUrl = "api/get-client";
     }
-    UsersService.prototype.getClients = function (privatekey) {
-        return this.http.get(this.clientUrl + "/" + privatekey)
+    UsersService.prototype.getClients = function (apikey, limit, page) {
+        if (limit === void 0) { limit = 10; }
+        if (page === void 0) { page = 1; }
+        return this.http.get(this.clientUrl + "?apikey=" + apikey + "&limit=" + limit + "&page=" + page)
+            .toPromise()
+            .then(function (res) { return res.json(); }, function (err) { return err.json(); });
+    };
+    UsersService.prototype.getLogs = function (apikey, limit, page) {
+        if (limit === void 0) { limit = 10; }
+        if (page === void 0) { page = 1; }
+        return this.http.get(this.logsUrl + "?apikey=" + apikey + "&limit=" + limit + "&page=" + page)
             .toPromise()
             .then(function (res) { return res.json(); }, function (err) { return err.json(); });
     };

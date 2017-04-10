@@ -31,11 +31,23 @@ import { UsersService } from '../../../services/users.service';
 export class LogsComponent implements OnInit{
     private profile: any;
     private showLoader = true;
+    private transactions: any[] = [];
 
     constructor(private usersService: UsersService){}
 
     ngOnInit(){
         this.profile = JSON.parse(localStorage.getItem('profile'));
         // console.log(this.profile);
+        if(this.profile.apikey){
+            this.usersService.getLogs(this.profile.apikey).then(
+                (data) => {
+                    this.showLoader = false;
+                    this.transactions = data.data;
+                },
+                (err) => {
+                    this.showLoader = false;
+                }
+            );
+        }
     }
 }

@@ -14,10 +14,20 @@ var LogsComponent = (function () {
     function LogsComponent(usersService) {
         this.usersService = usersService;
         this.showLoader = true;
+        this.transactions = [];
     }
     LogsComponent.prototype.ngOnInit = function () {
+        var _this = this;
         this.profile = JSON.parse(localStorage.getItem('profile'));
         // console.log(this.profile);
+        if (this.profile.apikey) {
+            this.usersService.getLogs(this.profile.apikey).then(function (data) {
+                _this.showLoader = false;
+                _this.transactions = data.data;
+            }, function (err) {
+                _this.showLoader = false;
+            });
+        }
     };
     LogsComponent = __decorate([
         core_1.Component({

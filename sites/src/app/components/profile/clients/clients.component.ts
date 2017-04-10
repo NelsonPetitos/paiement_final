@@ -13,11 +13,11 @@ import { UsersService } from '../../../services/users.service';
                 <td>Num</td>
                 <td>Number</td>
             <tr>
-            <tr *ngFor="let transaction of transactions">
+            <tr *ngFor="let client of clients">
                 <td>#</td>
-                <td>{{transaction}}</td>
+                <td>{{client.phone}}</td>
             </tr>
-            <tr *ngIf="transactions.length == 0">
+            <tr *ngIf="clients.length == 0">
                 <td colspan="3"><h2 style="text-align: center;">No clients.</h2></td>
             </tr>
         </table>
@@ -27,10 +27,24 @@ import { UsersService } from '../../../services/users.service';
 export class ClientsComponent implements OnInit{
     private showLoader = true;
     private profile : any;
+    private clients: any[] = [];
+
     constructor(private usersService: UsersService){}
 
     ngOnInit(){
         this.profile = JSON.parse(localStorage.getItem('profile'));
-        console.log(this.profile);
+        // console.log(this.profile);
+        if(this.profile.apikey){
+            this.usersService.getClients(this.profile.apikey).then(
+                (data) => {
+                    this.showLoader = false;
+                    this.clients = data.data;
+                },
+                (err) => {
+                    this.showLoader = false;
+                    console.log('Error when getting clients');
+                }
+            );
+        }
     }
 }
