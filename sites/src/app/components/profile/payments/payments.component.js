@@ -15,6 +15,7 @@ var PaymentsComponent = (function () {
         this.usersService = usersService;
         this.showLoader = true;
         this.transactions = [];
+        this.options = { day: "numeric", month: "numeric", year: "numeric", hour: 'numeric', minute: 'numeric' };
     }
     PaymentsComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -23,6 +24,12 @@ var PaymentsComponent = (function () {
             this.usersService.getPayments(this.profile.apikey).then(function (data) {
                 _this.showLoader = false;
                 _this.transactions = data.data;
+                _this.transactions.forEach(function (transaction) {
+                    if (transaction.date_init) {
+                        transaction.date_init = new Date(transaction.date_init);
+                        transaction.date_init = transaction.date_init.toLocaleString('en-GB', _this.options);
+                    }
+                });
             }, function (err) {
                 _this.showLoader = false;
                 console.log(err);

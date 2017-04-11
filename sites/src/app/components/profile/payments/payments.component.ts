@@ -32,6 +32,7 @@ export class PaymentsComponent implements OnInit{
     private profile: any;
     private showLoader = true;
     private transactions: any[] = [];
+    private options = {day: "numeric", month: "numeric", year: "numeric", hour: 'numeric', minute: 'numeric'};
 
     constructor(private usersService: UsersService){}
 
@@ -42,6 +43,12 @@ export class PaymentsComponent implements OnInit{
                 (data) => {
                     this.showLoader = false;
                     this.transactions = data.data;
+                    this.transactions.forEach(transaction => {
+                        if(transaction.date_init){
+                            transaction.date_init = new Date(transaction.date_init)
+                            transaction.date_init = transaction.date_init.toLocaleString('en-GB', this.options);
+                        }
+                    });
                 },
                 (err) => {
                     this.showLoader = false;
