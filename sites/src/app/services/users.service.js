@@ -16,6 +16,7 @@ var UsersService = (function () {
         this.http = http;
         this.clientUrl = "api/get-client";
         this.logsUrl = "api/get-logs";
+        this.paymentsUrl = "api/get-payments";
     }
     UsersService.prototype.getClients = function (apikey, limit, page) {
         if (limit === void 0) { limit = 10; }
@@ -28,6 +29,13 @@ var UsersService = (function () {
         if (limit === void 0) { limit = 10; }
         if (page === void 0) { page = 1; }
         return this.http.get(this.logsUrl + "?apikey=" + apikey + "&limit=" + limit + "&page=" + page)
+            .toPromise()
+            .then(function (res) { return res.json(); }, function (err) { return err.json(); });
+    };
+    UsersService.prototype.getPayments = function (apikey, limit, page) {
+        if (limit === void 0) { limit = 10; }
+        if (page === void 0) { page = 1; }
+        return this.http.get(this.paymentsUrl + "?apikey=" + apikey + "&limit=" + limit + "&page=" + page)
             .toPromise()
             .then(function (res) { return res.json(); }, function (err) { return err.json(); });
     };

@@ -9,14 +9,31 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var users_service_1 = require('../../../services/users.service');
 var PaymentsComponent = (function () {
-    function PaymentsComponent() {
+    function PaymentsComponent(usersService) {
+        this.usersService = usersService;
+        this.showLoader = true;
+        this.transactions = [];
     }
+    PaymentsComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.profile = JSON.parse(localStorage.getItem('profile'));
+        if (this.profile.apikey) {
+            this.usersService.getPayments(this.profile.apikey).then(function (data) {
+                _this.showLoader = false;
+                _this.transactions = data.data;
+            }, function (err) {
+                _this.showLoader = false;
+                console.log(err);
+            });
+        }
+    };
     PaymentsComponent = __decorate([
         core_1.Component({
-            template: "<h1>List payments</h1>"
+            template: "\n        <h1>List payments</h1>\n        \n        <div style=\"margin-top: 34px;\"><circle-loader *ngIf=\"showLoader\" role=\"alert\"></circle-loader></div>\n\n        <div *ngIf=\"!showLoader\" class=\"table-responsive\">\n            <table class=\"table table-hover\">\n                <tr>\n                    <td>Send on</td>\n                    <td>Number</td>\n                    <td>Amount</td>\n                    <td>Payment token</td>\n                <tr>\n                <tr *ngFor=\"let transaction of transactions\">\n                    <td>{{transaction.date_init}}</td>\n                    <td>{{transaction.phone}}</td>\n                    <td>{{transaction.amount}}</td>\n                    <td>{{transaction.token_id}}</td>\n                </tr>\n                <tr *ngIf=\"transactions.length == 0\">\n                    <td colspan=\"5\"><h2 style=\"text-align: center;\">No payments made.</h2></td>\n                </tr>\n            </table>\n        </div>\n    "
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [users_service_1.UsersService])
     ], PaymentsComponent);
     return PaymentsComponent;
 }());
