@@ -19,7 +19,7 @@ var DetailsComponent = (function () {
     DetailsComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
-            templateUrl: '../../templates/details.component.html'
+            template: "\n        <div class=\"page-header\">\n            <h1>{{profile.email}}</h1>\n        </div>\n        <div class=\"row well\" style=\"text-align: left;\">\n            <div class=\"col-xs-2\">\n                <span>Email :</span><br/><br/>\n                <span>Public key : </span><br/><br/>\n                <span>Private key :</span><br/>\n            </div>\n            <div class=\"col-xs-10\">\n                <span>{{profile.email}}</span><br/><br/>\n                <span>{{profile.apikey}}</span><br/><br/>\n                <span>{{profile.privatekey}}</span><br/>\n            </div>\n        </div>\n    "
         }), 
         __metadata('design:paramtypes', [])
     ], DetailsComponent);

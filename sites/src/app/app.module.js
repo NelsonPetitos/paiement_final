@@ -19,6 +19,7 @@ var http_1 = require('@angular/http');
 var my_auth_service_1 = require('./services/my-auth.service');
 var guard_service_1 = require('./services/guard.service');
 var users_service_1 = require('./services/users.service');
+var ng2_page_scroll_1 = require('ng2-page-scroll');
 var app_component_1 = require('./app.component');
 var circle_loader_component_1 = require('./loaders/circle-loader.component');
 var home_component_1 = require('./components/home/home.component');
@@ -94,7 +95,7 @@ var AppModule = (function () {
     }
     AppModule = __decorate([
         core_1.NgModule({
-            imports: [http_1.HttpModule, platform_browser_1.BrowserModule, router_1.RouterModule.forRoot(defaultRoutes)],
+            imports: [http_1.HttpModule, platform_browser_1.BrowserModule, router_1.RouterModule.forRoot(defaultRoutes), ng2_page_scroll_1.Ng2PageScrollModule.forRoot()],
             declarations: [app_component_1.AppComponent, home_component_1.HomeComponent, pagenotfound_component_1.PageNotFoundComponent, profile_component_1.ProfileComponent, details_component_1.DetailsComponent, circle_loader_component_1.CircleLoaderComponent,
                 apireference_component_1.ApiReferenceComponent, logs_component_1.LogsComponent, clients_component_1.ClientsComponent, payments_component_1.PaymentsComponent
             ],

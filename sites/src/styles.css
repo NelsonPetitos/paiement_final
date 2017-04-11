@@ -78,20 +78,22 @@
 
 .login_panel ul li a:hover, 
 .login_panel ul li.active a{
-    background-color: rgba(0, 0, 0, 0.3) !important;
+    background-color: #337ab7 !important;
     border-radius: 0;
     border-top: 2px solid #337ab7 !important;
     border-radius: 4px;
+    color: #fff;
+    /*font-weight: bold;*/
 }
 
 .login_panel ul li.active a{    
-    color: #337ab7;
+    color: #FFF;
     font-weight: bold;
 }
 
 .login_panel ul li.active a:hover {
     font: inherit;
-    color: #23527c;
+    color: #fff;
 }
 
 div.input-group-addon {
@@ -103,7 +105,7 @@ div.input-group-addon {
 .close_flippay_modal {
     color: #337ab7; 
     display: inline-block; 
-    font-size: 1.5em;
+    font-size: 1.25em;
     float: right;
     position: relative;
     top: 5px;

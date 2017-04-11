@@ -2,7 +2,7 @@
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
     <div class="navbar-header">
-        <a class="navbar-brand" href="#">Flitpay</a>
+        <a class="navbar-brand" routerLink="/home">Flitpay</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
@@ -14,8 +14,7 @@
             <li *ngIf="auth.authenticated()" class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Profile <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a routerLink="/profile">Details</a></li>
-                    <li><a href="#">Edit profile</a></li>
+                    <li><a routerLink="/profile">Account profile</a></li>
                     <li role="separator" class="divider"></li>
                     <li><a (click)="auth.logout()">Log out</a></li>
                 </ul>
@@ -24,6 +23,6 @@
     </div>
     </div>
 </nav>
-<div style="margin-top: 30px;">
+<div style="margin-top: 50px;">
     <router-outlet></router-outlet>
 </div>

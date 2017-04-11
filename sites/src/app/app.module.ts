@@ -12,6 +12,7 @@ import { HttpModule } from '@angular/http';
 import { AuthWRT } from './services/my-auth.service';
 import { AuthGuard } from './services/guard.service';
 import { UsersService } from './services/users.service'
+import {Ng2PageScrollModule} from 'ng2-page-scroll';
 
 import { AppComponent }  from './app.component';
 import { CircleLoaderComponent } from './loaders/circle-loader.component';
@@ -86,7 +87,7 @@ const defaultRoutes: Routes = [
 
 // Module and component related to this application
 @NgModule({
-  imports: [ HttpModule, BrowserModule, RouterModule.forRoot(defaultRoutes)],
+  imports: [ HttpModule, BrowserModule, RouterModule.forRoot(defaultRoutes), Ng2PageScrollModule.forRoot()],
   declarations: [ AppComponent, HomeComponent, PageNotFoundComponent, ProfileComponent, DetailsComponent, CircleLoaderComponent,
                   ApiReferenceComponent, LogsComponent, ClientsComponent, PaymentsComponent
                 ],

@@ -1,8 +1,13 @@
 import { Component } from '@angular/core';
+import { AuthWRT } from '../../services/my-auth.service';
+import {PageScrollConfig} from 'ng2-page-scroll';
 
 @Component({
     moduleId: module.id,
-    templateUrl: '../templates/home.component.html'
-    // template: "<h1>Hello home</h1>"
+    templateUrl: './home.component.html'
 })
-export class HomeComponent {}
+export class HomeComponent {
+    constructor(private auth: AuthWRT){
+        PageScrollConfig.defaultScrollOffset = 50;
+    }
+}
