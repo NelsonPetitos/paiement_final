@@ -32,6 +32,7 @@ export class PaymentsComponent implements OnInit{
     private profile: any;
     private showLoader = true;
     private transactions: any[] = [];
+    private count : number;
     private options = {day: "numeric", month: "numeric", year: "numeric", hour: 'numeric', minute: 'numeric'};
 
     constructor(private usersService: UsersService){}
@@ -54,6 +55,15 @@ export class PaymentsComponent implements OnInit{
                     this.showLoader = false;
                     console.log(err);
                 }
+            );
+
+            this.usersService.getPaymentsPagination(this.profile.apikey).then(
+                (data) => {
+                    this.count = data.data;
+                    console.log(`Limit de pagination ${this.count}`);
+                    // Appeler la pagination
+                },
+                (err) => {}
             );
         }
     }

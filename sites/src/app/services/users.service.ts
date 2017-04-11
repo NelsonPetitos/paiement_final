@@ -7,7 +7,9 @@ import 'rxjs/add/operator/toPromise';
 export class UsersService {
     private clientUrl = "api/get-client";
     private logsUrl = "api/get-logs";
+    private logsPaginationUrl = "api/get-logs-pagination";
     private paymentsUrl = "api/get-payments";
+    private paymentsPaginationUrl = "api/get-payments-pagination";
 
     constructor(private http: Http){
     }
@@ -30,8 +32,26 @@ export class UsersService {
             )
     }
 
+    getLogsPagination(apikey: string){
+        return this.http.get(this.logsPaginationUrl+"?apikey="+apikey)
+            .toPromise()
+            .then(
+                res => res.json(), 
+                err => err.json()
+            )
+    }
+
     getPayments(apikey: string, limit = 10, page = 1){
         return this.http.get(this.paymentsUrl+"?apikey="+apikey+"&limit="+limit+"&page="+page)
+            .toPromise()
+            .then(
+                res => res.json(), 
+                err => err.json()
+            )
+    }
+
+    getPaymentsPagination(apikey: string){
+        return this.http.get(this.paymentsPaginationUrl+"?apikey="+apikey)
             .toPromise()
             .then(
                 res => res.json(), 

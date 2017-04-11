@@ -3,28 +3,33 @@ import { UsersService } from '../../../services/users.service';
 
 @Component({
     template: `
-        <h1>Transactions log</h1>
-        
-        <div style="margin-top: 34px;"><circle-loader *ngIf="showLoader" role="alert"></circle-loader></div>
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Transactions log</h1>
+                
+                <div style="margin-top: 34px;"><circle-loader *ngIf="showLoader" role="alert"></circle-loader></div>
 
-        <div *ngIf="!showLoader" class="table-responsive">
-            <table class="table table-hover">
-                <tr>
-                    <td>Send on</td>
-                    <td>Number</td>
-                    <td>Amount</td>
-                    <td>Payment achieved</td>
-                <tr>
-                <tr *ngFor="let transaction of transactions">
-                    <td>{{transaction.date_init}}</td>
-                    <td>{{transaction.phone}}</td>
-                    <td>{{transaction.amount}}</td>
-                    <td>{{transaction.status_payment}}</td>
-                </tr>
-                <tr *ngIf="transactions.length == 0">
-                    <td colspan="5"><h2 style="text-align: center;">No trasactions initiated.</h2></td>
-                </tr>
-            </table>
+                <div *ngIf="!showLoader" class="table-responsive">
+                    <table class="table table-hover">
+                        <tr>
+                            <td>Send on</td>
+                            <td>Number</td>
+                            <td>Amount</td>
+                            <td>Payment achieved</td>
+                        <tr>
+                        <tr *ngFor="let transaction of transactions">
+                            <td>{{transaction.date_init}}</td>
+                            <td>{{transaction.phone}}</td>
+                            <td>{{transaction.amount}}</td>
+                            <td>{{transaction.status_payment}}</td>
+                        </tr>
+                        <tr *ngIf="transactions.length == 0">
+                            <td colspan="5"><h2 style="text-align: center;">No trasactions initiated.</h2></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
         </div>
     `
 })
@@ -32,6 +37,7 @@ export class LogsComponent implements OnInit{
     private profile: any;
     private showLoader = true;
     private transactions: any[] = [];
+    private count: number;
     private options = {day: "numeric", month: "numeric", year: "numeric", hour: 'numeric', minute: 'numeric'};
 
     constructor(private usersService: UsersService){}
@@ -43,7 +49,7 @@ export class LogsComponent implements OnInit{
             this.usersService.getLogs(this.profile.apikey).then(
                 (data) => {
                     console.log('Get transactions log');
-                    console.log(data);
+                    // console.log(data);
                     this.showLoader = false;
                     this.transactions = data.data;
                     this.transactions.forEach(transaction => {
@@ -57,6 +63,17 @@ export class LogsComponent implements OnInit{
                     this.showLoader = false;
                     console.log(err);
                     console.log('Error while getting logs');
+                }
+            );
+
+            this.usersService.getLogsPagination(this.profile.apikey).then(
+                (data) => {
+                    this.count = data.data;
+                    // Appeler la pagination
+                    console.log(`Limit de pagination ${this.count}`);
+                },
+                (err) => {
+                    // Pas possible de paginer
                 }
             );
         }

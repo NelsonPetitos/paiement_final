@@ -309,7 +309,39 @@ router.get('/get-logs', (req, res) => {
     }
 })
 
-router.get('/get-payments', (req, res) => {
+
+router.get('/get-logs-pagination', (req, res) => {
+    // console.log(req.query.apikey);
+    let apikey = req.query.apikey;
+
+    if(!apikey || apikey == ''){
+        return res.status(400).json({err: true, msg: 'Bad request parameters.'});
+    }
+    if(req.dburl){
+        pg.connect(req.dburl, function(err, client, done) {
+            if(err){
+                console.log('Erreur connection a la bd : get-logs');
+                console.error(err); 
+                return res.status(500).json({ err: true, msg: 'Database connection error.'});
+            }
+            client.query('select count(*) from tokens, payments where tokens.token = payments.token_id and tokens.apikey = $1', [apikey], function(err, result) {
+                done();
+                if(err){ 
+                    console.log(err);
+                    return res.status(500).json({ err: true, msg: 'Query error.'});
+                }
+                if(result.rows.length === 1){
+                    return res.status(200).json({ err: false, msg: 'Count return.', data: result.rows[0] });
+                }
+                return res.status(500).json({ err: true, msg: 'Multiple results unexpected' });
+            });
+        });
+    }else{
+        return res.status(500).json({ err: true, msg: 'Url not set.'});
+    }
+})
+
+router.get('/get-payments-pagination', (req, res) => {
     // console.log(req.query.apikey);
     let apikey = req.query.apikey;
     
@@ -327,6 +359,40 @@ router.get('/get-payments', (req, res) => {
                 return res.status(500).json({ err: true, msg: 'Database connection error.'});
             }
             client.query('select tokens.phone, tokens.amount, payments.token_id, payments.date_init, payments.status_payment from tokens, payments where tokens.token = payments.token_id and tokens.apikey = $1 and payments.status_payment = true order by payments.date_init desc limit $2 offset $3', [apikey, limit, offset], function(err, result) {
+                done();
+                if(err){ 
+                    console.error('Erreur requete : get-logs'); 
+                    console.log(err);
+                    return res.status(500).json({ err: true, msg: 'Query error.'});
+                }
+                if(result.rows.length === 1){
+                    return res.status(200).json({ err: false, msg: 'Count return.', data: result.rows[0] });
+                }
+                return res.status(500).json({ err: true, msg: 'Multiple result unexpected' });
+            });
+        });
+    }else{
+        return res.status(500).json({ err: true, msg: 'Url not set.'});
+    }
+})
+
+router.get('/get-payments', (req, res) => {
+    // console.log(req.query.apikey);
+    let apikey = req.query.apikey;
+    // let limit = (!parseInt(req.query.limit))? 10 : parseInt(req.query.limit);
+    // let offset = (!parseInt(req.query.page) || parseInt(req.query.page) < 0)? 0 : (parseInt(req.query.page) - 1) * limit;
+
+    if(!apikey || apikey == ''){
+        return res.status(400).json({err: true, msg: 'Bad request parameters.'});
+    }
+    if(req.dburl){
+        pg.connect(req.dburl, function(err, client, done) {
+            if(err){
+                console.log('Erreur connection a la bd : get-logs');
+                console.error(err); 
+                return res.status(500).json({ err: true, msg: 'Database connection error.'});
+            }
+            client.query('select count(*) from tokens, payments where tokens.token = payments.token_id and tokens.apikey = $1 and payments.status_payment = true', [apikey], function(err, result) {
                 done();
                 if(err){ 
                     console.error('Erreur requete : get-logs'); 

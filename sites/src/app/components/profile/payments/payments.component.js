@@ -34,6 +34,11 @@ var PaymentsComponent = (function () {
                 _this.showLoader = false;
                 console.log(err);
             });
+            this.usersService.getPaymentsPagination(this.profile.apikey).then(function (data) {
+                _this.count = data.data;
+                console.log("Limit de pagination " + _this.count);
+                // Appeler la pagination
+            }, function (err) { });
         }
     };
     PaymentsComponent = __decorate([
